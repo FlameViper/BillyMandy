@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
     public Camera upgradesCamera;
     public Camera example2Camera;
 
+    //derp
+
     void Start()
     {
         EnableMainCamera();
