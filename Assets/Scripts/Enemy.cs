@@ -4,21 +4,21 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public int maxHealth = 100;
+    public int baseHealth = 100; // Renamed to baseHealth for clarity
     public int currentHealth;
     public int damageToPlayer = 10;
     public float stopDistance = 1f;
     public float attackSpeed = 1f; // Attack speed in seconds
 
-    public GameObject coinPrefab; // Add this line to reference the coin prefab
+    public GameObject coinPrefab;
 
     private Transform player;
-    private Coroutine attackRoutine = null; // To keep track of the attack coroutine
+    private Coroutine attackRoutine = null;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        currentHealth = maxHealth;
+        currentHealth = baseHealth; // Ensure current health is set to base at start
     }
 
     void Update()
@@ -37,7 +37,6 @@ public class Enemy : MonoBehaviour
     {
         if (collision.CompareTag("Player") && attackRoutine == null)
         {
-            // Start dealing damage repeatedly when the enemy enters the player's hitbox
             attackRoutine = StartCoroutine(DealDamageRepeatedly(collision));
         }
     }
@@ -46,7 +45,6 @@ public class Enemy : MonoBehaviour
     {
         if (collision.CompareTag("Player") && attackRoutine != null)
         {
-            // Stop dealing damage when the enemy exits the player's hitbox
             StopCoroutine(attackRoutine);
             attackRoutine = null;
         }
@@ -57,7 +55,7 @@ public class Enemy : MonoBehaviour
         while (true)
         {
             playerCollider.GetComponent<Player>().TakeDamage(damageToPlayer);
-            yield return new WaitForSeconds(attackSpeed); // Wait for attackSpeed seconds before dealing damage again
+            yield return new WaitForSeconds(attackSpeed);
         }
     }
 
@@ -73,8 +71,14 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        // Instantiate the coin prefab at the enemy's position before destroying the enemy
         Instantiate(coinPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
+    }
+
+    // Add this method to set the enemy's health based on the current level
+    public void SetHealth(int level)
+    {
+        baseHealth = 100 + (level - 1) * 20; // Increase base health by 20 for each level beyond the first
+        currentHealth = baseHealth; // Reset current health to the new base health
     }
 }

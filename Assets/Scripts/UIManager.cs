@@ -10,10 +10,10 @@ public class UIManager : MonoBehaviour
     public Camera example2Camera;
 
 
-    void Start()
-    {
-        EnableMainCamera();
-    }
+    //void Start()
+    //{
+    //    EnableMainCamera();
+    //}
 
 
     public void EnableBattleCamera()

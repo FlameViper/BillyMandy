@@ -121,9 +121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  damageAmount: 10
-  destroyDelay: 50
-  attackSpeedLimit: 0.3
+  damageAmount: 50
+  destroyDelay: 10
 --- !u!61 &7588725078646041512
 BoxCollider2D:
   m_ObjectHideFlags: 0
