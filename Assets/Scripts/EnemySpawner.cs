@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public List<GameObject> enemyPrefabs;
-    public float spawnInterval = 3f;
+    // spawnInterval is now set dynamically in StartSpawning
+    private float spawnInterval;
     public int maxEnemies = 5;
 
     private float spawnTimer;
@@ -16,14 +17,42 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         spawnAreaSize = GetComponent<Renderer>().bounds.size;
-        // Removed auto-start to give control to BattleManager
     }
 
     public void StartSpawning(int level)
     {
         enemiesSpawned = 0;
         spawnTimer = 0;
+
+        // Calculate and adjust spawn interval based on maxEnemies and level duration
+        AdjustSpawnInterval();
+
         StartCoroutine(SpawnEnemies(level)); // Start coroutine with level parameter
+    }
+
+    private void AdjustSpawnInterval()
+    {
+        // Assuming a level duration of 60 seconds
+        float levelDuration = 60f;
+
+        // Adjust the spawn interval based on the number of enemies and the level duration
+        // Ensure we adjust for a very high number of enemies to maintain game balance
+        if (maxEnemies > 0)
+        {
+            spawnInterval = Mathf.Max(levelDuration / maxEnemies, 0.25f); // Ensures a minimum spawn interval of 0.25 seconds
+        }
+        else
+        {
+            // Default to 3 seconds if maxEnemies is somehow not set properly
+            spawnInterval = 3f;
+        }
+    }
+
+    public void IncreaseMaxEnemies(int increaseAmount)
+    {
+        maxEnemies += increaseAmount;
+        // Optionally re-adjust spawn interval if maxEnemies changes mid-level
+        // AdjustSpawnInterval();
     }
 
     IEnumerator SpawnEnemies(int level)
@@ -39,25 +68,12 @@ public class EnemySpawner : MonoBehaviour
                     Random.Range(-spawnAreaSize.y / 2, spawnAreaSize.y / 2),
                     0);
 
-                // Correctly select a random prefab from the enemyPrefabs list
                 GameObject selectedPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
                 GameObject newEnemy = Instantiate(selectedPrefab, randomSpawnPosition, Quaternion.identity);
                 currentEnemies.Add(newEnemy); // Keep track of the spawned enemy
 
-                // Adjust the enemy's health based on the level
-                var enemy = newEnemy.GetComponent<Enemy>(); // Try to get the Enemy component
-                if (enemy != null)
-                {
-                    enemy.SetHealth(level); // If it's a regular enemy, set its health based on the level
-                }
-                else
-                {
-                    var enemyShooter = newEnemy.GetComponent<EnemyShooter>(); // Try to get the EnemyShooter component
-                    if (enemyShooter != null)
-                    {
-                        enemyShooter.SetHealth(level); // If it's an enemy shooter, set its health based on the level
-                    }
-                }
+                // Adjust the enemy's health based on the current level
+                newEnemy.GetComponent<Enemy>().SetHealth(level); // Make sure your Enemy class has SetHealth method
 
                 enemiesSpawned++;
             }
@@ -70,7 +86,7 @@ public class EnemySpawner : MonoBehaviour
     public void StopSpawning()
     {
         StopAllCoroutines(); // Stops the spawning coroutine
-        spawnTimer = spawnInterval; // Ensures immediate spawning upon restart
+        spawnTimer = spawnInterval; // Resets spawn timer for immediate effect upon restart
     }
 
     public void DestroyAllEnemies()

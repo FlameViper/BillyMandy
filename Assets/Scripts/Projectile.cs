@@ -5,7 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float speed = 10f; // Speed of the projectile
-    public int damageAmount = 10; // Amount of damage dealt to enemies
+    public static int damageAmount = 10; // Amount of damage dealt to enemies
     public float destroyDelay = 10f; // Delay before destroying the projectile
 
     private Vector3 direction; // Direction in which the projectile will move

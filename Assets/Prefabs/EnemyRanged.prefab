@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3818308153191858454}
   - component: {fileID: 3753224899312541807}
-  - component: {fileID: 6777070650343953308}
   - component: {fileID: 7343976604053021382}
   - component: {fileID: 4650167552755612075}
+  - component: {fileID: -9107687307207701017}
   m_Layer: 0
   m_Name: EnemyRanged
   m_TagString: Enemy
@@ -87,25 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6777070650343953308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1800205754805486490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8294324b5168ebd48af24be19c3e2204, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 1
-  maxHealth: 20
-  currentHealth: 0
-  damageToPlayer: 5
-  stopDistance: 5
-  attackSpeed: 0.3
-  coinPrefab: {fileID: 388471209637791382, guid: 250c8ec9986cd214d914b1638c4ab158, type: 3}
 --- !u!61 &7343976604053021382
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -144,6 +125,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4890f3b5aad1234981845b11e6427f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 0.5
+  stopDistance: 3
   projectilePrefab: {fileID: 578942263459709013, guid: 5ccf80b63ca3c664db5fb055980f3c29, type: 3}
   attackSpeed: 1
-  attackRange: 5
+  attackRange: 3
+  baseHealth: 100
+  currentHealth: 0
+  coinPrefab: {fileID: 388471209637791382, guid: 250c8ec9986cd214d914b1638c4ab158, type: 3}
+  isFrozen: 0
+--- !u!114 &-9107687307207701017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800205754805486490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8294324b5168ebd48af24be19c3e2204, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 0.5
+  baseHealth: 100
+  currentHealth: 0
+  damageToPlayer: 10
+  stopDistance: 3
+  attackSpeed: 1
+  coinPrefab: {fileID: 388471209637791382, guid: 250c8ec9986cd214d914b1638c4ab158, type: 3}
+  isFrozen: 0
+  freezeDuration: 2

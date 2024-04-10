@@ -14,6 +14,10 @@ public class Enemy : MonoBehaviour
 
     private Transform player;
     private Coroutine attackRoutine = null;
+    public bool isFrozen = false;
+    
+
+
 
     void Start()
     {
@@ -23,6 +27,8 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if (isFrozen) return; // Prevent moving when frozen
+
         if (player != null)
         {
             float distanceToPlayer = Vector2.Distance(transform.position, player.position);
@@ -32,6 +38,45 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+    public void Freeze(bool freezeStatus)
+    {
+        isFrozen = freezeStatus;
+
+        // Access the SpriteRenderer component
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            // Change color to blue when frozen, revert to white when not frozen
+            spriteRenderer.color = freezeStatus ? Color.blue : Color.white;
+        }
+
+        // If freezing, start the unfreeze coroutine
+        if (freezeStatus)
+        {
+            StartCoroutine(UnfreezeAfterDuration(SupportProjectile.freezeDuration));
+        }
+    }
+
+    IEnumerator UnfreezeAfterDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        Freeze(false); // Unfreeze the enemy after the specified duration
+    }
+
+
+
+
+
+    IEnumerator DealDamageRepeatedly(Collider2D playerCollider)
+    {
+        while (!isFrozen)
+        {
+            playerCollider.GetComponent<Player>().TakeDamage(damageToPlayer);
+            yield return new WaitForSeconds(attackSpeed);
+        }
+    }
+
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -47,15 +92,6 @@ public class Enemy : MonoBehaviour
         {
             StopCoroutine(attackRoutine);
             attackRoutine = null;
-        }
-    }
-
-    IEnumerator DealDamageRepeatedly(Collider2D playerCollider)
-    {
-        while (true)
-        {
-            playerCollider.GetComponent<Player>().TakeDamage(damageToPlayer);
-            yield return new WaitForSeconds(attackSpeed);
         }
     }
 
@@ -78,7 +114,20 @@ public class Enemy : MonoBehaviour
     // Add this method to set the enemy's health based on the current level
     public void SetHealth(int level)
     {
-        baseHealth = 100 + (level - 1) * 20; // Increase base health by 20 for each level beyond the first
-        currentHealth = baseHealth; // Reset current health to the new base health
+        int healthIncrease = 20; // Default for Easy
+
+        switch (GameSettings.Instance.currentDifficulty)
+        {
+            case GameSettings.Difficulty.Medium:
+                healthIncrease = 30;
+                break;
+            case GameSettings.Difficulty.Hard:
+                healthIncrease = 50;
+                break;
+        }
+
+        baseHealth = 100 + (level - 1) * healthIncrease;
+        currentHealth = baseHealth;
     }
+
 }
