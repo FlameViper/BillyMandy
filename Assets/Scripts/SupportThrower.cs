@@ -12,7 +12,7 @@ public class SupportThrower : MonoBehaviour
     {
         if (isSupportActive && Input.GetMouseButtonDown(0) && Time.time - lastSupportAttackTime >= 1f / supportAttackSpeed)
         {
-            Debug.Log("Attempting to throw support projectile");
+            
             lastSupportAttackTime = Time.time;
 
             // Get the mouse position in world coordinates and adjust for 2D
@@ -23,18 +23,19 @@ public class SupportThrower : MonoBehaviour
             Vector3 direction = (mousePosition - transform.position).normalized;
 
             GameObject newSupportProjectile = Instantiate(supportProjectilePrefab, transform.position, Quaternion.identity);
-            Debug.Log($"Support projectile instantiated at {transform.position}");
+        
 
-            Projectile supportProjectile = newSupportProjectile.GetComponent<Projectile>();
+            // Change this to use SupportProjectile component
+            SupportProjectile supportProjectile = newSupportProjectile.GetComponent<SupportProjectile>();
 
             if (supportProjectile != null)
             {
                 supportProjectile.SetDirection(direction);
-                Debug.Log("Support projectile direction set");
+                
             }
             else
             {
-                Debug.LogError("Support projectile prefab doesn't have Projectile component attached!");
+                Debug.LogError("Support projectile prefab doesn't have SupportProjectile component attached!");
             }
         }
     }

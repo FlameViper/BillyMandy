@@ -4,25 +4,31 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public int maxHealth = 100;
+    public int baseHealth = 100; // Renamed to baseHealth for clarity
     public int currentHealth;
     public int damageToPlayer = 10;
     public float stopDistance = 1f;
     public float attackSpeed = 1f; // Attack speed in seconds
 
-    public GameObject coinPrefab; // Add this line to reference the coin prefab
+    public GameObject coinPrefab;
 
     private Transform player;
-    private Coroutine attackRoutine = null; // To keep track of the attack coroutine
+    private Coroutine attackRoutine = null;
+    public bool isFrozen = false;
+    
+
+
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        currentHealth = maxHealth;
+        currentHealth = baseHealth; // Ensure current health is set to base at start
     }
 
     void Update()
     {
+        if (isFrozen) return; // Prevent moving when frozen
+
         if (player != null)
         {
             float distanceToPlayer = Vector2.Distance(transform.position, player.position);
@@ -33,11 +39,49 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void Freeze(bool freezeStatus)
+    {
+        isFrozen = freezeStatus;
+
+        // Access the SpriteRenderer component
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            // Change color to blue when frozen, revert to white when not frozen
+            spriteRenderer.color = freezeStatus ? Color.blue : Color.white;
+        }
+
+        // If freezing, start the unfreeze coroutine
+        if (freezeStatus)
+        {
+            StartCoroutine(UnfreezeAfterDuration(SupportProjectile.freezeDuration));
+        }
+    }
+
+    IEnumerator UnfreezeAfterDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        Freeze(false); // Unfreeze the enemy after the specified duration
+    }
+
+
+
+
+
+    IEnumerator DealDamageRepeatedly(Collider2D playerCollider)
+    {
+        while (!isFrozen)
+        {
+            playerCollider.GetComponent<Player>().TakeDamage(damageToPlayer);
+            yield return new WaitForSeconds(attackSpeed);
+        }
+    }
+
+
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && attackRoutine == null)
         {
-            // Start dealing damage repeatedly when the enemy enters the player's hitbox
             attackRoutine = StartCoroutine(DealDamageRepeatedly(collision));
         }
     }
@@ -46,18 +90,8 @@ public class Enemy : MonoBehaviour
     {
         if (collision.CompareTag("Player") && attackRoutine != null)
         {
-            // Stop dealing damage when the enemy exits the player's hitbox
             StopCoroutine(attackRoutine);
             attackRoutine = null;
-        }
-    }
-
-    IEnumerator DealDamageRepeatedly(Collider2D playerCollider)
-    {
-        while (true)
-        {
-            playerCollider.GetComponent<Player>().TakeDamage(damageToPlayer);
-            yield return new WaitForSeconds(attackSpeed); // Wait for attackSpeed seconds before dealing damage again
         }
     }
 
@@ -73,8 +107,27 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        // Instantiate the coin prefab at the enemy's position before destroying the enemy
         Instantiate(coinPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
+
+    // Add this method to set the enemy's health based on the current level
+    public void SetHealth(int level)
+    {
+        int healthIncrease = 20; // Default for Easy
+
+        switch (GameSettings.Instance.currentDifficulty)
+        {
+            case GameSettings.Difficulty.Medium:
+                healthIncrease = 30;
+                break;
+            case GameSettings.Difficulty.Hard:
+                healthIncrease = 50;
+                break;
+        }
+
+        baseHealth = 100 + (level - 1) * healthIncrease;
+        currentHealth = baseHealth;
+    }
+
 }
