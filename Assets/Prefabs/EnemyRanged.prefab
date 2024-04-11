@@ -28,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1800205754805486490}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.1707463, y: -0.49086928, z: 0}
-  m_LocalScale: {x: 0.5393, y: 0.5137, z: 1}
+  m_LocalPosition: {x: -5.2159, y: -0.49086928, z: 0}
+  m_LocalScale: {x: 0.23373799, y: 0.5137, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -125,14 +125,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4890f3b5aad1234981845b11e6427f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.5
-  stopDistance: 3
   projectilePrefab: {fileID: 578942263459709013, guid: 5ccf80b63ca3c664db5fb055980f3c29, type: 3}
   attackSpeed: 1
   attackRange: 3
-  baseHealth: 100
-  currentHealth: 0
-  coinPrefab: {fileID: 388471209637791382, guid: 250c8ec9986cd214d914b1638c4ab158, type: 3}
   isFrozen: 0
 --- !u!114 &-9107687307207701017
 MonoBehaviour:
@@ -154,4 +149,3 @@ MonoBehaviour:
   attackSpeed: 1
   coinPrefab: {fileID: 388471209637791382, guid: 250c8ec9986cd214d914b1638c4ab158, type: 3}
   isFrozen: 0
-  freezeDuration: 2

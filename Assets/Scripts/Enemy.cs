@@ -107,9 +107,17 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
+        ResourceManager resourceManager = FindObjectOfType<ResourceManager>();
+        if (resourceManager != null)
+        {
+            resourceManager.AddScore(100); // Assuming each enemy kill gives you 100 points base
+            resourceManager.AddCoins(1); // Assuming you want to also add coins here or elsewhere
+        }
         Instantiate(coinPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
+
+
 
     // Add this method to set the enemy's health based on the current level
     public void SetHealth(int level)
