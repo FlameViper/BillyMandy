@@ -4584,17 +4584,17 @@ MonoBehaviour:
   coinSuckerUpgradeCost: 5
   coinSuckerSpeedIncrease: 1
   coinSuckerUpgradeCostIncrease: 2
-  enemySpawnUpgradeCost: 100
+  enemySpawnUpgradeCost: 1
   enemiesIncreaseAmount: 2
-  freezeDurationUpgradeCost: 40
-  freezeDurationIncrease: 0.5
-  freezeDurationUpgradeCostIncrease: 20
-  healUpgradeCost: 75
+  freezeDurationUpgradeCost: 1
+  freezeDurationIncrease: 1
+  freezeDurationUpgradeCostIncrease: 1
+  healUpgradeCost: 1
   healAmount: 50
-  healUpgradeCostIncrease: 30
-  healthUpgradeCost: 100
+  healUpgradeCostIncrease: 1
+  healthUpgradeCost: 1
   maxHealthIncrease: 20
-  healthUpgradeCostIncrease: 50
+  healthUpgradeCostIncrease: 1
   enemySpawner: {fileID: 148638701}
 --- !u!1 &2084163867
 GameObject:
