@@ -4,7 +4,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public int baseHealth = 100; // Renamed to baseHealth for clarity
+    public int baseHealth = 30; // Renamed to baseHealth for clarity
     public int currentHealth;
     public int damageToPlayer = 10;
     public float stopDistance = 1f;
@@ -134,7 +134,7 @@ public class Enemy : MonoBehaviour
                 break;
         }
 
-        baseHealth = 100 + (level - 1) * healthIncrease;
+        baseHealth = 30 + (level - 1) * healthIncrease;
         currentHealth = baseHealth;
     }
 

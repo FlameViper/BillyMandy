@@ -19,21 +19,59 @@ public class UpgradeManager : MonoBehaviour
     public float freezeDurationIncrease = 0.5f; // How much to increase freeze duration per upgrade
     public int freezeDurationUpgradeCostIncrease = 20; // Cost increase after each freeze duration upgrade
 
+    // Healing upgrade settings
+    public int healUpgradeCost = 75; // Initial cost of the healing upgrade
+    public int healAmount = 50; // Amount of health restored by the upgrade
+    public int healUpgradeCostIncrease = 30; // Cost increase after each healing upgrade purchase
+
+    public int healthUpgradeCost = 100; // Initial cost of the health upgrade
+    public int maxHealthIncrease = 20; // Amount of max health increased per upgrade
+    public int healthUpgradeCostIncrease = 50; // Cost increase after each health upgrade
 
 
+
+    private Player player;
     private ResourceManager resourceManager;
     public EnemySpawner enemySpawner; // Assign this in the Inspector
 
     void Start()
     {
         resourceManager = FindObjectOfType<ResourceManager>();
+        player = FindObjectOfType<Player>(); // Find the Player script in the scene
+
         if (resourceManager == null)
         {
             Debug.LogError("ResourceManager not found in the scene.");
         }
+        if (player == null)
+        {
+            Debug.LogError("Player script not found in the scene.");
+        }
     }
 
+    public void PurchaseMaxHealthUpgrade()
+    {
+        if (CanPurchaseUpgrade(healthUpgradeCost))
+        {
+            player.maxHealth += maxHealthIncrease; // Increase max health
+            player.currentHealth += maxHealthIncrease; // Optionally increase current health as well
+            resourceManager.SubtractCoins(healthUpgradeCost); // Deduct the cost from player resources
+            healthUpgradeCost += healthUpgradeCostIncrease; // Increase the cost for the next upgrade
+            Debug.Log("Max Health upgrade purchased. New Max Health: " + player.maxHealth);
+        }
+    }
 
+    public void PurchaseHealUpgrade()
+    {
+        if (CanPurchaseUpgrade(healUpgradeCost))
+        {
+            player.currentHealth += healAmount;
+            player.currentHealth = Mathf.Min(player.currentHealth, player.maxHealth); // Ensure health does not exceed max
+            resourceManager.SubtractCoins(healUpgradeCost);
+            healUpgradeCost += healUpgradeCostIncrease; // Increase the cost for the next upgrade
+            Debug.Log("Healing upgrade purchased. Current health: " + player.currentHealth);
+        }
+    }
 
     public void PurchaseFreezeDurationUpgrade()
     {

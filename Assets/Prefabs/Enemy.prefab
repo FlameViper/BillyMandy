@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
-  baseHealth: 100
+  baseHealth: 30
   currentHealth: 0
   damageToPlayer: 10
   stopDistance: 0.5
