@@ -111,7 +111,7 @@ public class Enemy : MonoBehaviour
         if (resourceManager != null)
         {
             resourceManager.AddScore(100); // Assuming each enemy kill gives you 100 points base
-            resourceManager.AddCoins(1); // Assuming you want to also add coins here or elsewhere
+            
         }
         Instantiate(coinPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);

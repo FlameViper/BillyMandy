@@ -6,6 +6,16 @@ public class PlayerRoleManager : MonoBehaviour
     private CoinSucker coinSucker;
     private SupportThrower supportThrower;
 
+    // Added references to the SpriteRenderers for each role
+    private SpriteRenderer projectileRenderer;
+    private SpriteRenderer coinRenderer;
+    private SpriteRenderer supportRenderer;
+
+    // Store the original colors
+    private Color originalProjectileColor;
+    private Color originalCoinColor;
+    private Color originalSupportColor;
+
     private enum PlayerRole { Thrower, Sucker, Support }
     private PlayerRole currentRole = PlayerRole.Thrower;
 
@@ -15,6 +25,16 @@ public class PlayerRoleManager : MonoBehaviour
         projectileThrower = GetComponentInChildren<ProjectileThrower>();
         coinSucker = GetComponentInChildren<CoinSucker>();
         supportThrower = GetComponentInChildren<SupportThrower>();
+
+        // Also get the SpriteRenderers
+        projectileRenderer = projectileThrower.GetComponent<SpriteRenderer>();
+        coinRenderer = coinSucker.GetComponent<SpriteRenderer>();
+        supportRenderer = supportThrower.GetComponent<SpriteRenderer>();
+
+        // Store the original colors
+        originalProjectileColor = projectileRenderer.color;
+        originalCoinColor = coinRenderer.color;
+        originalSupportColor = supportRenderer.color;
 
         // Debugging to check if all components are found
         Debug.Log($"ProjectileThrower found: {projectileThrower != null}");
@@ -47,9 +67,18 @@ public class PlayerRoleManager : MonoBehaviour
 
     void UpdateRole()
     {
-        // Enable the current role and disable others
-        if (projectileThrower != null) projectileThrower.isThrowerActive = (currentRole == PlayerRole.Thrower);
-        if (coinSucker != null) coinSucker.isSuckerActive = (currentRole == PlayerRole.Sucker);
-        if (supportThrower != null) supportThrower.isSupportActive = (currentRole == PlayerRole.Support);
+        // Enable the current role and disable others, and update colors
+        bool isThrowerActive = (currentRole == PlayerRole.Thrower);
+        bool isSuckerActive = (currentRole == PlayerRole.Sucker);
+        bool isSupportActive = (currentRole == PlayerRole.Support);
+
+        if (projectileThrower != null) projectileThrower.isThrowerActive = isThrowerActive;
+        if (coinSucker != null) coinSucker.isSuckerActive = isSuckerActive;
+        if (supportThrower != null) supportThrower.isSupportActive = isSupportActive;
+
+        // Update colors
+        projectileRenderer.color = isThrowerActive ? originalProjectileColor : Color.grey;
+        coinRenderer.color = isSuckerActive ? originalCoinColor : Color.grey;
+        supportRenderer.color = isSupportActive ? originalSupportColor : Color.grey;
     }
 }

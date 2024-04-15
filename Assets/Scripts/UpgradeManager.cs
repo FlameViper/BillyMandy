@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UpgradeManager : MonoBehaviour
 {
@@ -28,6 +29,20 @@ public class UpgradeManager : MonoBehaviour
     public int maxHealthIncrease = 20; // Amount of max health increased per upgrade
     public int healthUpgradeCostIncrease = 50; // Cost increase after each health upgrade
 
+    // New citizen spawn upgrade settings
+    public GameObject citizenPrefab; // Assign this in the Inspector
+    public int citizenSpawnUpgradeCost = 150; // Initial cost for this upgrade
+    public int citizenSpawnUpgradeCostIncrease = 50; // Cost increase after each upgrade
+
+    // UI Text References
+    public Text healthUpgradeCostText;
+    public Text projectileUpgradeCostText;
+    public Text coinSuckerUpgradeCostText;
+    public Text freezeDurationUpgradeCostText;
+    public Text healUpgradeCostText;
+    public Text citizenSpawnUpgradeCostText;
+    public Text enemySpawnUpgradeCostText;
+
 
 
     private Player player;
@@ -38,6 +53,7 @@ public class UpgradeManager : MonoBehaviour
     {
         resourceManager = FindObjectOfType<ResourceManager>();
         player = FindObjectOfType<Player>(); // Find the Player script in the scene
+        UpdateCostTexts();
 
         if (resourceManager == null)
         {
@@ -49,6 +65,34 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
+    void UpdateCostTexts()
+    {
+        healthUpgradeCostText.text = "Health Upgrade: " + healthUpgradeCost + " Coins";
+        projectileUpgradeCostText.text = "Projectile Damage: " + projectileUpgradeCost + " Coins";
+        coinSuckerUpgradeCostText.text = "Coin Sucker Speed: " + coinSuckerUpgradeCost + " Coins";
+        freezeDurationUpgradeCostText.text = "Freeze Duration: " + freezeDurationUpgradeCost + " Coins";
+        healUpgradeCostText.text = "Heal Amount: " + healUpgradeCost + " Coins";
+        citizenSpawnUpgradeCostText.text = "Citizen Spawn: " + citizenSpawnUpgradeCost + " Coins";
+        enemySpawnUpgradeCostText.text = "Enemy Spawn Rate: " + enemySpawnUpgradeCost + " Coins";
+    }
+
+    private void AfterPurchase()
+    {
+        UpdateCostTexts();  // Update UI texts after each purchase
+    }
+
+    public void PurchaseCitizenSpawnUpgrade()
+    {
+        if (CanPurchaseUpgrade(citizenSpawnUpgradeCost))
+        {
+            Instantiate(citizenPrefab, new Vector2(Random.Range(-10, 10), Random.Range(-10, 10)), Quaternion.identity); // Spawn the citizen at a random position
+            resourceManager.SubtractCoins(citizenSpawnUpgradeCost);
+            citizenSpawnUpgradeCost += citizenSpawnUpgradeCostIncrease; // Increase the cost for the next upgrade
+            AfterPurchase();
+            Debug.Log("Citizen spawn upgrade purchased.");
+        }
+    }
+
     public void PurchaseMaxHealthUpgrade()
     {
         if (CanPurchaseUpgrade(healthUpgradeCost))
@@ -57,6 +101,7 @@ public class UpgradeManager : MonoBehaviour
             player.currentHealth += maxHealthIncrease; // Optionally increase current health as well
             resourceManager.SubtractCoins(healthUpgradeCost); // Deduct the cost from player resources
             healthUpgradeCost += healthUpgradeCostIncrease; // Increase the cost for the next upgrade
+            AfterPurchase();
             Debug.Log("Max Health upgrade purchased. New Max Health: " + player.maxHealth);
         }
     }
@@ -69,6 +114,7 @@ public class UpgradeManager : MonoBehaviour
             player.currentHealth = Mathf.Min(player.currentHealth, player.maxHealth); // Ensure health does not exceed max
             resourceManager.SubtractCoins(healUpgradeCost);
             healUpgradeCost += healUpgradeCostIncrease; // Increase the cost for the next upgrade
+            AfterPurchase();
             Debug.Log("Healing upgrade purchased. Current health: " + player.currentHealth);
         }
     }
@@ -80,6 +126,7 @@ public class UpgradeManager : MonoBehaviour
             SupportProjectile.freezeDuration += freezeDurationIncrease; // Upgrade the freeze duration
             resourceManager.SubtractCoins(freezeDurationUpgradeCost);
             freezeDurationUpgradeCost += freezeDurationUpgradeCostIncrease; // Increase the cost for the next upgrade
+            AfterPurchase();
             Debug.Log("Freeze duration upgrade purchased. New duration: " + SupportProjectile.freezeDuration);
         }
     }
@@ -92,6 +139,7 @@ public class UpgradeManager : MonoBehaviour
             Projectile.damageAmount += projectileDamageIncrease;
             resourceManager.SubtractCoins(projectileUpgradeCost);
             projectileUpgradeCost += projectileUpgradeCostIncrease; // Increase the cost for the next upgrade
+            AfterPurchase();
             Debug.Log("Projectile upgrade purchased. New damage: " + Projectile.damageAmount);
         }
     }
@@ -110,6 +158,7 @@ public class UpgradeManager : MonoBehaviour
             coinSucker.moveSpeed += coinSuckerSpeedIncrease;
             resourceManager.SubtractCoins(coinSuckerUpgradeCost);
             coinSuckerUpgradeCost += coinSuckerUpgradeCostIncrease; // Increase the cost for the next upgrade
+            AfterPurchase();
             Debug.Log("CoinSucker upgrade purchased. New speed: " + coinSucker.moveSpeed);
         }
     }
@@ -124,7 +173,7 @@ public class UpgradeManager : MonoBehaviour
 
             // Increase the spawn rate
             enemySpawner.IncreaseMaxEnemies(enemiesIncreaseAmount);
-
+            AfterPurchase();
             // Optionally increase the cost for the next purchase or adjust other variables
             Debug.Log("Purchased Enemy Spawn Rate Upgrade. Max Enemies is now: " + enemySpawner.maxEnemies);
         }
