@@ -5,7 +5,7 @@ public class BattleManager : MonoBehaviour
 {
     public UIManager uiManager;
     public EnemySpawner enemySpawner;
-    public float roundTimeLimit = 10f;
+    public float roundTimeLimit = 60f;
 
     private bool isRoundActive = false;
     public int level = 1; // Level counter
@@ -33,7 +33,7 @@ public class BattleManager : MonoBehaviour
     public void StartRound()
     {
         isRoundActive = true;
-        roundTimeLimit = 20;
+        roundTimeLimit = 60;
 
         uiManager.EnableBattleCamera();
         enemySpawner.StartSpawning(level); // Pass current level to spawner
