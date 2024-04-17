@@ -67,13 +67,13 @@ public class UpgradeManager : MonoBehaviour
 
     void UpdateCostTexts()
     {
-        healthUpgradeCostText.text = "Health Upgrade: " + healthUpgradeCost + " Coins";
-        projectileUpgradeCostText.text = "Projectile Damage: " + projectileUpgradeCost + " Coins";
-        coinSuckerUpgradeCostText.text = "Coin Sucker Speed: " + coinSuckerUpgradeCost + " Coins";
-        freezeDurationUpgradeCostText.text = "Freeze Duration: " + freezeDurationUpgradeCost + " Coins";
-        healUpgradeCostText.text = "Heal Amount: " + healUpgradeCost + " Coins";
-        citizenSpawnUpgradeCostText.text = "Citizen Spawn: " + citizenSpawnUpgradeCost + " Coins";
-        enemySpawnUpgradeCostText.text = "Enemy Spawn Rate: " + enemySpawnUpgradeCost + " Coins";
+        healthUpgradeCostText.text = "Max HP +50: " + healthUpgradeCost + " Coins";
+        projectileUpgradeCostText.text = "Projectile Damage +20: " + projectileUpgradeCost + " Coins";
+        coinSuckerUpgradeCostText.text = "Coin Sucker Speed +1: " + coinSuckerUpgradeCost + " Coins";
+        freezeDurationUpgradeCostText.text = "Freeze Duration +1s: " + freezeDurationUpgradeCost + " Coins";
+        healUpgradeCostText.text = "Heal Amount +50: " + healUpgradeCost + " Coins";
+        citizenSpawnUpgradeCostText.text = "+1 Citizen: " + citizenSpawnUpgradeCost + " Coins";
+        enemySpawnUpgradeCostText.text = "+2 Enemy Spawn: " + enemySpawnUpgradeCost + " Coins";
     }
 
     private void AfterPurchase()

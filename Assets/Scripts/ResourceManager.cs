@@ -4,10 +4,11 @@ using UnityEngine.UI;
 public class ResourceManager : MonoBehaviour
 {
     public int Coins { get; private set; }
-    public int Score { get; private set; } // Added to handle score
+    public int Score { get; private set; } // Manage the score
 
-    public Text coinsText; // UI text to display coins
-    public Text scoreText; // Added UI text to display score
+    public Text coinsText; // Existing UI text to display coins on the Upgrade screen
+    public Text battleCoinsText; // Added UI text to display coins on the Battle screen
+    public Text scoreText; // UI text to display score
 
     void Start()
     {
@@ -55,7 +56,13 @@ public class ResourceManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        coinsText.text = "Coins: " + Coins; // Display the current amount of coins
-        scoreText.text = "Score: " + Score; // Display the current score
+        if (coinsText != null)
+            coinsText.text = "Coins: " + Coins; // Update coin display on the Upgrade screen
+
+        if (battleCoinsText != null)
+            battleCoinsText.text = "Coins: " + Coins; // Update coin display on the Battle screen
+
+        if (scoreText != null)
+            scoreText.text = "Score: " + Score; // Display the current score
     }
 }

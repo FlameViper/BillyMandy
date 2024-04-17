@@ -8,8 +8,7 @@ public class Player : MonoBehaviour
     public int maxHealth = 100; // Maximum health of the player
     public int currentHealth; // Current health of the player
     public GameObject gameOverScreen; // Drag your Game Over UI GameObject here in the inspector
-    public Text currentHealthText; // Drag your current health Text UI component here in the inspector
-    public Text maxHealthText; // Drag your max health Text UI component here in the inspector
+    public Text healthText; // Drag your health Text UI component here in the inspector (it will now display both current and max health)
 
     void Start()
     {
@@ -34,11 +33,8 @@ public class Player : MonoBehaviour
 
     private void UpdateHealthUI()
     {
-        if (currentHealthText != null)
-            currentHealthText.text = "Health: " + currentHealth.ToString();
-
-        if (maxHealthText != null)
-            maxHealthText.text = "Max Health: " + maxHealth.ToString();
+        if (healthText != null)
+            healthText.text = "HP " + currentHealth + "/" + maxHealth; // Displays as 'currentHealth/maxHealth', e.g., '50/100'
     }
 
     IEnumerator HandleDeath()
@@ -46,7 +42,6 @@ public class Player : MonoBehaviour
         Debug.Log("Player Died!");
         gameOverScreen.SetActive(true); // Show the Game Over screen
         yield return new WaitForSeconds(5); // Wait for 5 seconds
-        gameOverScreen.SetActive(false); // Optional: hide Game Over screen before reload
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload the scene
     }
 }
