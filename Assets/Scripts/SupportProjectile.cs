@@ -40,7 +40,7 @@ public class SupportProjectile : MonoBehaviour
                 enemyShooter.Freeze(true); // Similarly adjusted for EnemyShooter
             }
 
-            Destroy(gameObject); // Destroy the projectile after applying the effect
+           // Destroy(gameObject); // Destroy the projectile after applying the effect
         }
     }
 
