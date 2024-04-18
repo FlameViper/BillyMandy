@@ -4,15 +4,30 @@ using UnityEngine;
 public class CoinStealer : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public Transform target;  // Target to move towards initially
-    public Transform spawner; // Enemy spawner to return to
+    public Transform target;
+    public Transform spawner;
     public GameObject coinPrefab;
     public int coinsCollected = 0;
+    public float baseAttractionPower = 2f;  // Base sucking power
+    public float attractionPower;  // Current sucking power, adjusted per level
 
     private float suckDuration = 10f;
     private float suckTimer = 0f;
     private bool returningToSpawner = false;
     private bool isSuckerActive = false;
+
+    void Start()
+    {
+        if (BattleManager.Instance != null)
+        {
+            UpdateAttractionPower(BattleManager.Instance.level);  // Update power on start using the singleton instance
+        }
+        else
+        {
+            Debug.LogError("BattleManager instance not found");
+        }
+    }
+
 
     void Update()
     {
@@ -29,17 +44,19 @@ public class CoinStealer : MonoBehaviour
         if (isSuckerActive)
         {
             AttractCoins();
-            suckTimer += Time.deltaTime; // Ensure the timer is incremented properly
-            Debug.Log("Suck Timer: " + suckTimer);
+            suckTimer += Time.deltaTime;
             if (suckTimer >= suckDuration)
             {
-                DepositCoins();
-                returningToSpawner = true; // Start returning to spawner
-                isSuckerActive = false;
-                suckTimer = 0; // Reset timer
-                Debug.Log("Finished sucking coins. Returning to spawner.");
+                StopSucking();
             }
         }
+    }
+
+    public void UpdateAttractionPower(int level)
+    {
+        float levelMultiplier = 1.0f + (level - 1) * 0.5f;  // Increase power by 10% each level
+        attractionPower = baseAttractionPower * levelMultiplier;
+        Debug.Log($"Attraction power updated to: {attractionPower} at level {level}");
     }
 
     void MoveToTarget()
@@ -52,47 +69,57 @@ public class CoinStealer : MonoBehaviour
         }
         else if (!isSuckerActive)
         {
-            isSuckerActive = true;  // Start sucking coins
-            Debug.Log("Reached target. Coin sucking activated.");
+            StartSucking();
         }
     }
 
     private void AttractCoins()
     {
-        // Find all game objects tagged as "coin"
         GameObject[] coins = GameObject.FindGameObjectsWithTag("coin");
         Debug.Log("Found " + coins.Length + " coins to potentially attract.");
 
         foreach (GameObject coin in coins)
         {
-            Rigidbody2D coinRb = coin.GetComponent<Rigidbody2D>();
-            if (coinRb != null)
+            Coin coinScript = coin.GetComponent<Coin>();
+            if (coinScript != null && isSuckerActive)
             {
-                if (isSuckerActive)
-                {
-                    // Calculate direction to move the coin towards the Coin Sucker
-                    Vector2 directionToSucker = (transform.position - coin.transform.position).normalized;
-                    // Apply velocity based on the calculated direction and the move speed
-                    coinRb.velocity = directionToSucker * moveSpeed;
-                    Debug.Log("Applying force to coin at " + coin.transform.position + " towards Coin Sucker at " + transform.position + " with speed " + moveSpeed);
-                }
-                else
-                {
-                    // Stop coin's movement if the sucker is not active
-                    coinRb.velocity = Vector2.zero;
-                    Debug.Log("Coin Sucker not active, setting velocity of coin at " + coin.transform.position + " to zero.");
-                }
-            }
-            else
-            {
-                Debug.Log("No Rigidbody2D found on coin at " + coin.transform.position + ", cannot apply force.");
+                coinScript.AddAttractor(gameObject, attractionPower);
             }
         }
     }
 
+    private void StartSucking()
+    {
+        isSuckerActive = true;
+        Debug.Log("Coin sucking activated.");
+    }
 
+    private void StopSucking()
+    {
+        isSuckerActive = false;
+        suckTimer = 0;
+        Debug.Log("Finished sucking coins. Returning to spawner.");
+        RemoveAsAttractor(); // Ensure to remove as attractor when stops sucking
+        returningToSpawner = true;
+    }
 
+    private void RemoveAsAttractor()
+    {
+        GameObject[] coins = GameObject.FindGameObjectsWithTag("coin");
+        foreach (GameObject coin in coins)
+        {
+            Coin coinScript = coin.GetComponent<Coin>();
+            if (coinScript != null)
+            {
+                coinScript.RemoveAttractor(gameObject);
+            }
+        }
+    }
 
+    private void OnDisable()
+    {
+        StopSucking(); // Also handle removing as attractor when disabled
+    }
 
     void ReturnToSpawner()
     {

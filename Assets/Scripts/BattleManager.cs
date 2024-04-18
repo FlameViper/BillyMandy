@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
+    // Static singleton property
+    public static BattleManager Instance { get; private set; }
+
     public UIManager uiManager;
     public EnemySpawner enemySpawner;
     public float roundTimeLimit = 60f;
@@ -10,11 +13,34 @@ public class BattleManager : MonoBehaviour
     private bool isRoundActive = false;
     public int level = 1; // Level counter
 
-    //derp
-
-    void Start()
+    void Awake()
     {
-        //StartRound();
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
+    void StartRound()
+    {
+        isRoundActive = true;
+        roundTimeLimit = 60;
+
+        uiManager.EnableBattleCamera();
+        enemySpawner.StartSpawning(level); // Pass current level to spawner
+        UpdateAllStealers(level);
+    }
+
+    void UpdateAllStealers(int level)
+    {
+        foreach (CoinStealer stealer in FindObjectsOfType<CoinStealer>())
+        {
+            stealer.UpdateAttractionPower(level);
+        }
     }
 
     void Update()
@@ -30,14 +56,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void StartRound()
-    {
-        isRoundActive = true;
-        roundTimeLimit = 60;
-
-        uiManager.EnableBattleCamera();
-        enemySpawner.StartSpawning(level); // Pass current level to spawner
-    }
 
     void EndRound()
     {

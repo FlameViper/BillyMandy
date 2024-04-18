@@ -10,7 +10,7 @@ public class UpgradeManager : MonoBehaviour
 
     // CoinSucker upgrade settings
     public int coinSuckerUpgradeCost = 30; // Initial cost of the CoinSucker upgrade
-    public float coinSuckerSpeedIncrease = 2f; // Speed increase per CoinSucker upgrade
+    public float coinSuckerPowerIncrease = 2f; // Suck power increase per CoinSucker upgrade
     public int coinSuckerUpgradeCostIncrease = 20; // Cost increase after each CoinSucker upgrade
 
     public int enemySpawnUpgradeCost = 100; // Initial cost for this upgrade
@@ -43,6 +43,8 @@ public class UpgradeManager : MonoBehaviour
     public Text citizenSpawnUpgradeCostText;
     public Text enemySpawnUpgradeCostText;
 
+    private CoinSucker coinSucker; // Reference to the CoinSucker
+
 
 
     private Player player;
@@ -53,6 +55,7 @@ public class UpgradeManager : MonoBehaviour
     {
         resourceManager = FindObjectOfType<ResourceManager>();
         player = FindObjectOfType<Player>(); // Find the Player script in the scene
+        coinSucker = FindObjectOfType<CoinSucker>(true);
         UpdateCostTexts();
 
         if (resourceManager == null)
@@ -69,7 +72,7 @@ public class UpgradeManager : MonoBehaviour
     {
         healthUpgradeCostText.text = "Max HP +50: " + healthUpgradeCost + " Coins";
         projectileUpgradeCostText.text = "Projectile Damage +20: " + projectileUpgradeCost + " Coins";
-        coinSuckerUpgradeCostText.text = "Coin Sucker Speed +1: " + coinSuckerUpgradeCost + " Coins";
+        coinSuckerUpgradeCostText.text = "Coin Sucker Power +2: " + coinSuckerUpgradeCost + " Coins";
         freezeDurationUpgradeCostText.text = "Freeze Duration +1s: " + freezeDurationUpgradeCost + " Coins";
         healUpgradeCostText.text = "Heal Amount +50: " + healUpgradeCost + " Coins";
         citizenSpawnUpgradeCostText.text = "+1 Citizen: " + citizenSpawnUpgradeCost + " Coins";
@@ -146,22 +149,22 @@ public class UpgradeManager : MonoBehaviour
 
     public void PurchaseCoinSuckerUpgrade()
     {
-        CoinSucker coinSucker = FindObjectOfType<CoinSucker>();
         if (coinSucker == null)
         {
             Debug.LogError("CoinSucker not found in the scene.");
             return;
         }
 
-        if (CanPurchaseUpgrade(coinSuckerUpgradeCost))
+        if (resourceManager.Coins >= coinSuckerUpgradeCost)
         {
-            coinSucker.moveSpeed += coinSuckerSpeedIncrease;
+            coinSucker.SuckPower += coinSuckerPowerIncrease;
             resourceManager.SubtractCoins(coinSuckerUpgradeCost);
             coinSuckerUpgradeCost += coinSuckerUpgradeCostIncrease; // Increase the cost for the next upgrade
-            AfterPurchase();
-            Debug.Log("CoinSucker upgrade purchased. New speed: " + coinSucker.moveSpeed);
+            UpdateCostTexts();
+            Debug.Log("CoinSucker upgrade purchased. New Suck Power: " + coinSucker.SuckPower);
         }
     }
+
 
     public void PurchaseEnemySpawnUpgrade()
     {
