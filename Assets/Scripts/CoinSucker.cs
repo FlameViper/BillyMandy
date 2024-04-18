@@ -26,10 +26,10 @@ public class CoinSucker : MonoBehaviour
                     Vector2 directionToSucker = (transform.position - coin.transform.position).normalized;
                     coinRb.velocity = directionToSucker * moveSpeed;
                 }
-                else
+                //else
                 {
                     // Optionally stop the coin's movement when the Coin Sucker is not active
-                    coinRb.velocity = Vector2.zero;
+                    //coinRb.velocity = Vector2.zero;
                 }
             }
         }

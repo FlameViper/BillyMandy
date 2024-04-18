@@ -4,15 +4,18 @@ using UnityEngine.UI;
 public class ResourceManager : MonoBehaviour
 {
     public int Coins { get; private set; }
+    public int EnemyCoins { get; private set; } // Coins collected by the enemy
     public int Score { get; private set; } // Manage the score
 
     public Text coinsText; // Existing UI text to display coins on the Upgrade screen
+    public Text enemyCoinsText; // New UI text to display enemy coins
     public Text battleCoinsText; // Added UI text to display coins on the Battle screen
     public Text scoreText; // UI text to display score
 
     void Start()
     {
         Coins = 0; // Initialize coins to 0
+        EnemyCoins = 0;
         Score = 0;  // Initialize score to 0
         UpdateUI(); // Update the UI with the starting data
     }
@@ -21,6 +24,12 @@ public class ResourceManager : MonoBehaviour
     {
         Coins += amount;
         UpdateUI(); // Update the UI with the new coins value
+    }
+
+    public void AddEnemyCoins(int amount)
+    {
+        EnemyCoins += amount;
+        UpdateUI();
     }
 
     public void AddScore(int baseScore)
@@ -58,6 +67,9 @@ public class ResourceManager : MonoBehaviour
     {
         if (coinsText != null)
             coinsText.text = "Coins: " + Coins; // Update coin display on the Upgrade screen
+
+        if (enemyCoinsText != null)
+            enemyCoinsText.text = "Enemy Coins: " + EnemyCoins;
 
         if (battleCoinsText != null)
             battleCoinsText.text = "Coins: " + Coins; // Update coin display on the Battle screen
