@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     public int damageToPlayer = 10;
     public float stopDistance = 1f;
     public float attackSpeed = 1f;
+    public float freezeDuration = 2f;  // Default duration for freezing
     public GameObject coinPrefab;
 
     public AudioSource damageSound; // AudioSource for playing damage sound effect
@@ -19,7 +20,9 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer spriteRenderer; // Reference to the sprite renderer
 
     private bool isDead = false; // Flag to check if the enemy is dead
-    private bool isFrozen = false; // Flag to check if the enemy is frozen
+    private bool isFrozen = false; // Track freeze state
+    private Coroutine freezeCoroutine; // To manage ongoing freeze coroutines
+
 
     void Start()
     {
@@ -44,19 +47,32 @@ public class Enemy : MonoBehaviour
 
     public void Freeze(bool freezeStatus)
     {
+        if (isFrozen == freezeStatus) return;  // No change in status
         isFrozen = freezeStatus;
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
+        spriteRenderer.color = freezeStatus ? Color.blue : Color.white;
+
+        if (freezeStatus)
         {
-            spriteRenderer.color = freezeStatus ? Color.blue : Color.white;
+            if (freezeCoroutine != null)
+            {
+                StopCoroutine(freezeCoroutine);  // Ensure no overlapping coroutines
+            }
+            freezeCoroutine = StartCoroutine(UnfreezeAfterDuration(freezeDuration));
+        }
+        else if (freezeCoroutine != null)
+        {
+            StopCoroutine(freezeCoroutine);
+            freezeCoroutine = null;
         }
     }
 
-    IEnumerator UnfreezeAfterDuration(float duration)
+    private IEnumerator UnfreezeAfterDuration(float duration)
     {
         yield return new WaitForSeconds(duration);
-        Freeze(false);
+        Freeze(false);  // Automatically unfreeze after duration
     }
+
+
 
     IEnumerator DealDamageRepeatedly(Collider2D playerCollider)
     {

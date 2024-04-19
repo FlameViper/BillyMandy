@@ -31,34 +31,40 @@ public class SupportProjectile : MonoBehaviour
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.Freeze(true); // Assuming Freeze() now accesses SupportProjectile.freezeDuration internally
+                StartCoroutine(FreezeEnemy(enemy));
             }
 
             EnemyShooter enemyShooter = other.GetComponent<EnemyShooter>();
             if (enemyShooter != null)
             {
-                enemyShooter.Freeze(true); // Similarly adjusted for EnemyShooter
+                StartCoroutine(FreezeEnemyShooter(enemyShooter));
             }
 
-           // Destroy(gameObject); // Destroy the projectile after applying the effect
+            //Destroy(gameObject); // Destroy the projectile after applying the effect
         }
     }
 
-
-
     IEnumerator FreezeEnemy(Enemy enemy)
     {
-        enemy.Freeze(true); // Now simply passing the freeze status
-        yield return new WaitForSeconds(SupportProjectile.freezeDuration);
-        enemy.Freeze(false);
+        if (enemy != null)
+        {
+            enemy.Freeze(true); // Start freezing
+            yield return new WaitForSeconds(SupportProjectile.freezeDuration);
+            enemy.Freeze(false); // Unfreeze after the duration
+        }
     }
 
     IEnumerator FreezeEnemyShooter(EnemyShooter enemyShooter)
     {
-        enemyShooter.Freeze(true); // Again, only passing the freeze status
-        yield return new WaitForSeconds(SupportProjectile.freezeDuration);
-        enemyShooter.Freeze(false);
+        if (enemyShooter != null)
+        {
+            enemyShooter.Freeze(true); // Start freezing
+            yield return new WaitForSeconds(SupportProjectile.freezeDuration);
+            enemyShooter.Freeze(false); // Unfreeze after the duration
+        }
     }
+
+
 
 
     // Coroutine to destroy the projectile after a delay

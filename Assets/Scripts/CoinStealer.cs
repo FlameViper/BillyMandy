@@ -50,7 +50,6 @@ public class CoinStealer : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("Update called. Returning to Spawner: " + returningToSpawner + ", Sucker Active: " + isSuckerActive);
         if (!returningToSpawner)
         {
             MoveToTarget();
@@ -92,7 +91,6 @@ public class CoinStealer : MonoBehaviour
     void MoveToTarget()
     {
         float distance = Vector2.Distance(transform.position, target.position);
-        Debug.Log("Moving to target. Distance: " + distance);
         if (distance > 0.3f)
         {
             transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
