@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 37e920711689bb84e9bd0a91287e62e2, type: 3}
-  m_Color: {r: 1, g: 0.56981134, b: 0.56981134, a: 1}
+  m_Color: {r: 1, g: 0.47547168, b: 0.47547168, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 578942263459709013, guid: 5ccf80b63ca3c664db5fb055980f3c29, type: 3}
-  attackSpeed: 2
+  attackSpeed: 0.25
   attackRange: 3
   isFrozen: 0
 --- !u!114 &-9107687307207701017
@@ -143,8 +143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8294324b5168ebd48af24be19c3e2204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.5
-  baseHealth: 100
+  moveSpeed: 0.3
+  baseHealth: 30
   currentHealth: 0
   damageToPlayer: 10
   stopDistance: 3
@@ -163,7 +163,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 18c46f8a5e2edfc4394b8faf4b6a89d2, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
@@ -259,7 +259,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
   Loop: 0

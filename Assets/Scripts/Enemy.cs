@@ -6,91 +6,66 @@ public class Enemy : MonoBehaviour
     public float moveSpeed = 5f;
     public int baseHealth = 30;
     public int currentHealth;
-    public int damageToPlayer = 10;
     public float stopDistance = 1f;
-    public float attackSpeed = 1f;
     public GameObject coinPrefab;
 
-    public AudioSource damageSound; // AudioSource for playing damage sound effect
+    public AudioSource damageSound;
     public AudioSource deathSound;
 
-    private Transform player;
-    private Coroutine attackRoutine = null;
-    private SpriteRenderer spriteRenderer; // Reference to the sprite renderer
+    [SerializeField]
+    private Transform target;  // Private but serialized field, only use in inspector
 
-    private bool isDead = false; // Flag to check if the enemy is dead
-    private bool isFrozen = false; // Flag to check if the enemy is frozen
+    private SpriteRenderer spriteRenderer;
+
+    public bool isDead = false;
+    public bool isFrozen = false;
+
+    // Public property to change target programmatically
+    public Transform Target
+    {
+        get { return target; }
+        set { target = value; }
+    }
+
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         currentHealth = baseHealth;
         spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
     }
 
     void Update()
     {
-        if (isDead || isFrozen) return; // Stop all movement if enemy is dead or frozen
+        if (isDead || isFrozen || target == null) return; // Stop all movement if enemy is dead, frozen, or no target
 
-        if (player != null)
+        float distanceToTarget = Vector2.Distance(transform.position, target.position);
+        if (distanceToTarget > stopDistance)
         {
-            float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-            if (distanceToPlayer > stopDistance)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
-            }
+            transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
         }
     }
 
     public void Freeze(bool freezeStatus)
     {
         isFrozen = freezeStatus;
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = freezeStatus ? Color.blue : Color.white;
-        }
+        spriteRenderer.color = freezeStatus ? Color.blue : Color.white;
     }
 
     IEnumerator UnfreezeAfterDuration(float duration)
     {
+        Debug.LogError("freezing");
         yield return new WaitForSeconds(duration);
         Freeze(false);
     }
 
-    IEnumerator DealDamageRepeatedly(Collider2D playerCollider)
-    {
-        while (!isFrozen && !isDead)
-        {
-            playerCollider.GetComponent<Player>().TakeDamage(damageToPlayer);
-            yield return new WaitForSeconds(attackSpeed);
-        }
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player") && attackRoutine == null && !isDead)
-        {
-            attackRoutine = StartCoroutine(DealDamageRepeatedly(collision));
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player") && attackRoutine != null)
-        {
-            StopCoroutine(attackRoutine);
-            attackRoutine = null;
-        }
-    }
-
     public void TakeDamage(int damage)
     {
+        Debug.Log($"TakeDamage called. Current health: {currentHealth}, Damage: {damage}");
+
         if (isDead || isFrozen) return; // Ignore damage if already dead or frozen
 
         currentHealth -= damage;
 
-        // Play damage sound effect
         if (damageSound != null)
         {
             damageSound.Play();
@@ -107,14 +82,12 @@ public class Enemy : MonoBehaviour
         if (isDead) return; // Prevent multiple deaths
         isDead = true; // Mark as dead
 
-        // Disable all colliders on the enemy
         Collider2D[] colliders = GetComponents<Collider2D>();
         foreach (Collider2D collider in colliders)
         {
             collider.enabled = false;
         }
 
-        // Play death sound effect
         if (deathSound != null)
         {
             deathSound.Play();
@@ -127,10 +100,8 @@ public class Enemy : MonoBehaviour
         }
 
         Instantiate(coinPrefab, transform.position, Quaternion.identity);
-
         StartCoroutine(FadeOut(1f)); // Fade out over 1 second
     }
-
 
     IEnumerator FadeOut(float duration)
     {
