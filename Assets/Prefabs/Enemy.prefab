@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 220987573908078214}
   - component: {fileID: 286649445914157055}
-  - component: {fileID: 6819674565339994473}
   - component: {fileID: -1594065539388380148}
   - component: {fileID: 5910776325432827222}
   - component: {fileID: 112843118788035741}
@@ -89,27 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6819674565339994473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3393424486779976714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eefbf961eac458b4c82c7fb071987037, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  baseHealth: 30
-  currentHealth: 0
-  stopDistance: 1
-  coinPrefab: {fileID: 0}
-  damageSound: {fileID: 0}
-  deathSound: {fileID: 0}
-  damageToPlayer: 10
-  attackSpeed: 1
 --- !u!114 &-1594065539388380148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,7 +103,9 @@ MonoBehaviour:
   moveSpeed: 0.5
   baseHealth: 30
   currentHealth: 0
+  damageToPlayer: 10
   stopDistance: 0.5
+  attackSpeed: 1
   coinPrefab: {fileID: 388471209637791382, guid: 250c8ec9986cd214d914b1638c4ab158, type: 3}
   damageSound: {fileID: 112843118788035741}
   deathSound: {fileID: 8829242649662499052}
