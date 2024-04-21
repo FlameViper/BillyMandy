@@ -19,6 +19,21 @@ public class EnemySpawner : MonoBehaviour
     private int enemiesSpawned = 0;
     private List<GameObject> currentEnemies = new List<GameObject>();
 
+    public GameObject bossEnemyPrefab; // Boss enemy prefab
+    private bool shouldSpawnBossNextRound = false;
+
+    public bool ShouldSpawnBossNextRound
+    {
+        get { return shouldSpawnBossNextRound; }
+        private set { shouldSpawnBossNextRound = value; }
+    }
+
+    public void PrepareBossSpawn()
+    {
+        ShouldSpawnBossNextRound = true;
+    }
+
+
     void Start()
     {
         spawnAreaSize = GetComponent<Renderer>().bounds.size;
@@ -62,6 +77,13 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator SpawnEnemies(int level)
     {
+        if (shouldSpawnBossNextRound)
+        {
+            GameObject boss = Instantiate(bossEnemyPrefab, CalculateSpawnPosition(), Quaternion.identity);
+            currentEnemies.Add(boss);  // Add boss to the list of current enemies
+            shouldSpawnBossNextRound = false; // Reset the flag after spawning
+        }
+
         int specialEnemyCount = 0;
         if (level >= specialEnemyStartLevel)
         {
@@ -73,10 +95,7 @@ public class EnemySpawner : MonoBehaviour
             if (spawnTimer >= spawnInterval)
             {
                 spawnTimer = 0f;
-                Vector3 randomSpawnPosition = transform.position + new Vector3(
-                    Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2),
-                    Random.Range(-spawnAreaSize.y / 2, spawnAreaSize.y / 2),
-                    0);
+                Vector3 randomSpawnPosition = CalculateSpawnPosition();
 
                 GameObject selectedPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
                 if (specialEnemyCount > 0 && Random.Range(0, maxEnemies) < specialEnemyCount)
@@ -107,6 +126,14 @@ public class EnemySpawner : MonoBehaviour
             spawnTimer += Time.deltaTime;
             yield return null;
         }
+    }
+
+    private Vector2 CalculateSpawnPosition()
+    {
+        return transform.position + new Vector3(
+            Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2),
+            Random.Range(-spawnAreaSize.y / 2, spawnAreaSize.y / 2),
+            0);
     }
 
 

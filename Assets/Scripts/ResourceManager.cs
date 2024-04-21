@@ -12,12 +12,40 @@ public class ResourceManager : MonoBehaviour
     public Text battleCoinsText; // Added UI text to display coins on the Battle screen
     public Text scoreText; // UI text to display score
 
+    public EnemySpawner enemySpawner; // Reference to the EnemySpawner
+
     void Start()
     {
         Coins = 0; // Initialize coins to 0
         EnemyCoins = 0;
         Score = 0;  // Initialize score to 0
         UpdateUI(); // Update the UI with the starting data
+    }
+
+
+    void Update()
+    {
+        // Example condition for boss spawn: every 3 EnemyCoins
+        int bossSpawnThreshold = 3; // Set the threshold for boss spawn
+
+        // Regularly check if there are enough coins for a boss spawn
+        while (EnemyCoins >= bossSpawnThreshold && !enemySpawner.ShouldSpawnBossNextRound)
+        {
+            EnemyCoins -= bossSpawnThreshold;
+            enemySpawner.PrepareBossSpawn(); // Prepare the boss spawn for the next round
+        }
+    }
+    
+
+    void CheckForBossSpawn()
+    {
+        int bossSpawnThreshold = 3; // Set the threshold for boss spawn
+
+        while (EnemyCoins >= bossSpawnThreshold && !enemySpawner.ShouldSpawnBossNextRound)
+        {
+            EnemyCoins -= bossSpawnThreshold;
+            enemySpawner.PrepareBossSpawn(); // Prepare the boss spawn for the next round
+        }
     }
 
     public void AddCoins(int amount)
@@ -27,10 +55,14 @@ public class ResourceManager : MonoBehaviour
     }
 
     public void AddEnemyCoins(int amount)
-    {
-        EnemyCoins += amount;
-        UpdateUI();
-    }
+{
+    EnemyCoins += amount;
+    UpdateUI(); // Always update the UI when coins change
+}
+    
+
+
+
 
     public void AddScore(int baseScore)
     {
