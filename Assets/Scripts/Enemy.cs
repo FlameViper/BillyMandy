@@ -9,7 +9,6 @@ public class Enemy : MonoBehaviour
     public int damageToPlayer = 10;
     public float stopDistance = 1f;
     public float attackSpeed = 1f;
-    public float freezeDuration = 2f;  // Default duration for freezing
     public GameObject coinPrefab;
 
     public AudioSource damageSound; // AudioSource for playing damage sound effect
@@ -48,6 +47,7 @@ public class Enemy : MonoBehaviour
     public void Freeze(bool freezeStatus)
     {
         if (isFrozen == freezeStatus) return;  // No change in status
+
         isFrozen = freezeStatus;
         spriteRenderer.color = freezeStatus ? Color.blue : Color.white;
 
@@ -57,7 +57,8 @@ public class Enemy : MonoBehaviour
             {
                 StopCoroutine(freezeCoroutine);  // Ensure no overlapping coroutines
             }
-            freezeCoroutine = StartCoroutine(UnfreezeAfterDuration(freezeDuration));
+            // Use the static freezeDuration from SupportProjectile
+            freezeCoroutine = StartCoroutine(UnfreezeAfterDuration(SupportProjectile.freezeDuration));
         }
         else if (freezeCoroutine != null)
         {

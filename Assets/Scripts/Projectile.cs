@@ -17,23 +17,14 @@ public class Projectile : MonoBehaviour
 
     void Start()
     {
-        if (canvasTransform == null)
+        if (UIManager.Instance.battleCanvasTransform == null)
         {
-            // Attempt to find the canvas automatically
-            GameObject canvasObject = GameObject.FindWithTag("BattleCanvas");
-            if (canvasObject != null)
-            {
-                canvasTransform = canvasObject.transform;
-            }
-            else
-            {
-                // Handle the case where the canvas is not found
-                Debug.LogError("BattleCanvas not found. Please ensure it is properly tagged.");
-                return;  // Exit early to prevent the coroutine from starting
-            }
+            Debug.LogError("BattleCanvas Transform is not set in the UIManager.");
+            return;
         }
-        // Start the coroutine to destroy the projectile after a delay
+        canvasTransform = UIManager.Instance.battleCanvasTransform;
         StartCoroutine(DestroyAfterDelay());
+   
     }
 
     void Update()

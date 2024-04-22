@@ -88,13 +88,32 @@ public class UpgradeManager : MonoBehaviour
     {
         if (CanPurchaseUpgrade(citizenSpawnUpgradeCost))
         {
-            Instantiate(citizenPrefab, new Vector2(Random.Range(-10, 10), Random.Range(-10, 10)), Quaternion.identity); // Spawn the citizen at a random position
+            GameObject newCitizen = Instantiate(citizenPrefab, new Vector2(Random.Range(-10, 10), Random.Range(-10, 10)), Quaternion.identity);
+            GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
+            newCitizen.transform.SetParent(playerGameObject.transform, false);
+
+            // Set a random color hue and saturation
+            SpriteRenderer spriteRenderer = newCitizen.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.color = RandomColorHue();
+            }
+
             resourceManager.SubtractCoins(citizenSpawnUpgradeCost);
-            citizenSpawnUpgradeCost += citizenSpawnUpgradeCostIncrease; // Increase the cost for the next upgrade
+            citizenSpawnUpgradeCost += citizenSpawnUpgradeCostIncrease;
             AfterPurchase();
             Debug.Log("Citizen spawn upgrade purchased.");
         }
     }
+    Color RandomColorHue()
+    {
+        float hue = Random.Range(0f, 1f); // Random hue from 0 to 1
+        float saturation = Random.Range(0.5f, 1f); // Random saturation from 50% to 100%
+        return Color.HSVToRGB(hue, saturation, 1); // Full value for brightness
+    }
+
+
+
 
     public void PurchaseMaxHealthUpgrade()
     {

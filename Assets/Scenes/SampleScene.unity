@@ -3527,7 +3527,7 @@ Transform:
   m_GameObject: {fileID: 951959568}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.7348, y: -2.2723, z: -0.06847219}
+  m_LocalPosition: {x: -6.8, y: -2.13, z: -0.06847219}
   m_LocalScale: {x: 0.13, y: 0.13, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4404,6 +4404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6782b9446f88fc41a7934757e1c23d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleCanvasTransform: {fileID: 924632715}
   mainCamera: {fileID: 323615833}
   battleCamera: {fileID: 519420031}
   upgradesCamera: {fileID: 1542511370}

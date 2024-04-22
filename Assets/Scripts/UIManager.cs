@@ -4,6 +4,24 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+
+    public static UIManager Instance;
+
+    public Transform battleCanvasTransform;
+
+    void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
     public Camera mainCamera;
     public Camera battleCamera;
     public Camera upgradesCamera;
