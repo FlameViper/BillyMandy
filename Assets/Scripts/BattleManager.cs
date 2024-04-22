@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI; // Include this to use the Text component
 
 public class BattleManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class BattleManager : MonoBehaviour
     public UIManager uiManager;
     public EnemySpawner enemySpawner;
     public float roundTimeLimit = 60f;
+    public Text levelText; // UI Text element for displaying the level
 
     private bool isRoundActive = false;
     public int level = 1; // Level counter
@@ -33,6 +35,7 @@ public class BattleManager : MonoBehaviour
         uiManager.EnableBattleCamera();
         enemySpawner.StartSpawning(level); // Pass current level to spawner
         UpdateAllStealers(level);
+        UpdateLevelDisplay(); // Update the level display at the start of each round
     }
 
     void UpdateAllStealers(int level)
@@ -83,5 +86,13 @@ public class BattleManager : MonoBehaviour
     {
         uiManager.EnableMainCamera();
         StartRound(); // Start new round with incremented level
+    }
+
+    void UpdateLevelDisplay()
+    {
+        if (levelText != null)
+            levelText.text = "Level: " + level;
+        else
+            Debug.LogError("Level text component is not assigned in the BattleManager.");
     }
 }

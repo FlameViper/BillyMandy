@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Projectile : MonoBehaviour
 {
@@ -8,10 +9,29 @@ public class Projectile : MonoBehaviour
     public static int damageAmount = 20; // Amount of damage dealt to enemies
     public float destroyDelay = 10f; // Delay before destroying the projectile
 
+    public GameObject damageTextPrefab; // Reference to the damage text prefab
+    public Transform canvasTransform; // Reference to the transform of the Canvas object
+
+
     private Vector3 direction; // Direction in which the projectile will move
 
     void Start()
     {
+        if (canvasTransform == null)
+        {
+            // Attempt to find the canvas automatically
+            GameObject canvasObject = GameObject.FindWithTag("BattleCanvas");
+            if (canvasObject != null)
+            {
+                canvasTransform = canvasObject.transform;
+            }
+            else
+            {
+                // Handle the case where the canvas is not found
+                Debug.LogError("BattleCanvas not found. Please ensure it is properly tagged.");
+                return;  // Exit early to prevent the coroutine from starting
+            }
+        }
         // Start the coroutine to destroy the projectile after a delay
         StartCoroutine(DestroyAfterDelay());
     }
@@ -40,6 +60,7 @@ public class Projectile : MonoBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(damageAmount);
+                DisplayDamage(damageAmount, transform.position);
                 Destroy(gameObject);
             }
         }
@@ -53,14 +74,24 @@ public class Projectile : MonoBehaviour
             if (coinStealer != null)
             {
                 coinStealer.TakeDamage(damageAmount);
+                DisplayDamage(damageAmount, transform.position);
                 Destroy(gameObject);
             }
         }
 
     }
 
-// Coroutine to destroy the projectile after a delay
-IEnumerator DestroyAfterDelay()
+    void DisplayDamage(int damage, Vector3 position)
+    {
+        GameObject damageTextObject = Instantiate(damageTextPrefab, position, Quaternion.identity, canvasTransform);
+        Text textComponent = damageTextObject.GetComponent<Text>();
+        textComponent.text = damage.ToString("F0");
+        // Ensure the text is visible above everything else
+        damageTextObject.transform.localPosition = new Vector3(damageTextObject.transform.localPosition.x, damageTextObject.transform.localPosition.y, 0);
+    }
+
+    // Coroutine to destroy the projectile after a delay
+    IEnumerator DestroyAfterDelay()
     {
         yield return new WaitForSeconds(destroyDelay);
         Destroy(gameObject);

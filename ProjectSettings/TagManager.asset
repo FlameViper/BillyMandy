@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - coin
   - CoinStealer
+  - BattleCanvas
   layers:
   - Default
   - TransparentFX
