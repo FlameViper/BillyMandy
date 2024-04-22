@@ -59,7 +59,7 @@ public class EnemySpawner : MonoBehaviour
         // Ensure we adjust for a very high number of enemies to maintain game balance
         if (maxEnemies > 0)
         {
-            spawnInterval = Mathf.Max(levelDuration / maxEnemies, 0.25f); // Ensures a minimum spawn interval of 0.25 seconds
+            spawnInterval = Mathf.Max(levelDuration / maxEnemies, 0.01f); // Ensures a minimum spawn interval of 0.25 seconds
         }
         else
         {
