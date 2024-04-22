@@ -16,7 +16,7 @@ public class ResourceManager : MonoBehaviour
 
     void Start()
     {
-        Coins = 100; // Initialize coins to 0
+        Coins = 10; // Initialize coins to 0
         EnemyCoins = 0;
         Score = 0;  // Initialize score to 0
         UpdateUI(); // Update the UI with the starting data
