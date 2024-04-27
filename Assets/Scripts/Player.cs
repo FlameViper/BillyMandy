@@ -48,6 +48,6 @@ public class Player : MonoBehaviour
         Debug.Log("Player Died!");
         gameOverScreen.SetActive(true); // Show the Game Over screen
         yield return new WaitForSeconds(5); // Wait for 5 seconds
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Reload the scene
+        Time.timeScale = 0; // Reload the scene
     }
 }
