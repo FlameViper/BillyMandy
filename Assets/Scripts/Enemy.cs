@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -11,101 +12,111 @@ public class Enemy : MonoBehaviour
     public float attackSpeed = 1f;
     public GameObject coinPrefab;
 
-    public AudioSource damageSound; // AudioSource for playing damage sound effect
+    public AudioSource damageSound;
     public AudioSource deathSound;
 
+    private Transform target;
     private Transform player;
     private Coroutine attackRoutine = null;
-    private SpriteRenderer spriteRenderer; // Reference to the sprite renderer
+    private SpriteRenderer spriteRenderer;
 
-    private bool isDead = false; // Flag to check if the enemy is dead
-    private bool isFrozen = false; // Track freeze state
-    private Coroutine freezeCoroutine; // To manage ongoing freeze coroutines
+    private bool isDead = false;
+    private bool isFrozen = false;
+    private Coroutine freezeCoroutine;
 
+    private List<Transform> potentialTargets = new List<Transform>();
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        target = player;
         currentHealth = baseHealth;
-        spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
-        if (isDead || isFrozen) return; // Stop all movement if enemy is dead or frozen
+        if (isDead || isFrozen) return;
 
-        if (player != null)
+        // Update target to the closest potential target
+        UpdateTarget();
+
+        if (target != null)
         {
-            float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-            if (distanceToPlayer > stopDistance)
+            float distanceToTarget = Vector2.Distance(transform.position, target.position);
+            if (distanceToTarget > stopDistance)
             {
-                transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
             }
-        }
-    }
-
-    public void Freeze(bool freezeStatus)
-    {
-        if (isFrozen == freezeStatus) return;  // No change in status
-
-        isFrozen = freezeStatus;
-        spriteRenderer.color = freezeStatus ? Color.blue : Color.white;
-
-        if (freezeStatus)
-        {
-            if (freezeCoroutine != null)
-            {
-                StopCoroutine(freezeCoroutine);  // Ensure no overlapping coroutines
-            }
-            // Use the static freezeDuration from SupportProjectile
-            freezeCoroutine = StartCoroutine(UnfreezeAfterDuration(SupportProjectile.freezeDuration));
-        }
-        else if (freezeCoroutine != null)
-        {
-            StopCoroutine(freezeCoroutine);
-            freezeCoroutine = null;
-        }
-    }
-
-    private IEnumerator UnfreezeAfterDuration(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        Freeze(false);  // Automatically unfreeze after duration
-    }
-
-
-
-    IEnumerator DealDamageRepeatedly(Collider2D playerCollider)
-    {
-        while (!isFrozen && !isDead)
-        {
-            playerCollider.GetComponent<Player>().TakeDamage(damageToPlayer);
-            yield return new WaitForSeconds(attackSpeed);
         }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && attackRoutine == null && !isDead)
+        if (collision.CompareTag("Player") || collision.CompareTag("WarriorGotchi"))
         {
-            attackRoutine = StartCoroutine(DealDamageRepeatedly(collision));
+            potentialTargets.Add(collision.transform);
+            UpdateTarget();
         }
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && attackRoutine != null)
+        if (potentialTargets.Contains(collision.transform))
         {
-            StopCoroutine(attackRoutine);
-            attackRoutine = null;
+            potentialTargets.Remove(collision.transform);
+            UpdateTarget();
         }
     }
 
+    void UpdateTarget()
+    {
+        if (potentialTargets.Count == 0)
+        {
+            target = player;  // Default back to player if no gotchis are close
+            return;
+        }
+
+        Transform closest = null;
+        float minDistance = float.MaxValue;
+        foreach (Transform t in potentialTargets)
+        {
+            float dist = Vector2.Distance(transform.position, t.position);
+            if (dist < minDistance)
+            {
+                closest = t;
+                minDistance = dist;
+            }
+        }
+
+        if (closest != null && closest != target)
+        {
+            target = closest;
+            if (attackRoutine != null)
+            {
+                StopCoroutine(attackRoutine);
+                attackRoutine = null;
+            }
+            attackRoutine = StartCoroutine(DealDamageRepeatedly(target.GetComponent<Collider2D>()));
+        }
+    }
+
+    IEnumerator DealDamageRepeatedly(Collider2D targetCollider)
+    {
+        while (!isFrozen && !isDead && targetCollider != null)
+        {
+            targetCollider.GetComponent<Player>()?.TakeDamage(damageToPlayer);
+            targetCollider.GetComponent<WarriorGotchi>()?.TakeDamage(damageToPlayer);
+            yield return new WaitForSeconds(attackSpeed);
+        }
+    }
+
+
+
     public void TakeDamage(int damage)
     {
-        Debug.Log("TakeDamage called. Current health: " + currentHealth + ", Damage: " + damage);
-
-        if (isDead || isFrozen) return; // Ignore damage if already dead or frozen
+        // Ignore damage if already dead
+        if (isDead) return;
 
         currentHealth -= damage;
 
@@ -120,6 +131,7 @@ public class Enemy : MonoBehaviour
             Die();
         }
     }
+
 
     void Die()
     {
@@ -180,5 +192,34 @@ public class Enemy : MonoBehaviour
 
         baseHealth = 30 + (level - 1) * healthIncrease;
         currentHealth = baseHealth;
+    }
+
+    public void Freeze(bool freezeStatus)
+    {
+        if (isFrozen == freezeStatus) return;  // No change in status
+
+        isFrozen = freezeStatus;
+        spriteRenderer.color = freezeStatus ? Color.blue : Color.white;
+
+        if (freezeStatus)
+        {
+            if (freezeCoroutine != null)
+            {
+                StopCoroutine(freezeCoroutine);  // Ensure no overlapping coroutines
+            }
+            // Use the static freezeDuration from SupportProjectile
+            freezeCoroutine = StartCoroutine(UnfreezeAfterDuration(SupportProjectile.freezeDuration));
+        }
+        else if (freezeCoroutine != null)
+        {
+            StopCoroutine(freezeCoroutine);
+            freezeCoroutine = null;
+        }
+    }
+
+    private IEnumerator UnfreezeAfterDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        Freeze(false);  // Automatically unfreeze after duration
     }
 }

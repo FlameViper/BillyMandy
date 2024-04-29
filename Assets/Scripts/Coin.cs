@@ -19,10 +19,23 @@ public class Coin : MonoBehaviour
             Vector2 totalForce = Vector2.zero;
             foreach (var attractor in attractors)
             {
-                Vector2 direction = (attractor.Key.transform.position - transform.position).normalized;
-                totalForce += direction * attractor.Value;
+                if (attractor.Key != null)  // Ensure the attractor is still in the scene
+                {
+                    Vector2 direction = (attractor.Key.transform.position - transform.position).normalized;
+                    totalForce += direction * attractor.Value;
+                }
             }
-            rb.velocity = totalForce;
+
+            // Apply force only if there is a significant total force calculated
+            if (totalForce.magnitude > 0.01f)
+                rb.velocity = totalForce;
+            else
+                rb.velocity = Vector2.zero;
+        }
+        else
+        {
+            // If no attractors are present, stop moving the coin
+            rb.velocity = Vector2.zero;
         }
     }
 

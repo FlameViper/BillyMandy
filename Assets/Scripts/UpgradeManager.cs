@@ -34,6 +34,17 @@ public class UpgradeManager : MonoBehaviour
     public int citizenSpawnUpgradeCost = 150; // Initial cost for this upgrade
     public int citizenSpawnUpgradeCostIncrease = 50; // Cost increase after each upgrade
 
+    public WarriorGotchiSpawner warriorGotchiSpawner; // Reference to the WarriorGotchiSpawner
+
+    public int gotchiSpawnRateUpgradeCost = 50; // Initial cost to decrease the spawn interval
+    public int gotchiMaxIncreaseUpgradeCost = 100; // Initial cost to increase the maximum number of Gotchis
+
+    public int gotchiHealthUpgradeCost = 75; // Initial cost to increase health
+    public int gotchiDamageUpgradeCost = 100; // Initial cost to increase damage
+
+    public int gotchiHealthUpgradeAmount = 20; // Health increase per upgrade
+    public int gotchiDamageUpgradeAmount = 5;  // Damage increase per upgrade
+
     // UI Text References
     public Text healthUpgradeCostText;
     public Text projectileUpgradeCostText;
@@ -42,6 +53,12 @@ public class UpgradeManager : MonoBehaviour
     public Text healUpgradeCostText;
     public Text citizenSpawnUpgradeCostText;
     public Text enemySpawnUpgradeCostText;
+
+    public Text gotchiSpawnRateUpgradeCostText;  // UI Text for Gotchi spawn rate upgrade
+    public Text gotchiMaxUpgradeCostText;        // UI Text for Gotchi max count upgrade
+    public Text gotchiHealthUpgradeCostText;     // UI Text for Gotchi health upgrade
+    public Text gotchiDamageUpgradeCostText;     // UI Text for Gotchi damage upgrade
+
 
     private CoinSucker coinSucker; // Reference to the CoinSucker
 
@@ -77,6 +94,12 @@ public class UpgradeManager : MonoBehaviour
         healUpgradeCostText.text = "Heal Amount +50: " + healUpgradeCost + " Coins";
         citizenSpawnUpgradeCostText.text = "+1 Citizen: " + citizenSpawnUpgradeCost + " Coins";
         enemySpawnUpgradeCostText.text = "+2 Enemy Spawn: " + enemySpawnUpgradeCost + " Coins";
+
+        // New Warrior Gotchi Upgrades
+        gotchiSpawnRateUpgradeCostText.text = "Warrior Spawn rate -1s: " + gotchiSpawnRateUpgradeCost + " Coins";
+        gotchiMaxUpgradeCostText.text = "+1 Maximum Warrior: " + gotchiMaxIncreaseUpgradeCost + " Coins";
+        gotchiHealthUpgradeCostText.text = "Increase Warrior Health by " + gotchiHealthUpgradeAmount + ": " + gotchiHealthUpgradeCost + " Coins";
+        gotchiDamageUpgradeCostText.text = "Increase Warrior Damage by " + gotchiDamageUpgradeAmount + ": " + gotchiDamageUpgradeCost + " Coins";
     }
 
     private void AfterPurchase()
@@ -84,11 +107,58 @@ public class UpgradeManager : MonoBehaviour
         UpdateCostTexts();  // Update UI texts after each purchase
     }
 
+    public void PurchaseGotchiHealthUpgrade()
+    {
+        if (CanPurchaseUpgrade(gotchiHealthUpgradeCost))
+        {
+            WarriorGotchi.IncreaseHealth(gotchiHealthUpgradeAmount);
+            resourceManager.SubtractCoins(gotchiHealthUpgradeCost);
+            gotchiHealthUpgradeCost += 1; // Increment cost for next upgrade
+            AfterPurchase();
+            Debug.Log("Warrior Gotchi health upgrade purchased. New health: " + WarriorGotchi.baseHealth);
+        }
+    }
+
+    public void PurchaseGotchiDamageUpgrade()
+    {
+        if (CanPurchaseUpgrade(gotchiDamageUpgradeCost))
+        {
+            WarriorGotchi.IncreaseDamage(gotchiDamageUpgradeAmount);
+            resourceManager.SubtractCoins(gotchiDamageUpgradeCost);
+            gotchiDamageUpgradeCost += 1; // Increment cost for next upgrade
+            AfterPurchase();
+            Debug.Log("Warrior Gotchi damage upgrade purchased. New damage: " + WarriorGotchi.baseDamage);
+        }
+    }
+
+    public void PurchaseGotchiSpawnRateUpgrade()
+    {
+        if (CanPurchaseUpgrade(gotchiSpawnRateUpgradeCost))
+        {
+            warriorGotchiSpawner.DecreaseSpawnInterval(1f); // Decrease interval by 1 second
+            resourceManager.SubtractCoins(gotchiSpawnRateUpgradeCost);
+            AfterPurchase();
+            Debug.Log("Gotchi spawn rate upgrade purchased.");
+        }
+    }
+
+    public void PurchaseGotchiMaxIncreaseUpgrade()
+    {
+        if (CanPurchaseUpgrade(gotchiMaxIncreaseUpgradeCost))
+        {
+            warriorGotchiSpawner.IncreaseMaxGotchis(1); // Increase max Gotchis by 1
+            resourceManager.SubtractCoins(gotchiMaxIncreaseUpgradeCost);
+            AfterPurchase();
+            Debug.Log("Gotchi max increase upgrade purchased.");
+        }
+    }
+
+    public Transform spawnPointTransform; // Assign this in the Unity Inspector
     public void PurchaseCitizenSpawnUpgrade()
     {
         if (CanPurchaseUpgrade(citizenSpawnUpgradeCost))
         {
-            GameObject newCitizen = Instantiate(citizenPrefab, new Vector2(Random.Range(-10, 10), Random.Range(-10, 10)), Quaternion.identity);
+            GameObject newCitizen = Instantiate(citizenPrefab, spawnPointTransform.position, Quaternion.identity);
             GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
             newCitizen.transform.SetParent(playerGameObject.transform, false);
 

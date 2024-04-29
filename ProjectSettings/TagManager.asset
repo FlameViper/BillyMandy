@@ -10,6 +10,7 @@ TagManager:
   - coin
   - CoinStealer
   - BattleCanvas
+  - WarriorGotchi
   layers:
   - Default
   - TransparentFX
