@@ -8,14 +8,17 @@ TagManager:
   - Undefined
   - Enemy
   - coin
+  - CoinStealer
+  - BattleCanvas
+  - WarriorGotchi
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Three
   - Water
   - UI
-  - 
+  - Six
   - 
   - 
   - 

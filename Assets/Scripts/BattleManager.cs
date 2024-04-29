@@ -1,20 +1,49 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI; // Include this to use the Text component
 
 public class BattleManager : MonoBehaviour
 {
+    // Static singleton property
+    public static BattleManager Instance { get; private set; }
+
     public UIManager uiManager;
     public EnemySpawner enemySpawner;
-    public float roundTimeLimit = 10f;
+    public float roundTimeLimit = 60f;
+    public Text levelText; // UI Text element for displaying the level
 
     private bool isRoundActive = false;
     public int level = 1; // Level counter
 
-    //derp
-
-    void Start()
+    void Awake()
     {
-        //StartRound();
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
+    void StartRound()
+    {
+        isRoundActive = true;
+        roundTimeLimit = 60;
+
+        uiManager.EnableBattleCamera();
+        enemySpawner.StartSpawning(level); // Pass current level to spawner
+        UpdateAllStealers(level);
+        UpdateLevelDisplay(); // Update the level display at the start of each round
+    }
+
+    void UpdateAllStealers(int level)
+    {
+        foreach (CoinStealer stealer in FindObjectsOfType<CoinStealer>())
+        {
+            stealer.UpdateAttractionPower(level);
+        }
     }
 
     void Update()
@@ -30,14 +59,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void StartRound()
-    {
-        isRoundActive = true;
-        roundTimeLimit = 20;
-
-        uiManager.EnableBattleCamera();
-        enemySpawner.StartSpawning(level); // Pass current level to spawner
-    }
 
     void EndRound()
     {
@@ -65,5 +86,13 @@ public class BattleManager : MonoBehaviour
     {
         uiManager.EnableMainCamera();
         StartRound(); // Start new round with incremented level
+    }
+
+    void UpdateLevelDisplay()
+    {
+        if (levelText != null)
+            levelText.text = "Level: " + level;
+        else
+            Debug.LogError("Level text component is not assigned in the BattleManager.");
     }
 }

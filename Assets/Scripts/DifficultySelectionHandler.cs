@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections; // Required for Coroutines
 
 public class DifficultySelectionHandler : MonoBehaviour
 {
@@ -20,7 +21,12 @@ public class DifficultySelectionHandler : MonoBehaviour
                 break;
         }
 
-        // Assuming uiManager is assigned in the inspector.
-        uiManager.EnableUpgradesCamera(); // Switch to upgrades camera after setting difficulty
+        StartCoroutine(DelayCameraSwitch()); // Start the coroutine to delay camera switch
+    }
+
+    private IEnumerator DelayCameraSwitch()
+    {
+        yield return new WaitForSeconds(1); // Wait for one second
+        uiManager.EnableUpgradesCamera(); // Switch to upgrades camera after the delay
     }
 }

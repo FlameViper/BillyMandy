@@ -10,7 +10,7 @@ public class UpgradeManager : MonoBehaviour
 
     // CoinSucker upgrade settings
     public int coinSuckerUpgradeCost = 30; // Initial cost of the CoinSucker upgrade
-    public float coinSuckerSpeedIncrease = 2f; // Speed increase per CoinSucker upgrade
+    public float coinSuckerPowerIncrease = 2f; // Suck power increase per CoinSucker upgrade
     public int coinSuckerUpgradeCostIncrease = 20; // Cost increase after each CoinSucker upgrade
 
     public int enemySpawnUpgradeCost = 100; // Initial cost for this upgrade
@@ -34,6 +34,17 @@ public class UpgradeManager : MonoBehaviour
     public int citizenSpawnUpgradeCost = 150; // Initial cost for this upgrade
     public int citizenSpawnUpgradeCostIncrease = 50; // Cost increase after each upgrade
 
+    public WarriorGotchiSpawner warriorGotchiSpawner; // Reference to the WarriorGotchiSpawner
+
+    public int gotchiSpawnRateUpgradeCost = 50; // Initial cost to decrease the spawn interval
+    public int gotchiMaxIncreaseUpgradeCost = 100; // Initial cost to increase the maximum number of Gotchis
+
+    public int gotchiHealthUpgradeCost = 75; // Initial cost to increase health
+    public int gotchiDamageUpgradeCost = 100; // Initial cost to increase damage
+
+    public int gotchiHealthUpgradeAmount = 20; // Health increase per upgrade
+    public int gotchiDamageUpgradeAmount = 5;  // Damage increase per upgrade
+
     // UI Text References
     public Text healthUpgradeCostText;
     public Text projectileUpgradeCostText;
@@ -42,6 +53,14 @@ public class UpgradeManager : MonoBehaviour
     public Text healUpgradeCostText;
     public Text citizenSpawnUpgradeCostText;
     public Text enemySpawnUpgradeCostText;
+
+    public Text gotchiSpawnRateUpgradeCostText;  // UI Text for Gotchi spawn rate upgrade
+    public Text gotchiMaxUpgradeCostText;        // UI Text for Gotchi max count upgrade
+    public Text gotchiHealthUpgradeCostText;     // UI Text for Gotchi health upgrade
+    public Text gotchiDamageUpgradeCostText;     // UI Text for Gotchi damage upgrade
+
+
+    private CoinSucker coinSucker; // Reference to the CoinSucker
 
 
 
@@ -53,6 +72,7 @@ public class UpgradeManager : MonoBehaviour
     {
         resourceManager = FindObjectOfType<ResourceManager>();
         player = FindObjectOfType<Player>(); // Find the Player script in the scene
+        coinSucker = FindObjectOfType<CoinSucker>(true);
         UpdateCostTexts();
 
         if (resourceManager == null)
@@ -69,11 +89,17 @@ public class UpgradeManager : MonoBehaviour
     {
         healthUpgradeCostText.text = "Max HP +50: " + healthUpgradeCost + " Coins";
         projectileUpgradeCostText.text = "Projectile Damage +20: " + projectileUpgradeCost + " Coins";
-        coinSuckerUpgradeCostText.text = "Coin Sucker Speed +1: " + coinSuckerUpgradeCost + " Coins";
+        coinSuckerUpgradeCostText.text = "Coin Sucker Power +2: " + coinSuckerUpgradeCost + " Coins";
         freezeDurationUpgradeCostText.text = "Freeze Duration +1s: " + freezeDurationUpgradeCost + " Coins";
         healUpgradeCostText.text = "Heal Amount +50: " + healUpgradeCost + " Coins";
         citizenSpawnUpgradeCostText.text = "+1 Citizen: " + citizenSpawnUpgradeCost + " Coins";
         enemySpawnUpgradeCostText.text = "+2 Enemy Spawn: " + enemySpawnUpgradeCost + " Coins";
+
+        // New Warrior Gotchi Upgrades
+        gotchiSpawnRateUpgradeCostText.text = "Warrior Spawn rate -1s: " + gotchiSpawnRateUpgradeCost + " Coins";
+        gotchiMaxUpgradeCostText.text = "+1 Maximum Warrior: " + gotchiMaxIncreaseUpgradeCost + " Coins";
+        gotchiHealthUpgradeCostText.text = "Increase Warrior Health by " + gotchiHealthUpgradeAmount + ": " + gotchiHealthUpgradeCost + " Coins";
+        gotchiDamageUpgradeCostText.text = "Increase Warrior Damage by " + gotchiDamageUpgradeAmount + ": " + gotchiDamageUpgradeCost + " Coins";
     }
 
     private void AfterPurchase()
@@ -81,17 +107,83 @@ public class UpgradeManager : MonoBehaviour
         UpdateCostTexts();  // Update UI texts after each purchase
     }
 
+    public void PurchaseGotchiHealthUpgrade()
+    {
+        if (CanPurchaseUpgrade(gotchiHealthUpgradeCost))
+        {
+            WarriorGotchi.IncreaseHealth(gotchiHealthUpgradeAmount);
+            resourceManager.SubtractCoins(gotchiHealthUpgradeCost);
+            gotchiHealthUpgradeCost += 1; // Increment cost for next upgrade
+            AfterPurchase();
+            Debug.Log("Warrior Gotchi health upgrade purchased. New health: " + WarriorGotchi.baseHealth);
+        }
+    }
+
+    public void PurchaseGotchiDamageUpgrade()
+    {
+        if (CanPurchaseUpgrade(gotchiDamageUpgradeCost))
+        {
+            WarriorGotchi.IncreaseDamage(gotchiDamageUpgradeAmount);
+            resourceManager.SubtractCoins(gotchiDamageUpgradeCost);
+            gotchiDamageUpgradeCost += 1; // Increment cost for next upgrade
+            AfterPurchase();
+            Debug.Log("Warrior Gotchi damage upgrade purchased. New damage: " + WarriorGotchi.baseDamage);
+        }
+    }
+
+    public void PurchaseGotchiSpawnRateUpgrade()
+    {
+        if (CanPurchaseUpgrade(gotchiSpawnRateUpgradeCost))
+        {
+            warriorGotchiSpawner.DecreaseSpawnInterval(1f); // Decrease interval by 1 second
+            resourceManager.SubtractCoins(gotchiSpawnRateUpgradeCost);
+            AfterPurchase();
+            Debug.Log("Gotchi spawn rate upgrade purchased.");
+        }
+    }
+
+    public void PurchaseGotchiMaxIncreaseUpgrade()
+    {
+        if (CanPurchaseUpgrade(gotchiMaxIncreaseUpgradeCost))
+        {
+            warriorGotchiSpawner.IncreaseMaxGotchis(1); // Increase max Gotchis by 1
+            resourceManager.SubtractCoins(gotchiMaxIncreaseUpgradeCost);
+            AfterPurchase();
+            Debug.Log("Gotchi max increase upgrade purchased.");
+        }
+    }
+
+    public Transform spawnPointTransform; // Assign this in the Unity Inspector
     public void PurchaseCitizenSpawnUpgrade()
     {
         if (CanPurchaseUpgrade(citizenSpawnUpgradeCost))
         {
-            Instantiate(citizenPrefab, new Vector2(Random.Range(-10, 10), Random.Range(-10, 10)), Quaternion.identity); // Spawn the citizen at a random position
+            GameObject newCitizen = Instantiate(citizenPrefab, spawnPointTransform.position, Quaternion.identity);
+            GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
+            newCitizen.transform.SetParent(playerGameObject.transform, false);
+
+            // Set a random color hue and saturation
+            SpriteRenderer spriteRenderer = newCitizen.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.color = RandomColorHue();
+            }
+
             resourceManager.SubtractCoins(citizenSpawnUpgradeCost);
-            citizenSpawnUpgradeCost += citizenSpawnUpgradeCostIncrease; // Increase the cost for the next upgrade
+            citizenSpawnUpgradeCost += citizenSpawnUpgradeCostIncrease;
             AfterPurchase();
             Debug.Log("Citizen spawn upgrade purchased.");
         }
     }
+    Color RandomColorHue()
+    {
+        float hue = Random.Range(0f, 1f); // Random hue from 0 to 1
+        float saturation = Random.Range(0.5f, 1f); // Random saturation from 50% to 100%
+        return Color.HSVToRGB(hue, saturation, 1); // Full value for brightness
+    }
+
+
+
 
     public void PurchaseMaxHealthUpgrade()
     {
@@ -146,22 +238,22 @@ public class UpgradeManager : MonoBehaviour
 
     public void PurchaseCoinSuckerUpgrade()
     {
-        CoinSucker coinSucker = FindObjectOfType<CoinSucker>();
         if (coinSucker == null)
         {
             Debug.LogError("CoinSucker not found in the scene.");
             return;
         }
 
-        if (CanPurchaseUpgrade(coinSuckerUpgradeCost))
+        if (resourceManager.Coins >= coinSuckerUpgradeCost)
         {
-            coinSucker.moveSpeed += coinSuckerSpeedIncrease;
+            coinSucker.SuckPower += coinSuckerPowerIncrease;
             resourceManager.SubtractCoins(coinSuckerUpgradeCost);
             coinSuckerUpgradeCost += coinSuckerUpgradeCostIncrease; // Increase the cost for the next upgrade
-            AfterPurchase();
-            Debug.Log("CoinSucker upgrade purchased. New speed: " + coinSucker.moveSpeed);
+            UpdateCostTexts();
+            Debug.Log("CoinSucker upgrade purchased. New Suck Power: " + coinSucker.SuckPower);
         }
     }
+
 
     public void PurchaseEnemySpawnUpgrade()
     {

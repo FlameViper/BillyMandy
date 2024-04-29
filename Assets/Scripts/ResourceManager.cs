@@ -4,17 +4,48 @@ using UnityEngine.UI;
 public class ResourceManager : MonoBehaviour
 {
     public int Coins { get; private set; }
+    public int EnemyCoins { get; private set; } // Coins collected by the enemy
     public int Score { get; private set; } // Manage the score
 
     public Text coinsText; // Existing UI text to display coins on the Upgrade screen
+    public Text enemyCoinsText; // New UI text to display enemy coins
     public Text battleCoinsText; // Added UI text to display coins on the Battle screen
     public Text scoreText; // UI text to display score
 
+    public EnemySpawner enemySpawner; // Reference to the EnemySpawner
+
     void Start()
     {
-        Coins = 0; // Initialize coins to 0
+        Coins = 10; // Initialize coins to 0
+        EnemyCoins = 0;
         Score = 0;  // Initialize score to 0
         UpdateUI(); // Update the UI with the starting data
+    }
+
+
+    void Update()
+    {
+        // Example condition for boss spawn: every 3 EnemyCoins
+        int bossSpawnThreshold = 3; // Set the threshold for boss spawn
+
+        // Regularly check if there are enough coins for a boss spawn
+        while (EnemyCoins >= bossSpawnThreshold && !enemySpawner.ShouldSpawnBossNextRound)
+        {
+            EnemyCoins -= bossSpawnThreshold;
+            enemySpawner.PrepareBossSpawn(); // Prepare the boss spawn for the next round
+        }
+    }
+    
+
+    void CheckForBossSpawn()
+    {
+        int bossSpawnThreshold = 3; // Set the threshold for boss spawn
+
+        while (EnemyCoins >= bossSpawnThreshold && !enemySpawner.ShouldSpawnBossNextRound)
+        {
+            EnemyCoins -= bossSpawnThreshold;
+            enemySpawner.PrepareBossSpawn(); // Prepare the boss spawn for the next round
+        }
     }
 
     public void AddCoins(int amount)
@@ -22,6 +53,16 @@ public class ResourceManager : MonoBehaviour
         Coins += amount;
         UpdateUI(); // Update the UI with the new coins value
     }
+
+    public void AddEnemyCoins(int amount)
+{
+    EnemyCoins += amount;
+    UpdateUI(); // Always update the UI when coins change
+}
+    
+
+
+
 
     public void AddScore(int baseScore)
     {
@@ -58,6 +99,9 @@ public class ResourceManager : MonoBehaviour
     {
         if (coinsText != null)
             coinsText.text = "Coins: " + Coins; // Update coin display on the Upgrade screen
+
+        if (enemyCoinsText != null)
+            enemyCoinsText.text = "Enemy Coins: " + EnemyCoins;
 
         if (battleCoinsText != null)
             battleCoinsText.text = "Coins: " + Coins; // Update coin display on the Battle screen

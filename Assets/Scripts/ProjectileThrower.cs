@@ -7,6 +7,7 @@ public class ProjectileThrower : MonoBehaviour
     public GameObject projectilePrefab; // Prefab of the projectile to be thrown
     public float attackSpeed = 1f; // Attack speed, measured in attacks per second
     public bool isThrowerActive = true; // Flag to enable or disable throwing
+    public AudioSource attackSound; // AudioSource component for playing attack sounds
 
     private float lastAttackTime = 0f; // When the last attack happened
 
@@ -39,6 +40,16 @@ public class ProjectileThrower : MonoBehaviour
             else
             {
                 Debug.LogError("Projectile prefab doesn't have Projectile component attached!");
+            }
+
+            // Play the attack sound if the AudioSource and clip are available
+            if (attackSound != null)
+            {
+                attackSound.Play();
+            }
+            else
+            {
+                Debug.LogError("No AudioSource component found on the GameObject!");
             }
         }
     }
