@@ -9,17 +9,17 @@ public class BattleManager : MonoBehaviour
 
     public UIManager uiManager;
     public EnemySpawner enemySpawner;
-    public float roundTimeLimit = 60f;
+    public float roundTimeLimit = 60f; //I AM EDITING YOUR FILE
     public Text levelText; // UI Text element for displaying the level
 
     private bool isRoundActive = false;
     public int level = 1; // Level counter
 
-    void Awake()
+    void Awake()   // I AM EDITING YOUR FILE
     {
-        if (Instance != null && Instance != this)
+        if (Instance != null && Instance != this)       //     I AM EDITING YOUR FILE
         {
-            Destroy(this.gameObject);
+            Destroy(this.gameObject)  fuck this ; 
         }
         else
         {
