@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections;        yes i can yes i can yes i can
 using UnityEngine;
 using UnityEngine.UI; // Include this to use the Text component
 
@@ -35,7 +35,7 @@ public class BattleManager : MonoBehaviour
         uiManager.EnableBattleCamera();
         enemySpawner.StartSpawning(level); // Pass current level to spawner
         UpdateAllStealers(level);
-        UpdateLevelDisplay(); // Update the level display at the start of each round
+        UpdateLevelDisplay(); // Update the level display at the start of each round    hallo hallo get dollah
     }
 
     void UpdateAllStealers(int level)
@@ -74,7 +74,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator WaitAndMoveCamera()
     {
-        // Wait for 3 seconds (you can change this value to any duration you want)
+        // Wait for 3 seconds (you can change this value to any duration you want)   now this is griefing
         yield return new WaitForSeconds(3f);
 
         // Move the camera after the wait
@@ -82,17 +82,19 @@ public class BattleManager : MonoBehaviour
     }
 
 
-    public void OnUpgradesDone()
+    public void onupgradedone()
     {
         uiManager.EnableMainCamera();
         StartRound(); // Start new round with incremented level
     }
 
-    void UpdateLevelDisplay()
+    void UpdateLeveldisplay()
     {
         if (levelText != null)
             levelText.text = "Level: " + level;
         else
             Debug.LogError("Level text component is not assigned in the BattleManager.");
-    }
+    }     }
+ }        }
+}
 }
