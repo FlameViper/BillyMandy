@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class ProjectileThrower : MonoBehaviour
 {
-    public GameObject projectilePrefab; // Prefab of the projectile to be thrown
+
+    public ProjectileType projectileType = ProjectileType.Fireball;
+    public List<GameObject> projectilePrefabs; // Prefab of the projectile to be thrown
     public float attackSpeed = 1f; // Attack speed, measured in attacks per second
     public bool isThrowerActive = true; // Flag to enable or disable throwing
     public AudioSource attackSound; // AudioSource component for playing attack sounds
 
     private float lastAttackTime = 0f; // When the last attack happened
+
+   
+    //one instance projectiles
+    private Projectile projectileInstance;
+    private bool hasOneInstance;
 
     void Update()
     {
@@ -26,16 +33,23 @@ public class ProjectileThrower : MonoBehaviour
             // Calculate the direction towards the mouse position
             Vector3 direction = (mousePosition - transform.position).normalized;
 
+            if(hasOneInstance) {
+                if (projectileInstance != null) {
+                    return;
+                }
+            }
+
             // Instantiate the projectile at the current position
-            GameObject newProjectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            GameObject newProjectile = InstantiateProjectile(projectileType);
 
             // Get the Projectile component from the instantiated projectile
-            Projectile projectile = newProjectile.GetComponent<Projectile>();
+            //Projectile projectile = newProjectile.GetComponent<Projectile>();
+            projectileInstance = newProjectile.GetComponent<Projectile>();
 
             // If the projectile has a Projectile component, set its direction
-            if (projectile != null)
+            if (projectileInstance != null)
             {
-                projectile.SetDirection(direction);
+                projectileInstance.SetDirection(direction);
             }
             else
             {
@@ -53,4 +67,24 @@ public class ProjectileThrower : MonoBehaviour
             }
         }
     }
+
+    private GameObject InstantiateProjectile(ProjectileType projectileType) {
+        switch (projectileType) {
+            case ProjectileType.Fireball:
+                hasOneInstance = false;
+                return Instantiate(projectilePrefabs[0], transform.position, Quaternion.identity);
+            case ProjectileType.Boomerang:
+                hasOneInstance = true;
+                return Instantiate(projectilePrefabs[1], transform.position, Quaternion.identity);
+            default:
+                // Handle unknown projectile types or return null
+                Debug.Log("Projectile is not assigned");
+                return null;
+        }
+    }
+
+}
+public enum ProjectileType {
+    Fireball,
+    Boomerang,
 }

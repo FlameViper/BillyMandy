@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,12 @@ public class UpgradeManager : MonoBehaviour
     public int projectileUpgradeCost = 50; // Initial cost of the projectile upgrade
     public int projectileDamageIncrease = 5; // Damage increase per projectile upgrade
     public int projectileUpgradeCostIncrease = 25; // Cost increase after each projectile upgrade
+
+    //Weapon settings
+    public int fireballCost = 0;
+    public int fireballDamage = 20;
+    public int boomerangCost = 50;
+    public int boomerangDamage = 50;
 
     // CoinSucker upgrade settings
     public int coinSuckerUpgradeCost = 30; // Initial cost of the CoinSucker upgrade
@@ -58,6 +65,8 @@ public class UpgradeManager : MonoBehaviour
     public Text gotchiMaxUpgradeCostText;        // UI Text for Gotchi max count upgrade
     public Text gotchiHealthUpgradeCostText;     // UI Text for Gotchi health upgrade
     public Text gotchiDamageUpgradeCostText;     // UI Text for Gotchi damage upgrade
+    public TMP_Text fireballWeaponCostText;     // UI Text for Gotchi damage upgrade
+    public TMP_Text boomerangWeaponCostText;     // UI Text for Gotchi damage upgrade
 
 
     private CoinSucker coinSucker; // Reference to the CoinSucker
@@ -94,6 +103,8 @@ public class UpgradeManager : MonoBehaviour
         healUpgradeCostText.text = "Heal Amount +50: " + healUpgradeCost + " Coins";
         citizenSpawnUpgradeCostText.text = "+1 Citizen: " + citizenSpawnUpgradeCost + " Coins";
         enemySpawnUpgradeCostText.text = "+2 Enemy Spawn: " + enemySpawnUpgradeCost + " Coins";
+        fireballWeaponCostText.text = "Fireball:"+ fireballCost + " Coins";
+        boomerangWeaponCostText.text = "Boomerang:" + boomerangCost + " Coins";
 
         // New Warrior Gotchi Upgrades
         gotchiSpawnRateUpgradeCostText.text = "Warrior Spawn rate -1s: " + gotchiSpawnRateUpgradeCost + " Coins";
@@ -228,11 +239,24 @@ public class UpgradeManager : MonoBehaviour
     {
         if (CanPurchaseUpgrade(projectileUpgradeCost))
         {
-            Projectile.damageAmount += projectileDamageIncrease;
+            Projectile.projectileBonusDamage = projectileDamageIncrease;
+            Projectile.UpdateDamageAmount();
             resourceManager.SubtractCoins(projectileUpgradeCost);
             projectileUpgradeCost += projectileUpgradeCostIncrease; // Increase the cost for the next upgrade
             AfterPurchase();
             Debug.Log("Projectile upgrade purchased. New damage: " + Projectile.damageAmount);
+        }
+    }
+
+    public void PurchaseWeaponUpgrade(ProjectileType projectileType) {
+        if (CanPurchaseUpgrade(GetWeaponUpgradeCost(projectileType))) {
+            Projectile.weaponBonusDamage = GetWeaponDamageUpgrade(projectileType);
+            Projectile.UpdateDamageAmount();
+            resourceManager.SubtractCoins(GetWeaponUpgradeCost(projectileType));
+            player.projectileThrower.projectileType = projectileType;
+            UpdateWeaponUpgradeCost(projectileType);
+            AfterPurchase();
+            Debug.Log("Weapon purchased: " + projectileType);
         }
     }
 
@@ -285,6 +309,39 @@ public class UpgradeManager : MonoBehaviour
         {
             Debug.Log("Not enough coins to purchase the upgrade.");
             return false;
+        }
+    }
+
+    private int GetWeaponUpgradeCost(ProjectileType projectileType) {
+        switch (projectileType) {
+            case ProjectileType.Fireball:
+                return 0;
+            case ProjectileType.Boomerang:
+                return boomerangCost;
+            
+            default: return 0;
+        }
+    }
+    private int GetWeaponDamageUpgrade(ProjectileType projectileType) {
+        switch (projectileType) {
+            case ProjectileType.Fireball:
+                return fireballDamage;
+            case ProjectileType.Boomerang:
+                return boomerangDamage;
+            default: return 0;
+        }
+    }
+
+    private void UpdateWeaponUpgradeCost(ProjectileType projectileType) {
+        switch (projectileType) {
+            case ProjectileType.Fireball:
+                fireballCost = 0;
+                break;
+            case ProjectileType.Boomerang:
+                boomerangCost = 0;
+                break;
+            default:
+                break;
         }
     }
 }

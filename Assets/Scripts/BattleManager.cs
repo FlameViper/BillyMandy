@@ -19,7 +19,7 @@ public class BattleManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)       //     I AM EDITING YOUR FILE
         {
-            Destroy(this.gameObject)  fuck this ; 
+            Destroy(this.gameObject) ; 
         }
         else
         {

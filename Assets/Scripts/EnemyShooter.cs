@@ -65,6 +65,10 @@ public class EnemyShooter : MonoBehaviour
         Freeze(false); // This automatically unfreezes without needing a duration argument
     }
 
+    private void OnDestroy() {
+        StopCoroutine(UnfreezeAfterDuration());
+    }
+
 
 
 }

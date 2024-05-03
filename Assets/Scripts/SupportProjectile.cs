@@ -50,7 +50,10 @@ public class SupportProjectile : MonoBehaviour
         {
             enemy.Freeze(true); // Start freezing
             yield return new WaitForSeconds(SupportProjectile.freezeDuration);
-            enemy.Freeze(false); // Unfreeze after the duration
+            if (enemy != null) {
+                enemy.Freeze(false); // Unfreeze after the duration
+
+            }
         }
     }
 
@@ -60,7 +63,10 @@ public class SupportProjectile : MonoBehaviour
         {
             enemyShooter.Freeze(true); // Start freezing
             yield return new WaitForSeconds(SupportProjectile.freezeDuration);
-            enemyShooter.Freeze(false); // Unfreeze after the duration
+            if(enemyShooter != null) {
+                enemyShooter.Freeze(false); // Unfreeze after the duration
+
+            }
         }
     }
 

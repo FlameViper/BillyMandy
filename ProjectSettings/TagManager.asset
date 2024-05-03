@@ -11,6 +11,7 @@ TagManager:
   - CoinStealer
   - BattleCanvas
   - WarriorGotchi
+  - Border
   layers:
   - Default
   - TransparentFX

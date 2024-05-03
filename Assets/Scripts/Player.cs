@@ -11,10 +11,13 @@ public class Player : MonoBehaviour
     public Text healthText; // Drag your health Text UI component here in the inspector
     public AudioSource deathSound; // Reference to the AudioSource component that plays the death sound
     private bool isDead = false; // Flag to prevent multiple death sequences
+    //projectile ref
+    public ProjectileThrower projectileThrower;
 
     void Start()
     {
         currentHealth = maxHealth;
+        Projectile.UpdateDamageAmount();
         gameOverScreen.SetActive(false); // Ensure the Game Over screen is hidden at start
         UpdateHealthUI(); // Initial update of health display
     }
