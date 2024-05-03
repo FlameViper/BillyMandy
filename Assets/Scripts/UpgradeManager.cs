@@ -239,7 +239,7 @@ public class UpgradeManager : MonoBehaviour
     {
         if (CanPurchaseUpgrade(projectileUpgradeCost))
         {
-            Projectile.projectileBonusDamage = projectileDamageIncrease;
+            Projectile.projectileBonusDamage += projectileDamageIncrease;
             Projectile.UpdateDamageAmount();
             resourceManager.SubtractCoins(projectileUpgradeCost);
             projectileUpgradeCost += projectileUpgradeCostIncrease; // Increase the cost for the next upgrade
