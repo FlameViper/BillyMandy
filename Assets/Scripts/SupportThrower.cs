@@ -1,16 +1,19 @@
+
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SupportThrower : MonoBehaviour
 {
-    public GameObject supportProjectilePrefab; // Prefab of the support projectile to be thrown
+    [SerializeField] private float delayBetweenAttacks = 4f;
+    public List<GameObject> supportProjectilePrefabs; // Prefab of the support projectile to be thrown
     public float supportAttackSpeed = 1f; // Attack speed, measured in attacks per second
     public bool isSupportActive = true; // Flag to enable or disable support throwing
 
     private float lastSupportAttackTime = 0f; // When the last support attack happened
-
+    public int supportProjectileIndex=0;
     void Update()
     {
-        if (isSupportActive && Input.GetMouseButtonDown(0) && Time.time - lastSupportAttackTime >= 1f / supportAttackSpeed)
+        if (isSupportActive && Input.GetMouseButtonDown(0) && Time.time - lastSupportAttackTime >= delayBetweenAttacks / supportAttackSpeed)
         {
             
             lastSupportAttackTime = Time.time;
@@ -22,7 +25,7 @@ public class SupportThrower : MonoBehaviour
             // Correctly calculate the direction towards the mouse position before using it
             Vector3 direction = (mousePosition - transform.position).normalized;
 
-            GameObject newSupportProjectile = Instantiate(supportProjectilePrefab, transform.position, Quaternion.identity);
+            GameObject newSupportProjectile = Instantiate(supportProjectilePrefabs[supportProjectileIndex], transform.position, Quaternion.identity);
         
 
             // Change this to use SupportProjectile component
@@ -40,3 +43,4 @@ public class SupportThrower : MonoBehaviour
         }
     }
 }
+

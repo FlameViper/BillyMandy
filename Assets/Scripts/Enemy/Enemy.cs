@@ -11,47 +11,70 @@ public class Enemy : MonoBehaviour
     public float stopDistance = 1f;
     public float attackSpeed = 1f;
     public GameObject coinPrefab;
-
+    [SerializeField] private Collider2D obstacleCollider;
     public AudioSource damageSound;
     public AudioSource deathSound;
 
-    private Transform target;
-    private Transform player;
+    protected Transform target;
+    protected Transform player;
     private Coroutine attackRoutine = null;
     private SpriteRenderer spriteRenderer;
+    private Color baseColor;
+    protected Rigidbody2D rb;
 
     private bool isDead = false;
-    private bool isFrozen = false;
+    private bool isTouchingFrozenEnemy = false;
+    protected bool isFrozen = false;
     private Coroutine freezeCoroutine;
+    [SerializeField]private LayerMask frozenLayer;
 
     private List<Transform> potentialTargets = new List<Transform>();
 
-    void Start()
+    protected virtual void Start()
     {
+
         player = GameObject.FindGameObjectWithTag("Player").transform;
         target = player;
         currentHealth = baseHealth;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();   
+        baseColor = spriteRenderer.color;
     }
 
-    void Update()
+    protected virtual void Update()
     {
-        if (isDead || isFrozen) return;
+        if (isTouchingFrozenEnemy && !isFrozen && !isDead) {
+            // Calculate the direction to move towards the target
+            float distanceToTarget = Vector2.Distance(transform.position, target.position);
+            if (distanceToTarget > stopDistance) {
+                transform.position = Vector2.MoveTowards(transform.position, target.position, 0.1f * Time.deltaTime);
+            }
+
+            return;
+        }
+        if (isDead || isFrozen) {
+            
+            return;
+        }
+            
 
         // Update target to the closest potential target
         UpdateTarget();
 
-        if (target != null)
-        {
+        Movement();
+    }
+
+    protected virtual void Movement() {
+
+        if (target != null) {
             float distanceToTarget = Vector2.Distance(transform.position, target.position);
-            if (distanceToTarget > stopDistance)
-            {
+            if (distanceToTarget > stopDistance) {
                 transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
             }
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") || collision.CompareTag("WarriorGotchi"))
         {
@@ -60,7 +83,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D collision)
+    protected virtual void OnTriggerExit2D(Collider2D collision)
     {
         if (potentialTargets.Contains(collision.transform))
         {
@@ -68,6 +91,24 @@ public class Enemy : MonoBehaviour
             UpdateTarget();
         }
     }
+
+    protected virtual void OnCollisionStay2D(Collision2D collision) {
+        if (collision.collider.CompareTag("Enemy")) {
+            if (collision.collider.name == "Frozen") {
+                isTouchingFrozenEnemy = true;
+               
+            }
+            else {
+                isTouchingFrozenEnemy = false;
+            }
+
+
+        }
+
+    }
+
+
+
 
     void UpdateTarget()
     {
@@ -194,32 +235,39 @@ public class Enemy : MonoBehaviour
         currentHealth = baseHealth;
     }
 
-    public void Freeze(bool freezeStatus)
-    {
-        if (isFrozen == freezeStatus) return;  // No change in status
+    public void Freeze(bool solidFreeze) {
 
-        isFrozen = freezeStatus;
-        spriteRenderer.color = freezeStatus ? Color.blue : Color.white;
-
-        if (freezeStatus)
-        {
-            if (freezeCoroutine != null)
-            {
-                StopCoroutine(freezeCoroutine);  // Ensure no overlapping coroutines
-            }
-            // Use the static freezeDuration from SupportProjectile
-            freezeCoroutine = StartCoroutine(UnfreezeAfterDuration(SupportProjectile.freezeDuration));
-        }
-        else if (freezeCoroutine != null)
-        {
+        if(freezeCoroutine != null) {
             StopCoroutine(freezeCoroutine);
             freezeCoroutine = null;
         }
+
+        spriteRenderer.color = Color.blue;
+        isFrozen = true;
+        if (solidFreeze) {
+            ToggleObstacleCollider(true);
+            freezeCoroutine = StartCoroutine(UnfreezeAfterDuration(SupportProjectile.freezeDuration, true));
+        }
+        else {
+            freezeCoroutine = StartCoroutine(UnfreezeAfterDuration(SupportProjectile.freezeDuration, false));
+        }
+       
     }
 
-    private IEnumerator UnfreezeAfterDuration(float duration)
-    {
+    private IEnumerator UnfreezeAfterDuration(float duration, bool solidFreeze) {
+
         yield return new WaitForSeconds(duration);
-        Freeze(false);  // Automatically unfreeze after duration
+        spriteRenderer.color = baseColor;
+        isFrozen = false;
+        if (solidFreeze) {
+            ToggleObstacleCollider(false);
+        }
+        freezeCoroutine = null;
+    }
+
+
+    private void ToggleObstacleCollider(bool value) {
+       
+        obstacleCollider.name = value ? "Frozen" : "Normal";
     }
 }

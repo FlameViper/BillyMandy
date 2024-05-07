@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     private bool isDead = false; // Flag to prevent multiple death sequences
     //projectile ref
     public ProjectileThrower projectileThrower;
+    public SupportThrower supportThrower;
 
     void Start()
     {

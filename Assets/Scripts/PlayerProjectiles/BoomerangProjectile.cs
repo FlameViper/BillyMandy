@@ -24,8 +24,6 @@ public class BoomerangProjectile : Projectile
         Vector3[] pathPoints = new Vector3[] {
             transform.position, // Initial position
             transform.position + direction * 8f,
-            //transform.position + new Vector3(direction.x * 6f + 2f,direction.y * 6f),
-            //transform.position + new Vector3(direction.x * 3f + 1f,direction.y * 3f),
             transform.position + new Vector3(direction.x * projectileMaxDistance + projectileArc,direction.y * projectileMaxDistance),
             transform.position + new Vector3(direction.x * projectileMaxDistance/2 + projectileArc/2,direction.y * projectileMaxDistance/2),
             transform.position // Return to the initial position below it

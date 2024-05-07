@@ -11,11 +11,12 @@ GameObject:
   - component: {fileID: 3818308153191858454}
   - component: {fileID: 3753224899312541807}
   - component: {fileID: 7343976604053021382}
+  - component: {fileID: 7484828315143750464}
   - component: {fileID: 4650167552755612075}
-  - component: {fileID: -9107687307207701017}
   - component: {fileID: -3011392968227838525}
   - component: {fileID: 2799796304426317086}
-  m_Layer: 0
+  - component: {fileID: 187712783789438033}
+  m_Layer: 7
   m_Name: EnemyRanged
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -29,13 +30,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1800205754805486490}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.2159, y: -0.49086928, z: 0}
   m_LocalScale: {x: 0.2274666, y: 0.2828016, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3753224899312541807
 SpriteRenderer:
@@ -99,6 +100,25 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -115,6 +135,51 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.8918207, y: 3.3720007}
   m_EdgeRadius: 0
+--- !u!61 &7484828315143750464
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800205754805486490}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.044424742, y: -0.058309793}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.2, y: 3.7}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.9111505, y: 3.3531318}
+  m_EdgeRadius: 0
 --- !u!114 &4650167552755612075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,22 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4890f3b5aad1234981845b11e6427f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 578942263459709013, guid: 5ccf80b63ca3c664db5fb055980f3c29, type: 3}
-  attackSpeed: 0.25
-  attackRange: 3
-  isFrozen: 0
---- !u!114 &-9107687307207701017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1800205754805486490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8294324b5168ebd48af24be19c3e2204, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   moveSpeed: 0.3
   baseHealth: 30
   currentHealth: 0
@@ -150,8 +199,14 @@ MonoBehaviour:
   stopDistance: 3
   attackSpeed: 1
   coinPrefab: {fileID: 388471209637791382, guid: 250c8ec9986cd214d914b1638c4ab158, type: 3}
+  obstacleCollider: {fileID: 7484828315143750464}
   damageSound: {fileID: -3011392968227838525}
   deathSound: {fileID: 2799796304426317086}
+  frozenLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  projectilePrefab: {fileID: 578942263459709013, guid: 5ccf80b63ca3c664db5fb055980f3c29, type: 3}
+  attackRange: 3
 --- !u!82 &-3011392968227838525
 AudioSource:
   m_ObjectHideFlags: 0
@@ -344,3 +399,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!50 &187712783789438033
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800205754805486490}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4

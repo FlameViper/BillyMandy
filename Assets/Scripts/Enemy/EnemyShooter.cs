@@ -2,23 +2,20 @@ using System.Collections;
 using UnityEngine;
 
 
-public class EnemyShooter : MonoBehaviour
+public class EnemyShooter : Enemy
 {
     public GameObject projectilePrefab;
-    public float attackSpeed = 1f; // Attacks per second
     public float attackRange = 10f; // Range within which the enemy can shoot
-
-    private Transform player;
     private float lastAttackTime = 0f;
-    public bool isFrozen = false;
 
-    void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+
+    protected override void Start() {
+        base.Start();
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if (isFrozen || player == null) return; // Prevent shooting when frozen or if player is null
 
         // Shooting logic
@@ -43,32 +40,7 @@ public class EnemyShooter : MonoBehaviour
         }
     }
 
-    public void Freeze(bool freezeStatus)
-    {
-        isFrozen = freezeStatus;
-
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = freezeStatus ? Color.blue : Color.white;
-        }
-
-        if (freezeStatus)
-        {
-            StartCoroutine(UnfreezeAfterDuration()); // Adjusted call
-        }
-    }
-
-    IEnumerator UnfreezeAfterDuration()
-    {
-        yield return new WaitForSeconds(SupportProjectile.freezeDuration);
-        Freeze(false); // This automatically unfreezes without needing a duration argument
-    }
-
-    private void OnDestroy() {
-        StopCoroutine(UnfreezeAfterDuration());
-    }
-
+  
 
 
 }

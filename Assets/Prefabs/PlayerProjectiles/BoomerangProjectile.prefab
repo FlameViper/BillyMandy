@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6851634344883823223}
   - component: {fileID: 8009942831636014574}
   - component: {fileID: 7785898763397928994}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BoomerangProjectile
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2808532370032370335}
   - component: {fileID: 3289122021631878906}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ProjectileVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

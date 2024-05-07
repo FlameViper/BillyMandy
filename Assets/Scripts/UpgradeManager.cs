@@ -15,6 +15,10 @@ public class UpgradeManager : MonoBehaviour
     public int boomerangCost = 50;
     public int boomerangDamage = 50;
 
+    //Support Settings
+    public int freezBurstCost = 30;
+   
+
     // CoinSucker upgrade settings
     public int coinSuckerUpgradeCost = 30; // Initial cost of the CoinSucker upgrade
     public float coinSuckerPowerIncrease = 2f; // Suck power increase per CoinSucker upgrade
@@ -65,8 +69,10 @@ public class UpgradeManager : MonoBehaviour
     public Text gotchiMaxUpgradeCostText;        // UI Text for Gotchi max count upgrade
     public Text gotchiHealthUpgradeCostText;     // UI Text for Gotchi health upgrade
     public Text gotchiDamageUpgradeCostText;     // UI Text for Gotchi damage upgrade
-    public TMP_Text fireballWeaponCostText;     // UI Text for Gotchi damage upgrade
-    public TMP_Text boomerangWeaponCostText;     // UI Text for Gotchi damage upgrade
+    public TMP_Text fireballWeaponCostText;    
+    public TMP_Text boomerangWeaponCostText;     
+    public TMP_Text burstFreezCostText;    
+   
 
 
     private CoinSucker coinSucker; // Reference to the CoinSucker
@@ -82,8 +88,8 @@ public class UpgradeManager : MonoBehaviour
         resourceManager = FindObjectOfType<ResourceManager>();
         player = FindObjectOfType<Player>(); // Find the Player script in the scene
         coinSucker = FindObjectOfType<CoinSucker>(true);
+        InitialUpdateText();
         UpdateCostTexts();
-
         if (resourceManager == null)
         {
             Debug.LogError("ResourceManager not found in the scene.");
@@ -92,6 +98,10 @@ public class UpgradeManager : MonoBehaviour
         {
             Debug.LogError("Player script not found in the scene.");
         }
+    }
+
+    private void InitialUpdateText() {
+        burstFreezCostText.text = "BurstFreez:" + freezBurstCost + "Coins";
     }
 
     void UpdateCostTexts()
@@ -105,7 +115,7 @@ public class UpgradeManager : MonoBehaviour
         enemySpawnUpgradeCostText.text = "+2 Enemy Spawn: " + enemySpawnUpgradeCost + " Coins";
         fireballWeaponCostText.text = "Fireball:"+ fireballCost + " Coins";
         boomerangWeaponCostText.text = "Boomerang:" + boomerangCost + " Coins";
-
+       
         // New Warrior Gotchi Upgrades
         gotchiSpawnRateUpgradeCostText.text = "Warrior Spawn rate -1s: " + gotchiSpawnRateUpgradeCost + " Coins";
         gotchiMaxUpgradeCostText.text = "+1 Maximum Warrior: " + gotchiMaxIncreaseUpgradeCost + " Coins";
@@ -231,6 +241,18 @@ public class UpgradeManager : MonoBehaviour
             freezeDurationUpgradeCost += freezeDurationUpgradeCostIncrease; // Increase the cost for the next upgrade
             AfterPurchase();
             Debug.Log("Freeze duration upgrade purchased. New duration: " + SupportProjectile.freezeDuration);
+        }
+    }  
+    public void PurchaseBurstFreezeUpgrade()
+    {
+        if (CanPurchaseUpgrade(freezBurstCost))
+        {
+            player.supportThrower.supportProjectileIndex = 1;
+            resourceManager.SubtractCoins(freezBurstCost);
+            freezBurstCost = 0; // Increase the cost for the next upgrade
+                                // AfterPurchase();
+            burstFreezCostText.text = "Max";
+            Debug.Log("Purchased burst freeze upgrade: ");
         }
     }
 

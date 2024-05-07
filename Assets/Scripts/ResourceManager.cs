@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class ResourceManager : MonoBehaviour
 {
+    [SerializeField] int initialCoinAmount = 10;
     public int Coins { get; private set; }
     public int EnemyCoins { get; private set; } // Coins collected by the enemy
     public int Score { get; private set; } // Manage the score
@@ -16,7 +17,7 @@ public class ResourceManager : MonoBehaviour
 
     void Start()
     {
-        Coins = 10; // Initialize coins to 0
+        Coins = initialCoinAmount; // Initialize coins to 0
         EnemyCoins = 0;
         Score = 0;  // Initialize score to 0
         UpdateUI(); // Update the UI with the starting data
