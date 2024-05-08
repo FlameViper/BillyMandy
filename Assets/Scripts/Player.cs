@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance;
+
     public int maxHealth = 100; // Maximum health of the player
     public int currentHealth; // Current health of the player
     public GameObject gameOverScreen; // Drag your Game Over UI GameObject here in the inspector
@@ -15,6 +17,13 @@ public class Player : MonoBehaviour
     public ProjectileThrower projectileThrower;
     public SupportThrower supportThrower;
 
+    private void Awake() {
+
+        if (Instance == null) {
+
+            Instance = this;
+        }
+    }
     void Start()
     {
         currentHealth = maxHealth;

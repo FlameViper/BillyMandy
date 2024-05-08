@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 37e920711689bb84e9bd0a91287e62e2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.5
-  baseHealth: 30
+  baseHealth: 20
   currentHealth: 0
   damageToPlayer: 10
   stopDistance: 0.5
@@ -112,6 +112,8 @@ MonoBehaviour:
   obstacleCollider: {fileID: 6088040244100252393}
   damageSound: {fileID: 112843118788035741}
   deathSound: {fileID: 8829242649662499052}
+  damageTextPrefab: {fileID: 4908666859188776841, guid: 3d2ae03f4303db3439eb36ec3754fff3, type: 3}
+  canvasTransform: {fileID: 0}
   frozenLayer:
     serializedVersion: 2
     m_Bits: 512

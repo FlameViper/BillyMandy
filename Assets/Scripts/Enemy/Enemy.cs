@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public int baseHealth = 30;
+    [SerializeField] private int baseHealth = 50;
     public int currentHealth;
     public int damageToPlayer = 10;
     public float stopDistance = 1f;
@@ -21,15 +22,25 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Color baseColor;
     protected Rigidbody2D rb;
+    public GameObject damageTextPrefab; // Reference to the damage text prefab
+    public Transform canvasTransform; // Reference to the transform of the Canvas object
 
-    private bool isDead = false;
+
+    protected bool isDead = false;
     private bool isTouchingFrozenEnemy = false;
     protected bool isFrozen = false;
     private Coroutine freezeCoroutine;
-    [SerializeField]private LayerMask frozenLayer;
+  
 
-    private List<Transform> potentialTargets = new List<Transform>();
+    protected List<Transform> potentialTargets = new List<Transform>();
 
+    private void Awake() {
+        if (UIManager.Instance.battleCanvasTransform == null) {
+            Debug.LogError("BattleCanvas Transform is not set in the UIManager.");
+            return;
+        }
+        canvasTransform = UIManager.Instance.battleCanvasTransform;
+    }
     protected virtual void Start()
     {
 
@@ -107,10 +118,7 @@ public class Enemy : MonoBehaviour
 
     }
 
-
-
-
-    void UpdateTarget()
+    protected void UpdateTarget()
     {
         if (potentialTargets.Count == 0)
         {
@@ -122,11 +130,13 @@ public class Enemy : MonoBehaviour
         float minDistance = float.MaxValue;
         foreach (Transform t in potentialTargets)
         {
-            float dist = Vector2.Distance(transform.position, t.position);
-            if (dist < minDistance)
-            {
-                closest = t;
-                minDistance = dist;
+            if(t !=null) {
+                float dist = Vector2.Distance(transform.position, t.position);
+                if (dist < minDistance)
+                {
+                    closest = t;
+                    minDistance = dist;
+                }           
             }
         }
 
@@ -154,13 +164,13 @@ public class Enemy : MonoBehaviour
 
 
 
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage, bool isExplosionDmg)
     {
         // Ignore damage if already dead
         if (isDead) return;
 
         currentHealth -= damage;
-
+        DisplayDamage(damage, transform.position);
         // Play damage sound effect
         if (damageSound != null)
         {
@@ -174,7 +184,7 @@ public class Enemy : MonoBehaviour
     }
 
 
-    void Die()
+    protected virtual void Die()
     {
         if (isDead) return; // Prevent multiple deaths
         isDead = true; // Mark as dead
@@ -204,7 +214,7 @@ public class Enemy : MonoBehaviour
     }
 
 
-    IEnumerator FadeOut(float duration)
+    protected IEnumerator FadeOut(float duration)
     {
         float counter = 0;
         while (counter < duration)
@@ -231,7 +241,7 @@ public class Enemy : MonoBehaviour
                 break;
         }
 
-        baseHealth = 30 + (level - 1) * healthIncrease;
+        baseHealth += 30 + (level - 1) * healthIncrease;
         currentHealth = baseHealth;
     }
 
@@ -269,5 +279,13 @@ public class Enemy : MonoBehaviour
     private void ToggleObstacleCollider(bool value) {
        
         obstacleCollider.name = value ? "Frozen" : "Normal";
+    }
+
+    protected void DisplayDamage(int damage, Vector3 position) {
+        GameObject damageTextObject = Instantiate(damageTextPrefab, position, Quaternion.identity, canvasTransform);
+        Text textComponent = damageTextObject.GetComponent<Text>();
+        textComponent.text = damage.ToString("F0");
+        // Ensure the text is visible above everything else
+        damageTextObject.transform.localPosition = new Vector3(damageTextObject.transform.localPosition.x, damageTextObject.transform.localPosition.y, 0);
     }
 }

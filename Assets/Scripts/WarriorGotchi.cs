@@ -101,7 +101,7 @@ public class WarriorGotchi : MonoBehaviour
         if (Time.time - lastAttackTime >= attackInterval)
         {
             lastAttackTime = Time.time;
-            targetEnemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            targetEnemy.GetComponent<Enemy>().TakeDamage(attackDamage,false);
         }
     }
 
