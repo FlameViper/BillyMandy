@@ -152,7 +152,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    IEnumerator DealDamageRepeatedly(Collider2D targetCollider)
+    protected virtual IEnumerator DealDamageRepeatedly(Collider2D targetCollider)
     {
         while (!isFrozen && !isDead && targetCollider != null)
         {

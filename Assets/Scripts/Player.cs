@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private bool isDead = false; // Flag to prevent multiple death sequences
     //projectile ref
     public ProjectileThrower projectileThrower;
+    public CoinSucker coinSucker;
     public SupportThrower supportThrower;
 
     private void Awake() {
@@ -62,5 +63,8 @@ public class Player : MonoBehaviour
         gameOverScreen.SetActive(true); // Show the Game Over screen
         yield return new WaitForSeconds(5); // Wait for 5 seconds
         Time.timeScale = 0; // Reload the scene
+    }
+    public bool GetSuckerStatus() {
+        return coinSucker.isSuckerActive;
     }
 }

@@ -13,7 +13,9 @@ public class UpgradeManager : MonoBehaviour
     public int fireballCost = 0;
     public int fireballDamage = 20;
     public int boomerangCost = 50;
-    public int boomerangDamage = 50;
+    public int boomerangDamage = 50; 
+    public int balisticCost = 30;
+    public int balisticDamage = 30;
 
     //Support Settings
     public int freezBurstCost = 30;
@@ -71,6 +73,7 @@ public class UpgradeManager : MonoBehaviour
     public Text gotchiDamageUpgradeCostText;     // UI Text for Gotchi damage upgrade
     public TMP_Text fireballWeaponCostText;    
     public TMP_Text boomerangWeaponCostText;     
+    public TMP_Text balisticWeaponCostText;     
     public TMP_Text burstFreezCostText;    
    
 
@@ -115,6 +118,7 @@ public class UpgradeManager : MonoBehaviour
         enemySpawnUpgradeCostText.text = "+2 Enemy Spawn: " + enemySpawnUpgradeCost + " Coins";
         fireballWeaponCostText.text = "Fireball:"+ fireballCost + " Coins";
         boomerangWeaponCostText.text = "Boomerang:" + boomerangCost + " Coins";
+        balisticWeaponCostText.text = "Balistic:" + balisticCost + " Coins";
        
         // New Warrior Gotchi Upgrades
         gotchiSpawnRateUpgradeCostText.text = "Warrior Spawn rate -1s: " + gotchiSpawnRateUpgradeCost + " Coins";
@@ -340,7 +344,9 @@ public class UpgradeManager : MonoBehaviour
                 return 0;
             case ProjectileType.Boomerang:
                 return boomerangCost;
-            
+            case ProjectileType.Balistic:
+                return balisticCost;
+
             default: return 0;
         }
     }
@@ -350,6 +356,8 @@ public class UpgradeManager : MonoBehaviour
                 return fireballDamage;
             case ProjectileType.Boomerang:
                 return boomerangDamage;
+            case ProjectileType.Balistic:
+                return balisticDamage;
             default: return 0;
         }
     }
@@ -361,6 +369,9 @@ public class UpgradeManager : MonoBehaviour
                 break;
             case ProjectileType.Boomerang:
                 boomerangCost = 0;
+                break;
+            case ProjectileType.Balistic:
+                balisticCost = 0;
                 break;
             default:
                 break;

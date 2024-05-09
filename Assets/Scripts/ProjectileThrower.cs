@@ -49,7 +49,13 @@ public class ProjectileThrower : MonoBehaviour
             // If the projectile has a Projectile component, set its direction
             if (projectileInstance != null)
             {
-                projectileInstance.SetDirection(direction);
+                if (projectileType != ProjectileType.Balistic) {
+                    projectileInstance.SetDirection(direction);
+                }
+                else {
+                    projectileInstance.SetDirection(mousePosition);
+                }
+               
             }
             else
             {
@@ -76,6 +82,9 @@ public class ProjectileThrower : MonoBehaviour
             case ProjectileType.Boomerang:
                 hasOneInstance = true;
                 return Instantiate(projectilePrefabs[1], transform.position, Quaternion.identity);
+            case ProjectileType.Balistic:
+                hasOneInstance = false;
+                return Instantiate(projectilePrefabs[2], transform.position, Quaternion.identity);
             default:
                 // Handle unknown projectile types or return null
                 Debug.Log("Projectile is not assigned");
@@ -87,4 +96,5 @@ public class ProjectileThrower : MonoBehaviour
 public enum ProjectileType {
     Fireball,
     Boomerang,
+    Balistic
 }

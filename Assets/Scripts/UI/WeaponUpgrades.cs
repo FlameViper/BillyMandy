@@ -7,6 +7,7 @@ public class WeaponUpgrades : MonoBehaviour
 {
     [SerializeField] private Button fireballProjectile;
     [SerializeField] private Button boomerangProjectile;
+    [SerializeField] private Button balisticProjectile;
     [SerializeField] private UpgradeManager upgradeManager;
 
 
@@ -14,6 +15,7 @@ public class WeaponUpgrades : MonoBehaviour
         // Add listeners to the button click events
         fireballProjectile.onClick.AddListener(() => upgradeManager.PurchaseWeaponUpgrade(ProjectileType.Fireball));
         boomerangProjectile.onClick.AddListener(() => upgradeManager.PurchaseWeaponUpgrade(ProjectileType.Boomerang));
+        balisticProjectile.onClick.AddListener(() => upgradeManager.PurchaseWeaponUpgrade(ProjectileType.Balistic));
       
 
     }

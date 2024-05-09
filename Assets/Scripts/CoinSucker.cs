@@ -2,9 +2,15 @@ using UnityEngine;
 
 public class CoinSucker : MonoBehaviour
 {
+    public static CoinSucker Instance; 
     public bool isSuckerActive = false;
     public float SuckPower = 5f;
+    private void Awake() {
+        if (Instance == null) {
 
+            Instance = this;
+        }
+    }
     void Update()
     {
         // Constantly check if the sucker should be active and manage coin attraction accordingly
@@ -63,4 +69,7 @@ public class CoinSucker : MonoBehaviour
             RemoveAsAttractor();  // Stop attracting coins when deactivated
         }
     }
+
+
+   
 }

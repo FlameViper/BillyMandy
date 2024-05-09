@@ -12,6 +12,7 @@ TagManager:
   - BattleCanvas
   - WarriorGotchi
   - Border
+  - Limit
   layers:
   - Default
   - TransparentFX
