@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class EnemySwarm : Enemy
 {
-    private float destructionTimer; // Time in seconds before destruction
+    public float destructionTimer; // Time in seconds before destruction
+    public float modifiedDestructionTimer; // Time in seconds before destruction
     private bool beeingSuckedIn;
     [SerializeField]private float destructionTimerMax = 3f; 
+    [SerializeField]private float nightTimeModifier = 0.5f;
+    [SerializeField]private float perLvlModifier = 0.1f;
+    [SerializeField]private float dificultyModifierEasy = 0.3f;
+    [SerializeField]private float dificultyModifierMedium = 0.4f;
+    [SerializeField]private float dificultyModifierHard = 0.5f;
+    [SerializeField] private bool isNightTime; //for testing until i code the nightTime feature
     protected override void Start() {
         base.Start();
-        destructionTimer = destructionTimerMax;
+       
+        destructionTimer = GetDestructionTimer();
+        modifiedDestructionTimer = GetDestructionTimer();
     }
 
     protected override void Update() {
@@ -30,7 +39,7 @@ public class EnemySwarm : Enemy
         else {
             beeingSuckedIn = false;
             // Reset the destruction timer if the condition is not met
-            destructionTimer = destructionTimerMax; // Reset to original value
+            destructionTimer = modifiedDestructionTimer; // Reset to original value
         }
     }
 
@@ -50,4 +59,35 @@ public class EnemySwarm : Enemy
             yield return new WaitForSeconds(attackSpeed);
         }
     }
+
+    private float GetDestructionTimer() {
+        float modifiedTimer = destructionTimerMax;
+
+        switch (GameSettings.Instance.currentDifficulty) {
+            case GameSettings.Difficulty.Easy:
+                modifiedTimer += perLvlModifier * BattleManager.Instance.level;
+                modifiedTimer += isNightTime ? nightTimeModifier : 0f;
+                modifiedTimer += dificultyModifierEasy;
+                break;
+
+            case GameSettings.Difficulty.Medium:
+                modifiedTimer += perLvlModifier * BattleManager.Instance.level;
+                modifiedTimer += isNightTime ? nightTimeModifier : 0f;
+                modifiedTimer += dificultyModifierMedium;
+                break;
+
+            case GameSettings.Difficulty.Hard:
+                modifiedTimer += perLvlModifier * BattleManager.Instance.level;
+                modifiedTimer += isNightTime ? nightTimeModifier : 0f;
+                modifiedTimer += dificultyModifierHard;
+                break;
+
+            default:
+                Debug.LogWarning("Unknown difficulty setting!");
+                break;
+        }
+        
+        return modifiedTimer;
+    }
+
 }

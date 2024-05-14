@@ -114,7 +114,15 @@ MonoBehaviour:
   deathSound: {fileID: 8829242649662499052}
   damageTextPrefab: {fileID: 4908666859188776841, guid: 3d2ae03f4303db3439eb36ec3754fff3, type: 3}
   canvasTransform: {fileID: 0}
+  destructionTimer: 0
+  modifiedDestructionTimer: 0
   destructionTimerMax: 3
+  nightTimeModifier: 0.5
+  perLvlModifier: 0.1
+  dificultyModifierEasy: 0.3
+  dificultyModifierMedium: 0.4
+  dificultyModifierHard: 0.5
+  isNightTime: 1
 --- !u!61 &5910776325432827222
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -67,4 +67,5 @@ public class Player : MonoBehaviour
     public bool GetSuckerStatus() {
         return coinSucker.isSuckerActive;
     }
+
 }
