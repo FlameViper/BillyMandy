@@ -33,9 +33,11 @@ public class EnemySwarmSpawner : Enemy
     public override void TakeDamage(int damage, bool isExplosionDmg) {
         // Ignore damage if already dead
         if (isDead) return;
+        
+            enemyHitsTaken--;
+            DisplayDamage(1, transform.position);
 
-        enemyHitsTaken --;
-        DisplayDamage(1, transform.position);
+        
         // Play damage sound effect
         if (damageSound != null) {
             damageSound.Play();
@@ -75,4 +77,10 @@ public class EnemySwarmSpawner : Enemy
 
         StartCoroutine(FadeOut(1f)); // Fade out over 1 second
     }
+
+    public override void Freeze(bool solidFreeze) {
+
+        return;
+    }
+
 }

@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class SupportThrower : MonoBehaviour
 {
+    public static SupportThrower Instance;
     [SerializeField] private float delayBetweenAttacks = 4f;
     public List<GameObject> supportProjectilePrefabs; // Prefab of the support projectile to be thrown
     public float supportAttackSpeed = 1f; // Attack speed, measured in attacks per second
     public bool isSupportActive = true; // Flag to enable or disable support throwing
+    public bool canDamageFrozenEnemies = false; // Flag to enable or disable support throwing
 
     private float lastSupportAttackTime = 0f; // When the last support attack happened
     public int supportProjectileIndex=0;
+
+    private void Awake() {
+        if (Instance == null) {
+
+            Instance = this;
+        }
+    }
     void Update()
     {
         if (isSupportActive && Input.GetMouseButtonDown(0) && Time.time - lastSupportAttackTime >= delayBetweenAttacks / supportAttackSpeed)

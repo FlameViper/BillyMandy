@@ -38,8 +38,11 @@ public class EnemyBomb : Enemy
         // Ignore damage if already dead
         if (isDead) return;
 
-        currentHealth -= damage;
-        DisplayDamage(damage, transform.position);
+        if (!isFrozen || SupportThrower.Instance.canDamageFrozenEnemies) {
+            currentHealth -= damage;
+            DisplayDamage(damage, transform.position);
+
+        }
         // Play damage sound effect
         if (damageSound != null) {
             damageSound.Play();

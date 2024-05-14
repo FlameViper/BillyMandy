@@ -18,7 +18,8 @@ public class UpgradeManager : MonoBehaviour
     public int balisticDamage = 30;
 
     //Support Settings
-    public int freezBurstCost = 30;
+    public int burstFreezCost = 30;
+    public int vulnerableFreezCost = 30;
    
 
     // CoinSucker upgrade settings
@@ -75,6 +76,7 @@ public class UpgradeManager : MonoBehaviour
     public TMP_Text boomerangWeaponCostText;     
     public TMP_Text balisticWeaponCostText;     
     public TMP_Text burstFreezCostText;    
+    public TMP_Text vulnerableFreezCostText;    
    
 
 
@@ -104,7 +106,8 @@ public class UpgradeManager : MonoBehaviour
     }
 
     private void InitialUpdateText() {
-        burstFreezCostText.text = "BurstFreez:" + freezBurstCost + "Coins";
+        burstFreezCostText.text = "Burst Freez:" + burstFreezCost + "Coins";
+        vulnerableFreezCostText.text = "Vulnerable Freez:" + vulnerableFreezCost + "Coins";
     }
 
     void UpdateCostTexts()
@@ -249,17 +252,27 @@ public class UpgradeManager : MonoBehaviour
     }  
     public void PurchaseBurstFreezeUpgrade()
     {
-        if (CanPurchaseUpgrade(freezBurstCost))
+        if (CanPurchaseUpgrade(burstFreezCost))
         {
-            player.supportThrower.supportProjectileIndex = 1;
-            resourceManager.SubtractCoins(freezBurstCost);
-            freezBurstCost = 0; // Increase the cost for the next upgrade
+            SupportThrower.Instance.supportProjectileIndex = 1;
+            resourceManager.SubtractCoins(burstFreezCost);
+            burstFreezCost = 0; // Increase the cost for the next upgrade
                                 // AfterPurchase();
             burstFreezCostText.text = "Max";
             Debug.Log("Purchased burst freeze upgrade: ");
         }
     }
-
+    public void PurchaseVulnerableFreezeUpgrade() {
+        if (CanPurchaseUpgrade(vulnerableFreezCost)) {
+            
+            SupportThrower.Instance.canDamageFrozenEnemies = true;
+            resourceManager.SubtractCoins(vulnerableFreezCost);
+            vulnerableFreezCost = 0; // Increase the cost for the next upgrade
+                                     // AfterPurchase();
+            vulnerableFreezCostText.text = "Max";
+            Debug.Log("Purchased vulnerable freez upgrade: ");
+        }
+    }
 
     public void PurchaseProjectileUpgrade()
     {

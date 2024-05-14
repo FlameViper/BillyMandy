@@ -89,5 +89,9 @@ public class EnemySwarm : Enemy
         
         return modifiedTimer;
     }
+    public override void Freeze(bool solidFreeze) {
+
+        return;
+    }
 
 }

@@ -168,9 +168,11 @@ public class Enemy : MonoBehaviour
     {
         // Ignore damage if already dead
         if (isDead) return;
+        if(!isFrozen || SupportThrower.Instance.canDamageFrozenEnemies) {
+            currentHealth -= damage;
+            DisplayDamage(damage, transform.position);
 
-        currentHealth -= damage;
-        DisplayDamage(damage, transform.position);
+        }
         // Play damage sound effect
         if (damageSound != null)
         {
@@ -245,7 +247,7 @@ public class Enemy : MonoBehaviour
         currentHealth = baseHealth;
     }
 
-    public void Freeze(bool solidFreeze) {
+    public virtual void Freeze(bool solidFreeze) {
 
         if(freezeCoroutine != null) {
             StopCoroutine(freezeCoroutine);
