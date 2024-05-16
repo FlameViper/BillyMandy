@@ -1197,11 +1197,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefabs:
-  - {fileID: 3393424486779976714, guid: b1bf0fc9475ac4d4a98aa70f2c1c31bb, type: 3}
-  - {fileID: 3393424486779976714, guid: 41bf983b32831ad4eb6fbe3d2f707bee, type: 3}
-  - {fileID: 1800205754805486490, guid: f6a35945b022d6246bb8b2be1ecf104e, type: 3}
-  - {fileID: 1800205754805486490, guid: e9ea3930e04f5aa49ab5d489c7ab2b5c, type: 3}
-  maxEnemies: 50
+  - {fileID: 1800205754805486490, guid: a85d8f7925b89664098e71157b8873c1, type: 3}
+  maxEnemies: 20
   specialEnemyPrefab: {fileID: 6432242035614911728, guid: f181b4c51ed9e8a43afac243e99b861c, type: 3}
   specialEnemyStartLevel: 1
   specialEnemyInterval: 1
@@ -8020,7 +8017,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -20
   m_Sprite: {fileID: 21300000, guid: ba11507c6b4c6fe41bb560164ea9ce52, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

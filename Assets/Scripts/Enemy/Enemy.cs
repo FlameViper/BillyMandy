@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Enemy : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    [SerializeField] private int baseHealth = 50;
+    [SerializeField] protected int baseHealth = 50;
     public int currentHealth;
     public int damageToPlayer = 10;
     public float stopDistance = 1f;
@@ -18,9 +18,9 @@ public class Enemy : MonoBehaviour
 
     protected Transform target;
     protected Transform player;
-    private Coroutine attackRoutine = null;
-    private SpriteRenderer spriteRenderer;
-    private Color baseColor;
+    protected Coroutine attackRoutine = null;
+    protected SpriteRenderer spriteRenderer;
+    protected Color baseColor;
     protected Rigidbody2D rb;
     public GameObject damageTextPrefab; // Reference to the damage text prefab
     public Transform canvasTransform; // Reference to the transform of the Canvas object
