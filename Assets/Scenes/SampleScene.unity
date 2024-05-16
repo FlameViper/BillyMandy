@@ -1197,11 +1197,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefabs:
-  - {fileID: 3393424486779976714, guid: fb18a140d9da3ba4c8911027bd54684f, type: 3}
-  - {fileID: 3393424486779976714, guid: d69416cd4cf432a44b25d37b8f29442b, type: 3}
-  - {fileID: 3393424486779976714, guid: dd2a87be7f85fd94aa59640cdf7a1984, type: 3}
-  - {fileID: 3393424486779976714, guid: 44a8ac24240b91d44a3e74bf01789f59, type: 3}
-  - {fileID: 3393424486779976714, guid: 8fe7c9fde3b889a4289965f1b459aaac, type: 3}
+  - {fileID: 3393424486779976714, guid: b1bf0fc9475ac4d4a98aa70f2c1c31bb, type: 3}
+  - {fileID: 3393424486779976714, guid: 41bf983b32831ad4eb6fbe3d2f707bee, type: 3}
+  - {fileID: 1800205754805486490, guid: f6a35945b022d6246bb8b2be1ecf104e, type: 3}
+  - {fileID: 1800205754805486490, guid: e9ea3930e04f5aa49ab5d489c7ab2b5c, type: 3}
   maxEnemies: 50
   specialEnemyPrefab: {fileID: 6432242035614911728, guid: f181b4c51ed9e8a43afac243e99b861c, type: 3}
   specialEnemyStartLevel: 1
