@@ -16,6 +16,15 @@ public class UpgradeManager : MonoBehaviour
     public int boomerangDamage = 50; 
     public int balisticCost = 30;
     public int balisticDamage = 30;
+    public int blueFireCost = 30;
+    public int blueFireDamage = 30;
+    public int blueFireTargetsPierced = 3;
+    public int minigunCost = 30;
+    public int minigunAttackSpeed = 20;
+    public int minigunDamage = 5;
+    public int lazerCost = 30;
+    public int lazerAttackSpeed = 1;
+    public int lazerDamage = 100;
 
     //Support Settings
     public int burstFreezCost = 30;
@@ -75,6 +84,9 @@ public class UpgradeManager : MonoBehaviour
     public TMP_Text fireballWeaponCostText;    
     public TMP_Text boomerangWeaponCostText;     
     public TMP_Text balisticWeaponCostText;     
+    public TMP_Text blueFireWeaponCostText;     
+    public TMP_Text minigunWeaponCostText;     
+    public TMP_Text lazerFireWeaponCostText;     
     public TMP_Text burstFreezCostText;    
     public TMP_Text vulnerableFreezCostText;    
    
@@ -122,6 +134,9 @@ public class UpgradeManager : MonoBehaviour
         fireballWeaponCostText.text = "Fireball:"+ fireballCost + " Coins";
         boomerangWeaponCostText.text = "Boomerang:" + boomerangCost + " Coins";
         balisticWeaponCostText.text = "Balistic:" + balisticCost + " Coins";
+        blueFireWeaponCostText.text = "BlueFire:" + blueFireCost + " Coins";
+        minigunWeaponCostText.text = "Minigun:" + minigunCost + " Coins";
+        lazerFireWeaponCostText.text = "Lazer:" + lazerCost + " Coins";
        
         // New Warrior Gotchi Upgrades
         gotchiSpawnRateUpgradeCostText.text = "Warrior Spawn rate -1s: " + gotchiSpawnRateUpgradeCost + " Coins";
@@ -293,7 +308,17 @@ public class UpgradeManager : MonoBehaviour
             Projectile.UpdateDamageAmount();
             resourceManager.SubtractCoins(GetWeaponUpgradeCost(projectileType));
             player.projectileThrower.projectileType = projectileType;
-            UpdateWeaponUpgradeCost(projectileType);
+            UpdateWeaponUpgrade(projectileType);
+            if(projectileType == ProjectileType.BlueFire) {
+                if (blueFireTargetsPierced < 7) {
+                    blueFireTargetsPierced++;
+                }
+                BlueFireballPorjectile.maxNumberOfPassedEnemies = blueFireTargetsPierced;
+                if (blueFireTargetsPierced == 7) {
+                    blueFireWeaponCostText.text = "Max";
+                }
+                return;
+            }
             AfterPurchase();
             Debug.Log("Weapon purchased: " + projectileType);
         }
@@ -359,6 +384,12 @@ public class UpgradeManager : MonoBehaviour
                 return boomerangCost;
             case ProjectileType.Balistic:
                 return balisticCost;
+            case ProjectileType.BlueFire:
+                return blueFireCost;
+            case ProjectileType.Minigun:
+                return minigunCost;
+            case ProjectileType.Lazer:
+                return lazerCost;
 
             default: return 0;
         }
@@ -371,20 +402,43 @@ public class UpgradeManager : MonoBehaviour
                 return boomerangDamage;
             case ProjectileType.Balistic:
                 return balisticDamage;
+            case ProjectileType.BlueFire:
+                return blueFireDamage;
+            case ProjectileType.Minigun:
+                return minigunDamage;
+            case ProjectileType.Lazer:
+                return lazerDamage;
             default: return 0;
         }
     }
 
-    private void UpdateWeaponUpgradeCost(ProjectileType projectileType) {
+    private void UpdateWeaponUpgrade(ProjectileType projectileType) {
         switch (projectileType) {
             case ProjectileType.Fireball:
                 fireballCost = 0;
+                ProjectileThrower.Instance.deafaultAttackSpeed = 5;
                 break;
             case ProjectileType.Boomerang:
                 boomerangCost = 0;
+                ProjectileThrower.Instance.deafaultAttackSpeed = 5;
                 break;
             case ProjectileType.Balistic:
                 balisticCost = 0;
+                ProjectileThrower.Instance.deafaultAttackSpeed = 5;
+                break;
+            case ProjectileType.BlueFire:
+                if (blueFireTargetsPierced == 7) {
+                    blueFireCost = 0;
+                }
+                ProjectileThrower.Instance.deafaultAttackSpeed = 5;
+                break;
+            case ProjectileType.Minigun:
+                minigunCost = 0;
+                ProjectileThrower.Instance.deafaultAttackSpeed = minigunAttackSpeed;
+                break;
+            case ProjectileType.Lazer:
+                lazerCost = 0;
+                ProjectileThrower.Instance.deafaultAttackSpeed = lazerAttackSpeed;
                 break;
             default:
                 break;

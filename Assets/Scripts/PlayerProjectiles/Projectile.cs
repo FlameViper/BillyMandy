@@ -10,8 +10,8 @@ public class Projectile : MonoBehaviour {
     public static int projectileBonusDamage = 0;
     public static int weaponBonusDamage = 20; // Amount of damage dealt to enemies
     public float destroyDelay = 10f; // Delay before destroying the projectile
-    [SerializeField] private bool destoryedOnBorderInpact;
-    [SerializeField] private bool destoryedOnEnemyInpact;
+    [SerializeField] protected bool destoryedOnBorderInpact;
+    [SerializeField] protected bool destoryedOnEnemyInpact;
 
     public GameObject damageTextPrefab; // Reference to the damage text prefab
     public Transform canvasTransform; // Reference to the transform of the Canvas object

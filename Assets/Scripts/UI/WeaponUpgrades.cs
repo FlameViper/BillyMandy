@@ -8,6 +8,9 @@ public class WeaponUpgrades : MonoBehaviour
     [SerializeField] private Button fireballProjectile;
     [SerializeField] private Button boomerangProjectile;
     [SerializeField] private Button balisticProjectile;
+    [SerializeField] private Button blueFireProjectile;
+    [SerializeField] private Button minigunProjectile;
+    [SerializeField] private Button lazerProjectile;
     [SerializeField] private UpgradeManager upgradeManager;
 
 
@@ -16,6 +19,9 @@ public class WeaponUpgrades : MonoBehaviour
         fireballProjectile.onClick.AddListener(() => upgradeManager.PurchaseWeaponUpgrade(ProjectileType.Fireball));
         boomerangProjectile.onClick.AddListener(() => upgradeManager.PurchaseWeaponUpgrade(ProjectileType.Boomerang));
         balisticProjectile.onClick.AddListener(() => upgradeManager.PurchaseWeaponUpgrade(ProjectileType.Balistic));
+        blueFireProjectile.onClick.AddListener(() => upgradeManager.PurchaseWeaponUpgrade(ProjectileType.BlueFire));
+        minigunProjectile.onClick.AddListener(() => upgradeManager.PurchaseWeaponUpgrade(ProjectileType.Minigun));
+        lazerProjectile.onClick.AddListener(() => upgradeManager.PurchaseWeaponUpgrade(ProjectileType.Lazer));
       
 
     }

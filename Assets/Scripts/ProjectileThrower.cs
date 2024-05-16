@@ -5,9 +5,11 @@ using UnityEngine;
 public class ProjectileThrower : MonoBehaviour
 {
 
+    public static ProjectileThrower Instance;
     public ProjectileType projectileType = ProjectileType.Fireball;
     public List<GameObject> projectilePrefabs; // Prefab of the projectile to be thrown
-    public float attackSpeed = 1f; // Attack speed, measured in attacks per second
+    public float deafaultAttackSpeed = 5f; // Attack speed, measured in attacks per second
+   
     public bool isThrowerActive = true; // Flag to enable or disable throwing
     public AudioSource attackSound; // AudioSource component for playing attack sounds
 
@@ -17,11 +19,22 @@ public class ProjectileThrower : MonoBehaviour
     //one instance projectiles
     private Projectile projectileInstance;
     private bool hasOneInstance;
+   
+
+    private void Awake() {
+        if (Instance == null) {
+
+            Instance = this;
+        }
+    }
+    private void Start() {
+       
+    }
 
     void Update()
     {
         // Check if the thrower is active, for left mouse button click, and if enough time has passed since the last attack
-        if (isThrowerActive && Input.GetMouseButtonDown(0) && Time.time - lastAttackTime >= 1f / attackSpeed)
+        if (isThrowerActive && ( Input.GetMouseButtonDown(0) || Input.GetMouseButton(0) && projectileType == ProjectileType.Minigun ) && Time.time - lastAttackTime >= 1f / deafaultAttackSpeed)
         {
             // Record the time of this attack
             lastAttackTime = Time.time;
@@ -45,7 +58,7 @@ public class ProjectileThrower : MonoBehaviour
             // Get the Projectile component from the instantiated projectile
             //Projectile projectile = newProjectile.GetComponent<Projectile>();
             projectileInstance = newProjectile.GetComponent<Projectile>();
-
+ 
             // If the projectile has a Projectile component, set its direction
             if (projectileInstance != null)
             {
@@ -85,6 +98,15 @@ public class ProjectileThrower : MonoBehaviour
             case ProjectileType.Balistic:
                 hasOneInstance = false;
                 return Instantiate(projectilePrefabs[2], transform.position, Quaternion.identity);
+            case ProjectileType.BlueFire:
+                hasOneInstance = false;
+                return Instantiate(projectilePrefabs[3], transform.position, Quaternion.identity);
+            case ProjectileType.Minigun:
+                hasOneInstance = false;
+                return Instantiate(projectilePrefabs[4], transform.position, Quaternion.identity);
+            case ProjectileType.Lazer:
+                hasOneInstance = true;
+                return Instantiate(projectilePrefabs[5], transform.position, Quaternion.identity);
             default:
                 // Handle unknown projectile types or return null
                 Debug.Log("Projectile is not assigned");
@@ -96,5 +118,9 @@ public class ProjectileThrower : MonoBehaviour
 public enum ProjectileType {
     Fireball,
     Boomerang,
-    Balistic
+    Balistic,
+    BlueFire,
+    Lazer,
+    Minigun,
+ 
 }
