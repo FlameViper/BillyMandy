@@ -303,65 +303,6 @@ public class GoldenSnitchBoss : Enemy {
         });
     }
 
-    //private IEnumerator MovePointLeftRight() {
-    //    while (moveToEnemyPathCoroutine != null) {
-    //        float elapsedTime = 0f;
-    //        Vector3 startPosition = initialPointPosition;
-    //        Vector3 targetPosition = initialPointPosition + new Vector3(pointMoveRange, 0f, 0f);
-
-    //        // Move the point to the right
-    //        while (elapsedTime < pointMoveSpeed) {
-    //            rotateAroundPoint = Vector3.Lerp(startPosition, targetPosition, elapsedTime / pointMoveSpeed);
-    //            elapsedTime += Time.deltaTime;
-    //            yield return null;
-    //        }
-
-    //        // Ensure the point is exactly at the target position
-    //        rotateAroundPoint = targetPosition;
-
-    //        // Reset elapsedTime for the next movement
-    //        elapsedTime = 0f;
-    //        startPosition = targetPosition;
-    //        targetPosition = initialPointPosition - new Vector3(pointMoveRange, 0f, 0f);
-
-    //        // Move the point to the left
-    //        while (elapsedTime < pointMoveSpeed) {
-    //            rotateAroundPoint = Vector3.Lerp(startPosition, targetPosition, elapsedTime / pointMoveSpeed);
-    //            elapsedTime += Time.deltaTime;
-    //            yield return null;
-    //        }
-
-    //        // Ensure the point is exactly at the initial position
-    //        rotateAroundPoint = initialPointPosition;
-    //    }
-    //}
-
-    //private IEnumerator MoveInCircle(Vector3 point, float speed, float duration, float radius) {
-    //    float elapsedTime = 0f;
-    //    float angle = 0f;
-
-    //    while (elapsedTime < duration) {
-    //        // Increment the angle based on rotation speed and elapsed time
-    //        angle += speed * Time.deltaTime;
-
-    //        // Convert angle to radians
-    //        float angleRad = angle * Mathf.Deg2Rad;
-
-    //        // Calculate the new position using the angle and radius
-    //        float x = point.x + radius * Mathf.Cos(angleRad);
-    //        float y = point.y + radius * Mathf.Sin(angleRad);
-
-    //        // Update the enemy's position
-    //        transform.position = new Vector3(x, y, transform.position.z);
-
-    //        elapsedTime += Time.deltaTime;
-    //        yield return null; // Wait until the next frame
-    //    }
-
-    //    // Ensure the rotation stops after the duration
-    //    moveToEnemyPathCoroutine = null;
-    //}
-
 
     private void GetEnemyPath() {
         // Determine the active phase
