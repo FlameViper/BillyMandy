@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7785898763397928994}
   m_Layer: 8
   m_Name: BoomerangProjectile
-  m_TagString: Projectile
+  m_TagString: PlayerProjectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

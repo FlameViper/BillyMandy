@@ -27,9 +27,9 @@ public class Enemy : MonoBehaviour
 
 
     protected bool isDead = false;
-    private bool isTouchingFrozenEnemy = false;
+    protected bool isTouchingFrozenEnemy = false;
     protected bool isFrozen = false;
-    private Coroutine freezeCoroutine;
+    protected Coroutine freezeCoroutine;
   
 
     protected List<Transform> potentialTargets = new List<Transform>();
@@ -229,7 +229,7 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject); // Destroy the object after fading out
     }
 
-    public void SetHealth(int level)
+    public virtual void SetHealth(int level)
     {
         int healthIncrease = 20; // Default for Easy
 
@@ -266,7 +266,7 @@ public class Enemy : MonoBehaviour
        
     }
 
-    private IEnumerator UnfreezeAfterDuration(float duration, bool solidFreeze) {
+    protected IEnumerator UnfreezeAfterDuration(float duration, bool solidFreeze) {
 
         yield return new WaitForSeconds(duration);
         spriteRenderer.color = baseColor;
@@ -278,7 +278,7 @@ public class Enemy : MonoBehaviour
     }
 
 
-    private void ToggleObstacleCollider(bool value) {
+    protected void ToggleObstacleCollider(bool value) {
        
         obstacleCollider.name = value ? "Frozen" : "Normal";
     }

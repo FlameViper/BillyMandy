@@ -12,7 +12,7 @@ public class EnemySpawner : MonoBehaviour
 
     public int specialEnemyStartLevel = 5;
     public int specialEnemyInterval = 1; // Spawns an extra CoinStealer every 5 levels past level 5
-
+    [SerializeField] int bossSpawningLevel = 100;
 
     private float spawnTimer;
     private Vector3 spawnAreaSize;
@@ -28,9 +28,9 @@ public class EnemySpawner : MonoBehaviour
         private set { shouldSpawnBossNextRound = value; }
     }
 
-    public void PrepareBossSpawn()
+    public void PrepareBossSpawn(bool value)
     {
-        ShouldSpawnBossNextRound = true;
+        ShouldSpawnBossNextRound = value;
     }
 
 
@@ -47,7 +47,21 @@ public class EnemySpawner : MonoBehaviour
         // Calculate and adjust spawn interval based on maxEnemies and level duration
         AdjustSpawnInterval();
 
+        CheckForBossSpawn();
         StartCoroutine(SpawnEnemies(level)); // Start coroutine with level parameter
+    }
+
+    private void CheckForBossSpawn() {
+
+        if (BattleManager.Instance.level == bossSpawningLevel) {
+            BattleManager.Instance.isBossLevel = true;
+            PrepareBossSpawn(true);        
+        }
+        else {
+            BattleManager.Instance.isBossLevel = false;
+        }
+
+
     }
 
     private void AdjustSpawnInterval()
@@ -57,6 +71,11 @@ public class EnemySpawner : MonoBehaviour
 
         // Adjust the spawn interval based on the number of enemies and the level duration
         // Ensure we adjust for a very high number of enemies to maintain game balance
+
+        if (BattleManager.Instance.level == bossSpawningLevel) {
+            spawnInterval = 3;
+            return;
+        }
         if (maxEnemies > 0)
         {
             spawnInterval = Mathf.Max(levelDuration / maxEnemies, 0.01f); // Ensures a minimum spawn interval of 0.25 seconds
@@ -82,6 +101,7 @@ public class EnemySpawner : MonoBehaviour
             GameObject boss = Instantiate(bossEnemyPrefab, CalculateSpawnPosition(), Quaternion.identity);
             currentEnemies.Add(boss);  // Add boss to the list of current enemies
             shouldSpawnBossNextRound = false; // Reset the flag after spawning
+            yield break;
         }
 
         int specialEnemyCount = 0;

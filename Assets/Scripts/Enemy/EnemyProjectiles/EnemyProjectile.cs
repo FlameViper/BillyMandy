@@ -1,30 +1,29 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyProjectile : MonoBehaviour
-{
+public class EnemyProjectile : MonoBehaviour {
     public float speed = 10f; // Speed of the projectile
     public int damageAmount = 10; // Amount of damage dealt to the player
     public float destroyDelay = 10f; // Delay before destroying the projectile
 
-    private Vector3 direction; // Direction in which the projectile will move
+    protected Vector3 direction; // Direction in which the projectile will move
 
-    void Start()
+    protected virtual void Start()
     {
         StartCoroutine(DestroyAfterDelay());
     }
 
-    void Update()
+    protected virtual void Update()
     {
         transform.position += direction * speed * Time.deltaTime;
     }
 
-    public void SetDirection(Vector3 dir)
+    public virtual void SetDirection(Vector3 dir)
     {
         direction = dir;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
@@ -37,7 +36,7 @@ public class EnemyProjectile : MonoBehaviour
         }
     }
 
-    IEnumerator DestroyAfterDelay()
+    protected virtual IEnumerator DestroyAfterDelay()
     {
         yield return new WaitForSeconds(destroyDelay);
         Destroy(gameObject);

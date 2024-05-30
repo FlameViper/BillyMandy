@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2799796304426317086}
   - component: {fileID: 187712783789438033}
   m_Layer: 7
-  m_Name: EnemyAssasin
+  m_Name: EnemyAssasinBungee
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,10 +152,10 @@ MonoBehaviour:
   deathSound: {fileID: 2799796304426317086}
   damageTextPrefab: {fileID: 4908666859188776841, guid: 3d2ae03f4303db3439eb36ec3754fff3, type: 3}
   canvasTransform: {fileID: 0}
-  projectilePrefab: {fileID: 578942263459709013, guid: 5ccf80b63ca3c664db5fb055980f3c29, type: 3}
-  attackRange: 3
+  projectilePrefab: {fileID: 578942263459709013, guid: e9edc6f0467271e4eaff29f3e64fe261, type: 3}
+  attackRange: 5
   shotsPerAttack: 2
-  returnInterval: 1
+  returnDelay: 1
 --- !u!82 &-3011392968227838525
 AudioSource:
   m_ObjectHideFlags: 0

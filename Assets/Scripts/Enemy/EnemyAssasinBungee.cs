@@ -3,17 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAssasin : Enemy {
+public class EnemyAssasinBungee : Enemy {
 
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float attackRange = 10f;
     [SerializeField] private int shotsPerAttack = 2; 
-    [SerializeField] private float returnInterval = 1f;
-    [SerializeField] private float returnDelay = 1f; // Adjust the return delay as needed
+    [SerializeField] private float returnDelay = 1f; 
     private Vector3 originalPosition;
     private Coroutine returnToOriginalPositionCorroutine;
     private Vector3 randomPosition;
     private bool isReturning = false;
+ 
     private int shotsFired = 0;
     private float lastAttackTime = 0f;
 
@@ -31,6 +31,7 @@ public class EnemyAssasin : Enemy {
         base.Update();
     
     }
+
     protected override void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("WarriorGotchi")) {
             potentialTargets.Add(collision.transform);
@@ -40,6 +41,9 @@ public class EnemyAssasin : Enemy {
     protected override void Movement() {
         if (!isReturning) {
             MoveToRandomPosition();
+            //if(Vector3.Distance(transform.position, randomPosition) <= 0.5) {
+            //    Attack();
+            //}
             if (Vector3.Distance(transform.position, player.position) <= attackRange) {
                 Attack();
             }
@@ -68,13 +72,21 @@ public class EnemyAssasin : Enemy {
         transform.position = Vector3.MoveTowards(transform.position, randomPosition, moveSpeed * Time.deltaTime);
   
     }
+
     private void PickRandomPosition(Vector3 targetPosition) {
-        float randomRadius = UnityEngine.Random.Range(2, attackRange);
+        float randomRadius = UnityEngine.Random.Range(3, attackRange - 1f);
         Vector2 randomDirection = (UnityEngine.Random.insideUnitCircle).normalized;
         Vector2 randomOffset = randomDirection * randomRadius;
-        randomPosition = targetPosition + new Vector3(randomOffset.x, randomOffset.y, 0f);
 
+        // Ensure the y-coordinate is at least 3 units higher than the target position's y-coordinate
+        float newY = targetPosition.y + 3;
+        if (newY <= targetPosition.y + 3) {
+            newY = targetPosition.y + 3;
+        }
+
+        randomPosition = targetPosition + new Vector3(randomOffset.x, newY - targetPosition.y, 0f);
     }
+
     private void PickRandomReturnPosition(Vector3 targetPosition) {
         float randomRadius = UnityEngine.Random.Range(attackRange, attackRange * 2);
         Vector2 randomOffset = UnityEngine.Random.insideUnitCircle * randomRadius;
@@ -82,6 +94,7 @@ public class EnemyAssasin : Enemy {
 
     }
     private void Attack() {
+
         if (Time.time - lastAttackTime >= 1f / attackSpeed) {
             ShootProjectile();
             lastAttackTime = Time.time;

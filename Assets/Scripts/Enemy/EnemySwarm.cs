@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class EnemySwarm : Enemy
 {
+    const string FLASH_AMOUNT = "_FlashAmount";
     public float destructionTimer; // Time in seconds before destruction
     public float modifiedDestructionTimer; // Time in seconds before destruction
     private bool beeingSuckedIn;
-    [SerializeField]private float destructionTimerMax = 3f; 
+    private float hurtAnimationTimer;
+    private Coroutine hurtAnimationCorutine;
+    [SerializeField]private float destructionTimerMax = 3f;
+    [SerializeField] private float intervalBetweenHurtAnimations = 1f;
     [SerializeField]private float nightTimeModifier = 0.5f;
     [SerializeField]private float perLvlModifier = 0.1f;
     [SerializeField]private float dificultyModifierEasy = 0.3f;
     [SerializeField]private float dificultyModifierMedium = 0.4f;
     [SerializeField]private float dificultyModifierHard = 0.5f;
+    [SerializeField] private float HurtAnimationDelay = 0.2f;
     [SerializeField] private bool isNightTime; //for testing until i code the nightTime feature
     protected override void Start() {
         base.Start();
@@ -29,7 +34,12 @@ public class EnemySwarm : Enemy
             transform.position = Vector2.MoveTowards(transform.position, target.position + new Vector3(0, 1f), CoinSucker.Instance.SuckPower * Time.deltaTime);
             // Reduce the destruction timer
             destructionTimer -= Time.deltaTime;
-
+            // Call the coroutine every second
+            hurtAnimationTimer -= Time.deltaTime;
+            if (hurtAnimationTimer <= 0f) {
+                hurtAnimationCorutine ??= StartCoroutine(HandleEnemyHurtAnimation());
+                hurtAnimationTimer = intervalBetweenHurtAnimations; // Reset the timer
+            }
             // Check if the destruction timer has reached zero
             if (destructionTimer <= 0f) {
                 // Destroy the object
@@ -92,6 +102,16 @@ public class EnemySwarm : Enemy
     public override void Freeze(bool solidFreeze) {
 
         return;
+    }
+
+    public IEnumerator HandleEnemyHurtAnimation() {
+
+        spriteRenderer.material.SetFloat(FLASH_AMOUNT, 1);
+
+        yield return new WaitForSeconds(HurtAnimationDelay);
+
+        spriteRenderer.material.SetFloat(FLASH_AMOUNT, 0);
+        hurtAnimationCorutine = null;
     }
 
 }

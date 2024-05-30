@@ -14,6 +14,7 @@ public class BattleManager : MonoBehaviour
 
     private bool isRoundActive = false;
     public int level = 1; // Level counter
+    public bool isBossLevel;
 
     void Awake()   // I AM EDITING YOUR FILE
     {
@@ -31,7 +32,6 @@ public class BattleManager : MonoBehaviour
     {
         isRoundActive = true;
         roundTimeLimit = 60;
-
         uiManager.EnableBattleCamera();
         enemySpawner.StartSpawning(level); // Pass current level to spawner
         UpdateAllStealers(level);
@@ -50,7 +50,10 @@ public class BattleManager : MonoBehaviour
     {
         if (isRoundActive)
         {
-            roundTimeLimit -= Time.deltaTime;
+            if (!isBossLevel) {
+                roundTimeLimit -= Time.deltaTime;
+
+            }
 
             if (roundTimeLimit <= 0)
             {
@@ -60,7 +63,7 @@ public class BattleManager : MonoBehaviour
     }
 
 
-    void EndRound()
+    public void EndRound()
     {
         isRoundActive = false;
         enemySpawner.StopSpawning();

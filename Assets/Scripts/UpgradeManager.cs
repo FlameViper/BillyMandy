@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -310,11 +311,21 @@ public class UpgradeManager : MonoBehaviour
             player.projectileThrower.projectileType = projectileType;
             UpdateWeaponUpgrade(projectileType);
             if(projectileType == ProjectileType.BlueFire) {
-                if (blueFireTargetsPierced < 7) {
+                if(blueFireTargetsPierced >= 8) {
+                    return;
+                }
+                if (blueFireTargetsPierced < 8) {
                     blueFireTargetsPierced++;
                 }
+                
                 BlueFireballPorjectile.maxNumberOfPassedEnemies = blueFireTargetsPierced;
-                if (blueFireTargetsPierced == 7) {
+                if (blueFireTargetsPierced == 7 && blueFireWeaponCostText.text != "Max") {
+                    Color color = new Color(0.23f, 0, 0); 
+                    BlueFireballPorjectile.SetColor(color);
+                    blueFireWeaponCostText.text = "Black Fire" + blueFireCost + " Coins";
+                    BlueFireballPorjectile.SetBlackfire();
+                }
+                if (blueFireTargetsPierced == 8) {
                     blueFireWeaponCostText.text = "Max";
                 }
                 return;
@@ -427,7 +438,7 @@ public class UpgradeManager : MonoBehaviour
                 ProjectileThrower.Instance.deafaultAttackSpeed = 5;
                 break;
             case ProjectileType.BlueFire:
-                if (blueFireTargetsPierced == 7) {
+                if (blueFireTargetsPierced == 7 && blueFireWeaponCostText.text == "Black Fire" + blueFireCost + " Coins") {
                     blueFireCost = 0;
                 }
                 ProjectileThrower.Instance.deafaultAttackSpeed = 5;
@@ -444,4 +455,6 @@ public class UpgradeManager : MonoBehaviour
                 break;
         }
     }
+
+
 }

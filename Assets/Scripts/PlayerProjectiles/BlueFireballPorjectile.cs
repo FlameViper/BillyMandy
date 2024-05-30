@@ -8,10 +8,14 @@ public class BlueFireballPorjectile : Projectile {
 
     public static float maxNumberOfPassedEnemies = 3;
     public float currrentNumberOfPassedEnemies = 0;
+    private SpriteRenderer spriteRenderer;
+    private static Color color = Color.white;
+    private static bool isInfinite = false;
 
     protected override void Awake() {
         base.Awake();
-       
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.color = color;
     }
     protected override void Start() {
         base.Start();
@@ -36,7 +40,7 @@ public class BlueFireballPorjectile : Projectile {
                 enemy.TakeDamage(damageAmount, false);
                 // DisplayDamage(damageAmount, transform.position);
                 currrentNumberOfPassedEnemies++;
-                if (destoryedOnEnemyInpact && currrentNumberOfPassedEnemies >= maxNumberOfPassedEnemies) {
+                if (destoryedOnEnemyInpact && !isInfinite && currrentNumberOfPassedEnemies >= maxNumberOfPassedEnemies) {
                     
                     Destroy(gameObject);
                 }
@@ -72,6 +76,14 @@ public class BlueFireballPorjectile : Projectile {
             angle += 360;
         }
         return angle;
+    }
+
+    public static void SetColor(Color value) {
+        color = value;
+    }
+
+    public static void SetBlackfire() {
+        isInfinite = true;
     }
 
 }

@@ -57,6 +57,8 @@ public class Projectile : MonoBehaviour {
 
             // If the enemy component exists, apply damage
             if (enemy != null) {
+                
+
                 enemy.TakeDamage(damageAmount, false);
                 // DisplayDamage(damageAmount, transform.position);
                 if (destoryedOnEnemyInpact) {

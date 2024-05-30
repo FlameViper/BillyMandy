@@ -13,6 +13,8 @@ TagManager:
   - WarriorGotchi
   - Border
   - Limit
+  - EnemyProjectile
+  - PlayerProjectile
   layers:
   - Default
   - TransparentFX
@@ -25,7 +27,7 @@ TagManager:
   - PlayerProjectile
   - Frozen
   - Player
-  - 
+  - FreezableProjectile
   - 
   - 
   - 

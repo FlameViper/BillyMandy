@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1194412728146530868}
   - component: {fileID: 441383942811966562}
-  - component: {fileID: 794488950821930139}
+  - component: {fileID: 7437568210666310881}
   - component: {fileID: -258754597315866095}
   - component: {fileID: -4097091112138117637}
   m_Layer: 0
-  m_Name: EnemyAssasinProjectile
-  m_TagString: Projectile
+  m_Name: EnemyBigDestructableProjectile
+  m_TagString: EnemyProjectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.39, y: -0.54, z: 0}
-  m_LocalScale: {x: 1.5032319, y: 1.0782909, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 7, y: 7, z: 2.3333333}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -76,8 +76,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ca3813ce11f0d3b47bb275ebd3b0e6e0, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 3e137bd8111e02240ad19ecca2887125, type: 3}
+  m_Color: {r: 1, g: 0, b: 0.5372553, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -87,7 +87,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &794488950821930139
+--- !u!114 &7437568210666310881
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,12 +96,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 578942263459709013}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd2a37f2fc26fd44fa940f4a30f642a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 584518aca46ede5439f058d946d73db2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  damageAmount: 10
+  speed: 2
+  damageAmount: 30
   destroyDelay: 10
+  destroysPlayerBulletsAlso: 1
+  maxHealth: 40
+  currentHealth: 0
 --- !u!61 &-258754597315866095
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -138,7 +141,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.1, y: 0.12}
+    oldSize: {x: 0.12, y: 0.12}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
