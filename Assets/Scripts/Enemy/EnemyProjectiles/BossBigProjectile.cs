@@ -72,6 +72,7 @@ public class BossBigProjectile : EnemyProjectile {
                     }
                     if(goldenSnitchBoss.shield1Active || goldenSnitchBoss.shield2Active) {
                         goldenSnitchBoss.DestroyShield();
+                        Destroy(gameObject);
                     }
                     else {
                         goldenSnitchBoss.TakeDamage(damageAmount, false);
@@ -79,6 +80,7 @@ public class BossBigProjectile : EnemyProjectile {
                         goldenSnitchBoss.TakeDamage(damageAmount, false);
                         goldenSnitchBoss.TakeDamage(damageAmount, false);
                         goldenSnitchBoss.TakeDamage(damageAmount, false);
+                        Destroy(gameObject);
 
                     }
 
@@ -115,6 +117,8 @@ public class BossBigProjectile : EnemyProjectile {
             yield return null; // Wait until the next frame
         }
         goldenSnitchBoss.TriggerExplostion();
-        ricochetCoroutine = null;   
+        ricochetCoroutine = null;
+        //after animation
+        Destroy(gameObject);
     }
 }
