@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3525529072912796177}
   - component: {fileID: -258754597315866095}
   - component: {fileID: -4097091112138117637}
+  - component: {fileID: 6047370619661409432}
   m_Layer: 7
   m_Name: BossBigProjectile
   m_TagString: EnemyProjectile
@@ -111,9 +112,11 @@ MonoBehaviour:
   speedAddedPerBounce: 0.2
   hitBackCountPlayer: 0
   hitBackCountBoss: 0
-  spriteRenderer: {fileID: 0}
   baseColor: {r: 0, g: 0, b: 0, a: 0}
   transformed: 0
+  ricochet: 0
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!61 &-258754597315866095
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -186,6 +189,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!95 &6047370619661409432
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578942263459709013}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 10d90edc1c0dd4e46bae55e19fc1600b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3681883346330323800
 GameObject:
   m_ObjectHideFlags: 0

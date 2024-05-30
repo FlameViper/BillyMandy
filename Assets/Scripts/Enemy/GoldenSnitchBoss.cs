@@ -147,7 +147,7 @@ public class GoldenSnitchBoss : Enemy {
     }   
 
     private IEnumerator RandomRangeShooting() {
-        while (!performingMeleeAttack && !gettingPushed) {
+        while (!performingMeleeAttack && !gettingPushed && !explosionJustTriggered) {
             //int projectileCount = smallRangeAttackProjectileNumber; // Number of projectiles to shoot at once
             //for (int i = 0; i < projectileCount; i++) {
             //    BossSmallProjectile bossSmallProjectile = Instantiate(smallProjectilePrefab, transform.position, Quaternion.identity).GetComponent<BossSmallProjectile>();

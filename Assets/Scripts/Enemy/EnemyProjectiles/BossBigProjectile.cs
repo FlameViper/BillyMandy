@@ -10,12 +10,15 @@ public class BossBigProjectile : EnemyProjectile {
     [SerializeField] protected float speedAddedPerBounce = 0.2f;
     public int hitBackCountPlayer;
     public int hitBackCountBoss;
-    public SpriteRenderer spriteRenderer;
     public Color baseColor;
     public bool transformed;
+    public bool ricochet;
     private Coroutine ricochetCoroutine;
+    public SpriteRenderer spriteRenderer;
+    public Animator animator;
     private void Awake() {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
         baseColor = spriteRenderer.color;
 
     }
@@ -25,6 +28,9 @@ public class BossBigProjectile : EnemyProjectile {
     }
 
     protected override void Update() {
+        if (ricochet) {
+            return;
+        }
         base.Update();
     }
 
@@ -66,7 +72,7 @@ public class BossBigProjectile : EnemyProjectile {
                 if (hitBackCountBoss > 7) {
                     GoldenSnitchBoss goldenSnitchBoss = other.GetComponent<GoldenSnitchBoss>();
                     int random = Random.Range(0, 3);
-                    if(random == 0) {
+                    if(/*random == 0*/true) {
                         ricochetCoroutine ??= StartCoroutine(Ricochet(goldenSnitchBoss));
                         return;
                     }
@@ -102,11 +108,13 @@ public class BossBigProjectile : EnemyProjectile {
 
 
     private IEnumerator Ricochet(GoldenSnitchBoss goldenSnitchBoss) {
+        ricochet = true;
         Vector2 startPosition = transform.position;
-        Vector2 destination = new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y + 4f);
+        Vector2 destination = new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y + 3f);
         float journeyLength = Vector2.Distance(startPosition, destination);
         float startTime = Time.time;
         while ((Vector2)transform.position != destination) {
+            Debug.Log("rhicohe bugged");
             // Calculate the fraction of the journey completed
             float distCovered = (Time.time - startTime) * speed;
             float fractionOfJourney = distCovered / journeyLength;
@@ -118,7 +126,15 @@ public class BossBigProjectile : EnemyProjectile {
         }
         goldenSnitchBoss.TriggerExplostion();
         ricochetCoroutine = null;
-        //after animation
+        animator.Play("bossExplosionAnimation");
+
+
+
+
+    }
+
+    public void DestroyGameobjectAfterExplosion() {
+        ricochet = false;
         Destroy(gameObject);
     }
 }

@@ -23,9 +23,14 @@ public class BossSmallProjectile : EnemyProjectile {
         currentHealth = maxHealth;
         GoldenSnitchBoss.Instance.OnExplosionTriggerd += Instance_OnExplosionTriggerd;
     }
-
+    private void OnDestroy() {
+        GoldenSnitchBoss.Instance.OnExplosionTriggerd -= Instance_OnExplosionTriggerd;
+    }
     private void Instance_OnExplosionTriggerd(object sender, System.EventArgs e) {
+     
         Destroy(gameObject);
+
+        
     }
 
     protected override void Update() {
