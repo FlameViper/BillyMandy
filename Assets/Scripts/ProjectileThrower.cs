@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class ProjectileThrower : MonoBehaviour
 {
@@ -8,13 +9,18 @@ public class ProjectileThrower : MonoBehaviour
     public static ProjectileThrower Instance;
     public ProjectileType projectileType = ProjectileType.Fireball;
     public List<GameObject> projectilePrefabs; // Prefab of the projectile to be thrown
+    public GameObject coloredProjectilePrefab; // Prefab of the projectile to be thrown
+    public List<Sprite> coloredProjectileSprites; // Prefab of the projectile to be thrown
     public float deafaultAttackSpeed = 5f; // Attack speed, measured in attacks per second
+    public float coloredProjectileAttackSpeed = 5f; // Attack speed, measured in attacks per second
    
     public bool isThrowerActive = true; // Flag to enable or disable throwing
     public AudioSource attackSound; // AudioSource component for playing attack sounds
 
     private float lastAttackTime = 0f; // When the last attack happened
-
+    private float lastAttackTimeColored = 0f; // When the last attack happened
+    private int currentColoredProjectileTypeIndex;
+    private int currentColoredProjectileModeIndex;
    
     //one instance projectiles
     private Projectile projectileInstance;
@@ -33,12 +39,56 @@ public class ProjectileThrower : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {
+        if (isThrowerActive && Input.GetKeyDown(KeyCode.Alpha1)) {
+            currentColoredProjectileModeIndex++;
+
+            if (currentColoredProjectileModeIndex > 2) {
+
+                currentColoredProjectileModeIndex = 0;
+            }
 
         }
+        if (isThrowerActive && Input.GetKeyDown(KeyCode.Alpha2) ) {
+            currentColoredProjectileTypeIndex++;
+
+            if (currentColoredProjectileTypeIndex > 3) {
+
+                currentColoredProjectileTypeIndex = 0;
+            }
+
+        }
+
+        if (isThrowerActive && Input.GetMouseButtonDown(0) && Time.time - lastAttackTimeColored >= 1f / coloredProjectileAttackSpeed) {
+            // Record the time of this attack
+            lastAttackTimeColored = Time.time;
+
+            // Get the mouse position in world coordinates
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0f; // Ensure the z-coordinate is 0 for 2D
+            // Calculate the direction towards the mouse position
+            Vector3 direction = (mousePosition - transform.position).normalized;
+            Vector2 coloredPosition1 = new Vector2(transform.position.x + 0.2f, transform.position.y);
+            Vector2 coloredPosition2 = new Vector2(transform.position.x - 0.2f, transform.position.y);
+            if (currentColoredProjectileModeIndex !=0) {
+                ColoredProjectile coloredProjectile1 = Instantiate(coloredProjectilePrefab, coloredPosition1, Quaternion.identity).GetComponent<ColoredProjectile>();
+                coloredProjectile1.spriteRenderer.sprite = coloredProjectileSprites[currentColoredProjectileTypeIndex];
+                coloredProjectile1.color = GetColor();
+                coloredProjectile1.SetDirection(direction);
+                if(currentColoredProjectileModeIndex == 2) {
+                    ColoredProjectile coloredProjectile2 = Instantiate(coloredProjectilePrefab, coloredPosition2, Quaternion.identity).GetComponent<ColoredProjectile>();
+                    coloredProjectile2.spriteRenderer.sprite = coloredProjectileSprites[currentColoredProjectileTypeIndex];
+                    coloredProjectile2.color = GetColor();
+                    coloredProjectile2.SetDirection(direction);
+                }
+            }
+        }
+
         // Check if the thrower is active, for left mouse button click, and if enough time has passed since the last attack
         if (isThrowerActive && ( Input.GetMouseButtonDown(0) || Input.GetMouseButton(0) && projectileType == ProjectileType.Minigun ) && Time.time - lastAttackTime >= 1f / deafaultAttackSpeed)
         {
+            if(currentColoredProjectileModeIndex == 2) {
+                return;
+            }
             // Record the time of this attack
             lastAttackTime = Time.time;
 
@@ -118,6 +168,27 @@ public class ProjectileThrower : MonoBehaviour
                 return null;
         }
     }
+
+
+    private string GetColor() {
+        switch (currentColoredProjectileTypeIndex) {
+            case 0:
+                return "Red";
+
+            case 1:
+                return "Green";
+
+            case 2:
+                return "Yellow";
+
+            case 3:
+                return "Purple";
+
+            default:
+                return "Red";
+        }
+    }
+
 
 }
 public enum ProjectileType {

@@ -90,10 +90,10 @@ public class GoldenSnitchBoss : Enemy {
         if (isDead) {
             return;
         }
-        if (!explosionJustTriggered) {
+       // if (!explosionJustTriggered) {
             randomRangeShootingCoroutine ??= StartCoroutine(RandomRangeShooting());
 
-        }
+       // }
         triggerShieldCoroutine ??= StartCoroutine(TriggerShield());
         bigRangeAttackCooldownCoroutine ??= StartCoroutine(BigRangeAttackCooldown());
      
@@ -126,7 +126,7 @@ public class GoldenSnitchBoss : Enemy {
         // Ensure the position is exactly set at the target
         transform.position = bigrangeAttackPosition;
         yield return new WaitForSeconds(0.5f);
-        bossBigProjectile = Instantiate(bigPlasmaProjectilePrefab, transform.position, Quaternion.identity).GetComponent<BossBigProjectile>();
+        bossBigProjectile = Instantiate(bigPlasmaProjectilePrefab, new Vector2(transform.position.x,transform.position.y - 0.5f), Quaternion.identity).GetComponent<BossBigProjectile>();
         Vector3 directionPlayer = (Player.Instance.transform.position - transform.position).normalized;
         bossBigProjectile.SetDirection(directionPlayer);
         yield return new WaitUntil(() => bossBigProjectile == null || bossBigProjectile.gameObject == null);
@@ -172,6 +172,7 @@ public class GoldenSnitchBoss : Enemy {
 
             Vector2 randomDirection = new Vector2(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f)).normalized;
             bossSmallProjectile.SetDirection(randomDirection);
+
         }
     }
 
@@ -613,7 +614,7 @@ public class GoldenSnitchBoss : Enemy {
         Vector2 destination = new Vector2(hoverAbovePlayerPosition.x, hoverAbovePlayerPosition.y + 4f);
         float journeyLength = Vector2.Distance(startPosition, destination);
         float startTime = Time.time;
-        while ((Vector2)transform.position != destination) {
+        while (Vector2.Distance(transform.position,destination)>0.2f) {
             // Calculate the fraction of the journey completed
             float distCovered = (Time.time - startTime) * moveSpeed;
             float fractionOfJourney = distCovered / journeyLength;
@@ -632,7 +633,7 @@ public class GoldenSnitchBoss : Enemy {
 
         OnExplosionTriggerd?.Invoke(this, EventArgs.Empty);
         bossBigProjectile = null;
-        explosionJustTriggeredCortuine ??= StartCoroutine(ExplosionEffect());
+        //explosionJustTriggeredCortuine ??= StartCoroutine(ExplosionEffect());
     }
 
     private IEnumerator ExplosionEffect() {

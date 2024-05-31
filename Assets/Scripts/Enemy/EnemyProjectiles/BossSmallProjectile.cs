@@ -13,6 +13,7 @@ public class BossSmallProjectile : EnemyProjectile {
     public SpriteRenderer spriteRenderer;
     public Color baseColor;
     public bool transformed;
+
     private void Awake() {
         spriteRenderer = GetComponent<SpriteRenderer>();
         baseColor = spriteRenderer.color;
@@ -35,6 +36,7 @@ public class BossSmallProjectile : EnemyProjectile {
 
     protected override void Update() {
         base.Update();
+
     }
 
 
@@ -91,7 +93,7 @@ public class BossSmallProjectile : EnemyProjectile {
             }
             else if (other.CompareTag("Enemy")) {
                 other.GetComponent<Enemy>().TakeDamage(damageAmount,false);
-                Debug.Log("dmg dealt");
+ 
                 Destroy(gameObject);
             }
 

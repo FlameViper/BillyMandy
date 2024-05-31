@@ -1198,7 +1198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefabs:
   - {fileID: 1800205754805486490, guid: f6a35945b022d6246bb8b2be1ecf104e, type: 3}
-  maxEnemies: 20
+  maxEnemies: 1
   specialEnemyPrefab: {fileID: 6432242035614911728, guid: f181b4c51ed9e8a43afac243e99b861c, type: 3}
   specialEnemyStartLevel: 1
   specialEnemyInterval: 1
@@ -3873,6 +3873,67 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1643196612}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &740159856
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3442017150751071412, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+      propertyPath: m_Name
+      value: ColoredProjectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 3442017150751071412, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248839402488129955, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248839402488129955, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248839402488129955, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248839402488129955, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248839402488129955, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248839402488129955, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248839402488129955, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248839402488129955, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248839402488129955, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248839402488129955, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
 --- !u!1 &742429215
 GameObject:
   m_ObjectHideFlags: 0
@@ -7618,7 +7679,14 @@ MonoBehaviour:
   - {fileID: 3442017150751071412, guid: cafce8222270e8f4a9914174f41c2b1c, type: 3}
   - {fileID: 3442017150751071412, guid: 1d2aba718a1eae04db6cf40cb5c0339c, type: 3}
   - {fileID: 3442017150751071412, guid: 48582ef05d2c6fa48a3e581586c44867, type: 3}
+  coloredProjectilePrefab: {fileID: 3442017150751071412, guid: 52120c5eb784f184eb3b88ecb5200fe5, type: 3}
+  coloredProjectileSprites:
+  - {fileID: 21300000, guid: 3416d6373d42f4a44b65f8e3fe3ba4ef, type: 3}
+  - {fileID: 21300000, guid: d674e7998886c3f41a1abc1c5be0beca, type: 3}
+  - {fileID: 21300000, guid: 9f632737c233c7e4e8fed0b37635dea1, type: 3}
+  - {fileID: 21300000, guid: d85cb96b95f21474cad8fd7c3bf9afad, type: 3}
   deafaultAttackSpeed: 5
+  coloredProjectileAttackSpeed: 5
   isThrowerActive: 0
   attackSound: {fileID: 2134783286}
 --- !u!212 &1249886202
@@ -11934,3 +12002,4 @@ SceneRoots:
   - {fileID: 684653780}
   - {fileID: 1224128844}
   - {fileID: 936698354}
+  - {fileID: 740159856}

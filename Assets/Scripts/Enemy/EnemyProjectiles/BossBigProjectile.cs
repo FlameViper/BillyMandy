@@ -11,6 +11,7 @@ public class BossBigProjectile : EnemyProjectile {
     [SerializeField] protected float speedAddedPerBounce = 0.2f;
     [SerializeField] protected SpriteRenderer visual1;
     [SerializeField] protected SpriteRenderer visual2;
+    [SerializeField] private Collider2D suckInCollider;
     public int hitBackCountPlayer;
     public int hitBackCountBoss;
     public Color baseColor;
@@ -40,6 +41,7 @@ public class BossBigProjectile : EnemyProjectile {
 
 
     protected override void OnTriggerEnter2D(Collider2D other) {
+      
         if (!transformed) {
             if (other.CompareTag("Player")) {
                 Player player = other.GetComponent<Player>();
@@ -106,6 +108,40 @@ public class BossBigProjectile : EnemyProjectile {
                 }
             }
 
+        
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other) {
+        if (other.CompareTag("EnemyProjectile") && ricochet) {
+            if (Vector2.Distance(new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y + 3f), other.transform.position) < 0.3f) {
+                Debug.Log(Vector2.Distance(new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y + 3f), other.transform.position));
+                Destroy(other.gameObject);
+            }
+
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if( collision != null ) {
+           if(collision.gameObject.CompareTag("EnemyProjectile")) {
+
+                //if (Vector2.Distance(new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y + 3f), collision.transform.position) < 0.3f) {
+                //    Debug.Log(Vector2.Distance(new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y + 3f), collision.transform.position));
+                //    Destroy(collision.gameObject);
+                //}
+                //else {
+                    Vector2  direction = (transform.position - collision.transform.position).normalized;
+                    EnemyProjectile enemyProjectile = collision.gameObject.GetComponent<EnemyProjectile>();
+                    enemyProjectile.SetDirection(direction);
+                    enemyProjectile.speed = 1f;
+
+               // }
+
+
+                
+           }
+
 
         }
     }
@@ -113,6 +149,7 @@ public class BossBigProjectile : EnemyProjectile {
 
     private IEnumerator Ricochet(GoldenSnitchBoss goldenSnitchBoss) {
         ricochet = true;
+        suckInCollider.enabled = true;
         Vector2 startPosition = transform.position;
         Vector2 destination = new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y + 3f);
         float journeyLength = Vector2.Distance(startPosition, destination);
@@ -130,18 +167,19 @@ public class BossBigProjectile : EnemyProjectile {
         }
         goldenSnitchBoss.TriggerExplostion();
        // ricochetCoroutine = null;
-        animator.Play("bossExplosionAnimation");
         visual1.sprite = null;
         visual2.sprite = null;
 
+        animator.Play("bossExplosionAnimation");
         explosionPulseCoroutine ??= StartCoroutine(ExplosionPulse());
 
 
     }
 
     private IEnumerator ExplosionPulse() {
-        yield return new WaitForSeconds(1);
-        animator.Play("bossPulseAnimation");
+        yield return new WaitForSeconds(10);
+        DestroyGameobjectAfterExplosion();
+      //  animator.Play("bossPulseAnimation");
 
     }
 
