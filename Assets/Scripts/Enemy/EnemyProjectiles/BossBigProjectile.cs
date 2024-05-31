@@ -149,6 +149,7 @@ public class BossBigProjectile : EnemyProjectile {
 
     private IEnumerator Ricochet(GoldenSnitchBoss goldenSnitchBoss) {
         ricochet = true;
+        spriteRenderer.color = Color.white;
         suckInCollider.enabled = true;
         Vector2 startPosition = transform.position;
         Vector2 destination = new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y + 3f);
