@@ -32,7 +32,7 @@ public class GoldenSnitchBoss : Enemy {
     public bool gettingPushed;
     public bool canBigRangeAttack;
     public bool performingBigRangeAttack;
-    public bool explosionJustTriggered;
+    //public bool explosionJustTriggered;
     public Coroutine moveToEnemyPathCoroutine;
     private Vector2 hoverAbovePlayerPosition = new Vector2(0,0);
     [SerializeField] private float meleeAttackHoverTime=5f;
@@ -148,7 +148,7 @@ public class GoldenSnitchBoss : Enemy {
     }   
 
     private IEnumerator RandomRangeShooting() {
-        while (!performingMeleeAttack && !gettingPushed && !explosionJustTriggered) {
+        while (!performingMeleeAttack && !gettingPushed) {
             //int projectileCount = smallRangeAttackProjectileNumber; // Number of projectiles to shoot at once
             //for (int i = 0; i < projectileCount; i++) {
             //    BossSmallProjectile bossSmallProjectile = Instantiate(smallProjectilePrefab, transform.position, Quaternion.identity).GetComponent<BossSmallProjectile>();
@@ -636,10 +636,10 @@ public class GoldenSnitchBoss : Enemy {
         //explosionJustTriggeredCortuine ??= StartCoroutine(ExplosionEffect());
     }
 
-    private IEnumerator ExplosionEffect() {
-        explosionJustTriggered = true;
-        yield return new WaitForSeconds(10f);
-        explosionJustTriggered = false;
-        explosionJustTriggeredCortuine = null;
-    }
+    //private IEnumerator ExplosionEffect() {
+    //    explosionJustTriggered = true;
+    //    yield return new WaitForSeconds(10f);
+    //    explosionJustTriggered = false;
+    //    explosionJustTriggeredCortuine = null;
+    //}
 }

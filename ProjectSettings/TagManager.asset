@@ -15,6 +15,7 @@ TagManager:
   - Limit
   - EnemyProjectile
   - PlayerProjectile
+  - ColoredProjectile
   layers:
   - Default
   - TransparentFX
