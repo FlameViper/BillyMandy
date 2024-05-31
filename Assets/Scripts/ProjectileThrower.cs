@@ -33,6 +33,9 @@ public class ProjectileThrower : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha1)) {
+
+        }
         // Check if the thrower is active, for left mouse button click, and if enough time has passed since the last attack
         if (isThrowerActive && ( Input.GetMouseButtonDown(0) || Input.GetMouseButton(0) && projectileType == ProjectileType.Minigun ) && Time.time - lastAttackTime >= 1f / deafaultAttackSpeed)
         {
@@ -85,6 +88,8 @@ public class ProjectileThrower : MonoBehaviour
                 Debug.LogError("No AudioSource component found on the GameObject!");
             }
         }
+
+
     }
 
     private GameObject InstantiateProjectile(ProjectileType projectileType) {

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +9,15 @@ public class BossBigProjectile : EnemyProjectile {
     [SerializeField] protected int currentHealth;
     [SerializeField] protected int maxHitBackCount = 5;
     [SerializeField] protected float speedAddedPerBounce = 0.2f;
+    [SerializeField] protected SpriteRenderer visual1;
+    [SerializeField] protected SpriteRenderer visual2;
     public int hitBackCountPlayer;
     public int hitBackCountBoss;
     public Color baseColor;
     public bool transformed;
     public bool ricochet;
     private Coroutine ricochetCoroutine;
+    private Coroutine explosionPulseCoroutine;
     public SpriteRenderer spriteRenderer;
     public Animator animator;
     private void Awake() {
@@ -114,7 +118,7 @@ public class BossBigProjectile : EnemyProjectile {
         float journeyLength = Vector2.Distance(startPosition, destination);
         float startTime = Time.time;
         while ((Vector2)transform.position != destination) {
-            Debug.Log("rhicohe bugged");
+          
             // Calculate the fraction of the journey completed
             float distCovered = (Time.time - startTime) * speed;
             float fractionOfJourney = distCovered / journeyLength;
@@ -125,11 +129,19 @@ public class BossBigProjectile : EnemyProjectile {
             yield return null; // Wait until the next frame
         }
         goldenSnitchBoss.TriggerExplostion();
-        ricochetCoroutine = null;
+       // ricochetCoroutine = null;
         animator.Play("bossExplosionAnimation");
+        visual1.sprite = null;
+        visual2.sprite = null;
+
+        explosionPulseCoroutine ??= StartCoroutine(ExplosionPulse());
 
 
+    }
 
+    private IEnumerator ExplosionPulse() {
+        yield return new WaitForSeconds(1);
+        animator.Play("bossPulseAnimation");
 
     }
 

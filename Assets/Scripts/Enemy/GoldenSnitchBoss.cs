@@ -59,15 +59,16 @@ public class GoldenSnitchBoss : Enemy {
     private Coroutine bigRangeAttackCoroutine;
     private Coroutine bigRangeAttackCooldownCoroutine;
     private Coroutine explosionJustTriggeredCortuine;
-
+    private int movement1Count;
+    private int movement2Count;
     //rotation
-    [SerializeField] private Transform rotateAroundPoint;/* = new Vector2(0,2);*/
+    [SerializeField] private Transform rotateAroundPoint;
     [SerializeField] private float rotationSpeed = 60.0f;
     [SerializeField] private float rotationDuration = 6f;
-    [SerializeField] private float pointMoveSpeed = 1f;   // Speed of the point movement from left to right
-    [SerializeField] private float pointMoveRange = 5f;   // Range of the point movement
+    [SerializeField] private float pointMoveSpeed = 1f;   
+    [SerializeField] private float pointMoveRange = 5f; 
     [SerializeField] private float radius = 3f;
-    
+    BossBigProjectile bossBigProjectile;
 
     private void Awake() {
         if (Instance == null) {
@@ -98,7 +99,7 @@ public class GoldenSnitchBoss : Enemy {
      
        
         UpdateTarget();
-        if (isMoving /*&& !performingBigRangeAttack && !performingMeleeAttack*/) {
+        if (isMoving) {
             Movement();
         }
     }
@@ -125,7 +126,7 @@ public class GoldenSnitchBoss : Enemy {
         // Ensure the position is exactly set at the target
         transform.position = bigrangeAttackPosition;
         yield return new WaitForSeconds(0.5f);
-        BossBigProjectile bossBigProjectile = Instantiate(bigPlasmaProjectilePrefab, transform.position, Quaternion.identity).GetComponent<BossBigProjectile>();
+        bossBigProjectile = Instantiate(bigPlasmaProjectilePrefab, transform.position, Quaternion.identity).GetComponent<BossBigProjectile>();
         Vector3 directionPlayer = (Player.Instance.transform.position - transform.position).normalized;
         bossBigProjectile.SetDirection(directionPlayer);
         yield return new WaitUntil(() => bossBigProjectile == null || bossBigProjectile.gameObject == null);
@@ -183,6 +184,7 @@ public class GoldenSnitchBoss : Enemy {
         }
         int random = UnityEngine.Random.Range(0, 2);
         if (random == 1) {
+           
             shieldCurrentHp = shield1MaxHp;
             shieldSlider.gameObject.SetActive(true);
             shieldSlider.maxValue = shield1MaxHp;
@@ -194,6 +196,7 @@ public class GoldenSnitchBoss : Enemy {
             shieldCollider.enabled = true;
         }
         else {
+       
             shieldCurrentHp = shield2MaxHp;
             shieldSlider.gameObject.SetActive(true);
             shieldSlider.maxValue = shield2MaxHp;
@@ -220,11 +223,19 @@ public class GoldenSnitchBoss : Enemy {
             return;
         }
         int random = UnityEngine.Random.Range(0, 2);
-        if (random == 0 ) {
+        if (random == 0 && movement1Count < 2 || movement2Count > 2) {
+            movement1Count++;
+            if(movement2Count >= 2) {
+                movement2Count = 0;
+            }
             //moveToEnemyPathCoroutine ??= StartCoroutine(MoveInCircle(new Vector3(0,2), rotationSpeed, rotationDuration,2));
             moveToEnemyPathCoroutine ??= StartCoroutine(MoveInCircle(rotationSpeed, rotationDuration,2));
         }
         else {
+            movement2Count++;
+            if (movement1Count >= 2) {
+                movement1Count = 0;
+            }
             GetEnemyPath();
           
             moveToEnemyPathCoroutine ??= StartCoroutine(MoveToEnemyPath());
@@ -242,25 +253,6 @@ public class GoldenSnitchBoss : Enemy {
         //}
     }
     private IEnumerator MoveInCircle( float speed, float duration, float radius) {
-        //rotateAroundPoint.transform.position = new Vector3(0, 3.25f);
-        //Vector3 destiantion = new Vector3(0, 3.25f);
-        //Vector2 startPosition = transform.position;
-        //float journeyLength = Vector2.Distance(startPosition, destiantion);
-        //float startTime = Time.time;
-
-        //while (transform.position != rotateAroundPoint.position) {
-        //    // Calculate the fraction of the journey completed
-        //    float distCovered = (Time.time - startTime) * moveSpeed;
-        //    float fractionOfJourney = distCovered / journeyLength;
-
-        //    // Move the transform position to the interpolated position
-        //    transform.position = Vector2.Lerp(startPosition, destiantion, fractionOfJourney);
-
-        //    yield return null; // Wait until the next frame
-        //}
-
-        //// Ensure the position is exactly set at the target
-        //transform.position = destiantion;
 
         float elapsedTime = 0f;
         float angle = 0f;
@@ -464,33 +456,6 @@ public class GoldenSnitchBoss : Enemy {
 
     }
 
-    //protected void UpdateTarget() {
-    //    if (potentialTargets.Count == 0) {
-    //        target = player;  // Default back to player if no gotchis are close
-    //        return;
-    //    }
-
-    //    Transform closest = null;
-    //    float minDistance = float.MaxValue;
-    //    foreach (Transform t in potentialTargets) {
-    //        if (t != null) {
-    //            float dist = Vector2.Distance(transform.position, t.position);
-    //            if (dist < minDistance) {
-    //                closest = t;
-    //                minDistance = dist;
-    //            }
-    //        }
-    //    }
-
-    //    if (closest != null && closest != target) {
-    //        target = closest;
-    //        if (attackRoutine != null) {
-    //            StopCoroutine(attackRoutine);
-    //            attackRoutine = null;
-    //        }
-    //        attackRoutine = StartCoroutine(DealDamageRepeatedly(target.GetComponent<Collider2D>()));
-    //    }
-    //}
 
     protected override IEnumerator DealDamageRepeatedly(Collider2D targetCollider) {
         while (!isFrozen && !isDead && targetCollider != null) {
@@ -666,7 +631,7 @@ public class GoldenSnitchBoss : Enemy {
     public void TriggerExplostion() {
 
         OnExplosionTriggerd?.Invoke(this, EventArgs.Empty);
-
+        bossBigProjectile = null;
         explosionJustTriggeredCortuine ??= StartCoroutine(ExplosionEffect());
     }
 
