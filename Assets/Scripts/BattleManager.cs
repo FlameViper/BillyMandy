@@ -11,6 +11,7 @@ public class BattleManager : MonoBehaviour
     public EnemySpawner enemySpawner;
     public float roundTimeLimit = 60f; //I AM EDITING YOUR FILE
     public Text levelText; // UI Text element for displaying the level
+    public Text livesDuringBossText;
 
     private bool isRoundActive = false;
     public int level = 1; // Level counter
@@ -34,7 +35,15 @@ public class BattleManager : MonoBehaviour
         roundTimeLimit = 60;
         uiManager.EnableBattleCamera();
         enemySpawner.StartSpawning(level); // Pass current level to spawner
-        Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
+        if (isBossLevel) {
+            livesDuringBossText.gameObject.SetActive(true);
+            Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
+            livesDuringBossText.text = "Lives left:" + Player.Instance.numberOfLifesLeft.ToString();
+        }
+        else {
+            livesDuringBossText.gameObject.SetActive(false);
+
+        }
         UpdateAllStealers(level);
         UpdateLevelDisplay(); // Update the level display at the start of each round
     }
@@ -46,11 +55,11 @@ public class BattleManager : MonoBehaviour
             stealer.UpdateAttractionPower(level);
         }
     }
-    private void Start() {
-        if (isBossLevel) {
-            Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
-        }
-    }
+    //private void Start() {
+    //    if (isBossLevel) {
+    //        Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
+    //    }
+    //}
 
     void Update()
     {

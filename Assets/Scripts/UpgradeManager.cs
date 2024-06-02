@@ -272,8 +272,8 @@ public class UpgradeManager : MonoBehaviour
     public void PurchaseColoredProjectileBounceUprgade() {
         if (CanPurchaseUpgrade(coloredProjectileBounceUpgradeCost)) {
             ColoredProjectile.maxNumberOfBounces ++;
-            resourceManager.SubtractCoins(freezeDurationUpgradeCost);
-            freezeDurationUpgradeCost += 10; 
+            resourceManager.SubtractCoins(coloredProjectileBounceUpgradeCost);
+            coloredProjectileBounceUpgradeCost += 10; 
             AfterPurchase();
             Debug.Log("Max Number Of Bounces upgrade purchased. New max nr: " + ColoredProjectile.maxNumberOfBounces);
         }
