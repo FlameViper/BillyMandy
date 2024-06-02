@@ -78,7 +78,7 @@ public class BossBigProjectile : EnemyProjectile {
                 if (hitBackCountBoss > 7) {
                     GoldenSnitchBoss goldenSnitchBoss = other.GetComponent<GoldenSnitchBoss>();
                     int random = Random.Range(0, 3);
-                    if(/*random == 0*/true) {
+                    if(random == 0) {
                         ricochetCoroutine ??= StartCoroutine(Ricochet(goldenSnitchBoss));
                         return;
                     }

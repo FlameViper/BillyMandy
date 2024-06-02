@@ -34,6 +34,7 @@ public class BattleManager : MonoBehaviour
         roundTimeLimit = 60;
         uiManager.EnableBattleCamera();
         enemySpawner.StartSpawning(level); // Pass current level to spawner
+        Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
         UpdateAllStealers(level);
         UpdateLevelDisplay(); // Update the level display at the start of each round
     }
@@ -45,12 +46,18 @@ public class BattleManager : MonoBehaviour
             stealer.UpdateAttractionPower(level);
         }
     }
+    private void Start() {
+        if (isBossLevel) {
+            Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
+        }
+    }
 
     void Update()
     {
         if (isRoundActive)
         {
             if (!isBossLevel) {
+
                 roundTimeLimit -= Time.deltaTime;
 
             }
@@ -70,6 +77,16 @@ public class BattleManager : MonoBehaviour
         enemySpawner.DestroyAllEnemies();
 
         level++; // Increment level
+
+        // Start the coroutine to wait a few seconds before moving the camera
+        StartCoroutine(WaitAndMoveCamera());
+    }
+
+    public void RestartRound() {
+        isRoundActive = false;
+        enemySpawner.StopSpawning();
+        enemySpawner.DestroyAllEnemies();
+
 
         // Start the coroutine to wait a few seconds before moving the camera
         StartCoroutine(WaitAndMoveCamera());

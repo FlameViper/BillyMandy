@@ -11,6 +11,7 @@ public class ProjectileThrower : MonoBehaviour
     public List<GameObject> projectilePrefabs; // Prefab of the projectile to be thrown
     public GameObject coloredProjectilePrefab; // Prefab of the projectile to be thrown
     public List<Sprite> coloredProjectileSprites; // Prefab of the projectile to be thrown
+    public List<Color> colorList; // Prefab of the projectile to be thrown
     public float deafaultAttackSpeed = 5f; // Attack speed, measured in attacks per second
     public float coloredProjectileAttackSpeed = 5f; // Attack speed, measured in attacks per second
    
@@ -25,7 +26,10 @@ public class ProjectileThrower : MonoBehaviour
     //one instance projectiles
     private Projectile projectileInstance;
     private bool hasOneInstance;
-   
+    [SerializeField] SpriteRenderer selectedColor;
+    [SerializeField] SpriteRenderer color1;
+    [SerializeField] SpriteRenderer color2;
+    [SerializeField] SpriteRenderer color3;
 
     private void Awake() {
         if (Instance == null) {
@@ -39,23 +43,31 @@ public class ProjectileThrower : MonoBehaviour
 
     void Update()
     {
+        //if (isThrowerActive && Input.GetKeyDown(KeyCode.Alpha1)) {
+        //    currentColoredProjectileModeIndex++;
+
+        //    if (currentColoredProjectileModeIndex > 2) {
+
+        //        currentColoredProjectileModeIndex = 0;
+        //    }
+
+        //}
+        //if (isThrowerActive && Input.GetKeyDown(KeyCode.Alpha2) ) {
+        //    currentColoredProjectileTypeIndex++;
+
+        //    if (currentColoredProjectileTypeIndex > 3) {
+
+        //        currentColoredProjectileTypeIndex = 0;
+        //    }
+
+        //}
         if (isThrowerActive && Input.GetKeyDown(KeyCode.Alpha1)) {
-            currentColoredProjectileModeIndex++;
-
-            if (currentColoredProjectileModeIndex > 2) {
-
-                currentColoredProjectileModeIndex = 0;
-            }
-
+            currentColoredProjectileModeIndex = (currentColoredProjectileModeIndex + 1) % 3;
         }
-        if (isThrowerActive && Input.GetKeyDown(KeyCode.Alpha2) ) {
-            currentColoredProjectileTypeIndex++;
 
-            if (currentColoredProjectileTypeIndex > 3) {
-
-                currentColoredProjectileTypeIndex = 0;
-            }
-
+        if (isThrowerActive && Input.GetKeyDown(KeyCode.Alpha2)) {
+            currentColoredProjectileTypeIndex = (currentColoredProjectileTypeIndex + 1) % 4;
+            UpdateProjectileVisuals();
         }
 
         if (isThrowerActive && Input.GetMouseButtonDown(0) && Time.time - lastAttackTimeColored >= 1f / coloredProjectileAttackSpeed) {
@@ -68,25 +80,28 @@ public class ProjectileThrower : MonoBehaviour
             // Calculate the direction towards the mouse position
             Vector3 direction = (mousePosition - transform.position).normalized;
             Vector2 coloredPosition1 = new Vector2(transform.position.x + 0.2f, transform.position.y);
-            Vector2 coloredPosition2 = new Vector2(transform.position.x - 0.2f, transform.position.y);
-            if (currentColoredProjectileModeIndex !=0) {
+
+            if (currentColoredProjectileModeIndex == 2) {
                 ColoredProjectile coloredProjectile1 = Instantiate(coloredProjectilePrefab, coloredPosition1, Quaternion.identity).GetComponent<ColoredProjectile>();
                 coloredProjectile1.spriteRenderer.sprite = coloredProjectileSprites[currentColoredProjectileTypeIndex];
                 coloredProjectile1.color = GetColor();
                 coloredProjectile1.SetDirection(direction);
-                if(currentColoredProjectileModeIndex == 2) {
-                    ColoredProjectile coloredProjectile2 = Instantiate(coloredProjectilePrefab, coloredPosition2, Quaternion.identity).GetComponent<ColoredProjectile>();
-                    coloredProjectile2.spriteRenderer.sprite = coloredProjectileSprites[currentColoredProjectileTypeIndex];
-                    coloredProjectile2.color = GetColor();
-                    coloredProjectile2.SetDirection(direction);
-                }
+
+            }
+            else if (currentColoredProjectileModeIndex == 1) {
+
+                ColoredProjectile coloredProjectile2 = Instantiate(coloredProjectilePrefab, transform.position, Quaternion.identity).GetComponent<ColoredProjectile>();
+                coloredProjectile2.spriteRenderer.sprite = coloredProjectileSprites[currentColoredProjectileTypeIndex];
+                coloredProjectile2.color = GetColor();
+                coloredProjectile2.SetDirection(direction);
+
             }
         }
 
         // Check if the thrower is active, for left mouse button click, and if enough time has passed since the last attack
         if (isThrowerActive && ( Input.GetMouseButtonDown(0) || Input.GetMouseButton(0) && projectileType == ProjectileType.Minigun ) && Time.time - lastAttackTime >= 1f / deafaultAttackSpeed)
         {
-            if(currentColoredProjectileModeIndex == 2) {
+            if(currentColoredProjectileModeIndex == 1) {
                 return;
             }
             // Record the time of this attack
@@ -187,6 +202,21 @@ public class ProjectileThrower : MonoBehaviour
             default:
                 return "Red";
         }
+    }
+
+    private void UpdateProjectileVisuals() {
+        //selectedColor.sprite = coloredProjectileSprites[currentColoredProjectileTypeIndex];
+        selectedColor.color = colorList[currentColoredProjectileTypeIndex];
+
+        // Update other colors/sprites as needed
+       // color1.sprite = coloredProjectileSprites[(currentColoredProjectileTypeIndex + 1) % 4];
+        color1.color = colorList[(currentColoredProjectileTypeIndex + 1) % 4];
+
+       // color2.sprite = coloredProjectileSprites[(currentColoredProjectileTypeIndex + 2) % 4];
+        color2.color = colorList[(currentColoredProjectileTypeIndex + 2) % 4];
+
+        //color3.sprite = coloredProjectileSprites[(currentColoredProjectileTypeIndex + 3) % 4];
+        color3.color = colorList[(currentColoredProjectileTypeIndex + 3) % 4];
     }
 
 

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 220987573908078214}
   - component: {fileID: 286649445914157055}
-  - component: {fileID: -1594065539388380148}
+  - component: {fileID: 7226393918130843041}
   - component: {fileID: 5910776325432827222}
   - component: {fileID: 6088040244100252393}
   - component: {fileID: 112843118788035741}
@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 2402184975667035575}
   m_Layer: 7
   m_Name: ColoredEnemy
-  m_TagString: Enemy
+  m_TagString: ColoredEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -2
-  m_Sprite: {fileID: -1015362253, guid: 6d5cc92e593c05540aa822529a3007b0, type: 3}
+  m_Sprite: {fileID: -390007116, guid: e377fe674cf70ec41be92df8655b8509, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -90,7 +90,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-1594065539388380148
+--- !u!114 &7226393918130843041
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,11 +99,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3393424486779976714}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8294324b5168ebd48af24be19c3e2204, type: 3}
+  m_Script: {fileID: 11500000, guid: cbfa659840dc10e4cb38258f7de8a23e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.5
-  baseHealth: 20
+  baseHealth: 50
   currentHealth: 0
   damageToPlayer: 10
   stopDistance: 0.5
@@ -114,6 +114,17 @@ MonoBehaviour:
   deathSound: {fileID: 8829242649662499052}
   damageTextPrefab: {fileID: 4908666859188776841, guid: 3d2ae03f4303db3439eb36ec3754fff3, type: 3}
   canvasTransform: {fileID: 0}
+  spriteColors:
+  - {fileID: -390007116, guid: e377fe674cf70ec41be92df8655b8509, type: 3}
+  - {fileID: -1015362253, guid: 6d5cc92e593c05540aa822529a3007b0, type: 3}
+  - {fileID: -375570651, guid: d85386680af94914c84f6c67158231ab, type: 3}
+  - {fileID: -745095440, guid: c98f52683f07aaf40839363f10d92b1a, type: 3}
+  coloredExplosionPrefabs:
+  - {fileID: 8764921344791802960, guid: 29bba14cf20cf8544b9354d3bfb7da85, type: 3}
+  - {fileID: 8764921344791802960, guid: 12d4e472a2a18b94da1c0a572acb303a, type: 3}
+  - {fileID: 8764921344791802960, guid: 52595b865b5cb8c418451c6ed7fae74c, type: 3}
+  - {fileID: 8764921344791802960, guid: 7041a99d10d1de0438e23884a11151a8, type: 3}
+  currentColor: 
 --- !u!61 &5910776325432827222
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -139,10 +150,10 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 3968
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 3968
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -150,7 +161,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 7.0625, y: 11.1875}
+    oldSize: {x: 1.765625, y: 2.796875}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -195,7 +206,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 7.0625, y: 11.1875}
+    oldSize: {x: 1.765625, y: 2.796875}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

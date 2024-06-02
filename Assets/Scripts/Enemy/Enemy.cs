@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
 
     protected List<Transform> potentialTargets = new List<Transform>();
 
-    private void Awake() {
+    protected virtual void Awake() {
         if (UIManager.Instance.battleCanvasTransform == null) {
             Debug.LogError("BattleCanvas Transform is not set in the UIManager.");
             return;
@@ -89,6 +89,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.CompareTag("Player") || collision.CompareTag("WarriorGotchi"))
         {
+           
             potentialTargets.Add(collision.transform);
             UpdateTarget();
         }
@@ -98,6 +99,7 @@ public class Enemy : MonoBehaviour
     {
         if (potentialTargets.Contains(collision.transform))
         {
+         
             potentialTargets.Remove(collision.transform);
             UpdateTarget();
         }
@@ -118,14 +120,14 @@ public class Enemy : MonoBehaviour
 
     }
 
-    protected void UpdateTarget()
+    protected virtual void UpdateTarget()
     {
         if (potentialTargets.Count == 0)
         {
             target = player;  // Default back to player if no gotchis are close
             return;
         }
-
+       
         Transform closest = null;
         float minDistance = float.MaxValue;
         foreach (Transform t in potentialTargets)
@@ -138,10 +140,15 @@ public class Enemy : MonoBehaviour
                     minDistance = dist;
                 }           
             }
-        }
+            else {
+                Debug.Log(t +"null");
 
+            }
+        }
+   
         if (closest != null && closest != target)
         {
+  
             target = closest;
             if (attackRoutine != null)
             {

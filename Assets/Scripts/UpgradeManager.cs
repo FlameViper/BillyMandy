@@ -26,7 +26,9 @@ public class UpgradeManager : MonoBehaviour
     public int lazerCost = 30;
     public int lazerAttackSpeed = 1;
     public int lazerDamage = 100;
-
+    //Colored settings
+    public int maxNumberOfBounces=3;
+    public int coloredProjectileBounceUpgradeCost = 30;
     //Support Settings
     public int burstFreezCost = 30;
     public int vulnerableFreezCost = 30;
@@ -90,6 +92,7 @@ public class UpgradeManager : MonoBehaviour
     public TMP_Text lazerFireWeaponCostText;     
     public TMP_Text burstFreezCostText;    
     public TMP_Text vulnerableFreezCostText;    
+    public TMP_Text coloredProjectileBounceUpgradeCostText;    
    
 
 
@@ -138,7 +141,7 @@ public class UpgradeManager : MonoBehaviour
         blueFireWeaponCostText.text = "BlueFire:" + blueFireCost + " Coins";
         minigunWeaponCostText.text = "Minigun:" + minigunCost + " Coins";
         lazerFireWeaponCostText.text = "Lazer:" + lazerCost + " Coins";
-       
+        coloredProjectileBounceUpgradeCostText.text = "MaxNumberOfBounces:" + coloredProjectileBounceUpgradeCost + "Coins"; 
         // New Warrior Gotchi Upgrades
         gotchiSpawnRateUpgradeCostText.text = "Warrior Spawn rate -1s: " + gotchiSpawnRateUpgradeCost + " Coins";
         gotchiMaxUpgradeCostText.text = "+1 Maximum Warrior: " + gotchiMaxIncreaseUpgradeCost + " Coins";
@@ -265,7 +268,16 @@ public class UpgradeManager : MonoBehaviour
             AfterPurchase();
             Debug.Log("Freeze duration upgrade purchased. New duration: " + SupportProjectile.freezeDuration);
         }
-    }  
+    }
+    public void PurchaseColoredProjectileBounceUprgade() {
+        if (CanPurchaseUpgrade(coloredProjectileBounceUpgradeCost)) {
+            ColoredProjectile.maxNumberOfBounces ++;
+            resourceManager.SubtractCoins(freezeDurationUpgradeCost);
+            freezeDurationUpgradeCost += 10; 
+            AfterPurchase();
+            Debug.Log("Max Number Of Bounces upgrade purchased. New max nr: " + ColoredProjectile.maxNumberOfBounces);
+        }
+    }
     public void PurchaseBurstFreezeUpgrade()
     {
         if (CanPurchaseUpgrade(burstFreezCost))

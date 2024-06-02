@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6851634344883823223}
   - component: {fileID: 6475089495071336912}
   - component: {fileID: 7588725078646041512}
+  - component: {fileID: 942181023938088407}
   m_Layer: 8
   m_Name: ColoredProjectile
   m_TagString: ColoredProjectile
@@ -129,9 +130,12 @@ MonoBehaviour:
   speed: 10
   destroyDelay: 10
   destoryedOnBorderInpact: 1
-  destoryedOnEnemyInpact: 0
+  destoryedOnEnemyInpact: 1
   damageTextPrefab: {fileID: 4908666859188776841, guid: 3d2ae03f4303db3439eb36ec3754fff3, type: 3}
   canvasTransform: {fileID: 0}
+  chainLightning: {fileID: 6919800717130832529, guid: 08e1d94296411cb4399c453abdc12f63, type: 3}
+  gotBouncedOn: {fileID: 3207760742647441980, guid: be7fdb75526d41a4fb2228939424158c, type: 3}
+  damage: 20
   spriteRenderer: {fileID: 2344487439220774462}
   color: 
 --- !u!61 &7588725078646041512
@@ -153,20 +157,20 @@ BoxCollider2D:
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 128
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
+    m_Bits: 128
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0012284294, y: 0.0032572597}
+  m_Offset: {x: 0.097708225, y: 0.0032572597}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -177,5 +181,40 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.10326268, y: 0.114043176}
+  m_Size: {x: 0.3527546, y: 0.114043176}
   m_EdgeRadius: 0
+--- !u!58 &942181023938088407
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3442017150751071412}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.5

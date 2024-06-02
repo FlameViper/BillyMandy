@@ -16,6 +16,7 @@ TagManager:
   - EnemyProjectile
   - PlayerProjectile
   - ColoredProjectile
+  - ColoredEnemy
   layers:
   - Default
   - TransparentFX
