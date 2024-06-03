@@ -16,6 +16,7 @@ public class BossBigProjectile : EnemyProjectile {
     public Color baseColor;
     public bool transformed;
     public bool ricochet;
+    public bool triggered;
     private Coroutine ricochetCoroutine;
     private Coroutine explosionPulseCoroutine;
     public SpriteRenderer spriteRenderer;
@@ -78,21 +79,23 @@ public class BossBigProjectile : EnemyProjectile {
             //}
         }
         else {
-            if (other.CompareTag("Enemy")) {
+            if (other.CompareTag("Enemy") && !triggered) {
                 if (hitBackCountBoss > 7) {
+                    triggered = true;
                     GoldenSnitchBoss goldenSnitchBoss = other.GetComponent<GoldenSnitchBoss>();
                     int random = Random.Range(0, 3);
+                    Debug.Log("random:"+random);
                     if(random == 0) {
                         ricochetCoroutine ??= StartCoroutine(Ricochet(goldenSnitchBoss));
-                        Debug.Log("ricochet");
+                      
                     }
                     else if(goldenSnitchBoss.shield1Active || goldenSnitchBoss.shield2Active) {
                         goldenSnitchBoss.DestroyShield();
                         Destroy(gameObject);
-                        Debug.Log("Hit boss shield");
+                       
                     }
                     else {
-                        Debug.Log("Hit boss hp");
+                        
                         goldenSnitchBoss.TakeDamage(damageAmount, false);
                         goldenSnitchBoss.TakeDamage(damageAmount, false);
                         goldenSnitchBoss.TakeDamage(damageAmount, false);
