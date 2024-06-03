@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     public ProjectileThrower projectileThrower;
     public CoinSucker coinSucker;
     public SupportThrower supportThrower;
-    public int numberOfLifesLeft = 2;
+    public int numberOfLivesDuringBoss = 3;
     public int healthWhenFightingTheBoss;
 
     private void Awake() {
@@ -72,9 +72,10 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Player Died!");
         gameOverScreen.SetActive(true); // Show the Game Over screen
+        numberOfLivesDuringBoss--;
+        BattleManager.Instance.UpdateLivesText();
         yield return new WaitForSeconds(5); // Wait for 5 seconds
-        if (BattleManager.Instance.isBossLevel && numberOfLifesLeft>0) {
-            numberOfLifesLeft--;
+        if (BattleManager.Instance.isBossLevel && numberOfLivesDuringBoss>0) {
             isDead = false;
             currentHealth = healthWhenFightingTheBoss;
             healthText.text = currentHealth.ToString();

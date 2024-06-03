@@ -29,6 +29,7 @@ public class BossBigProjectile : EnemyProjectile {
     protected override void Start() {
         base.Start();
         currentHealth = maxHealth;
+        hitBackCountBoss = 0;
     }
 
     protected override void Update() {
@@ -47,6 +48,7 @@ public class BossBigProjectile : EnemyProjectile {
                 if (player != null) {
                     player.TakeDamage(damageAmount);
                 }
+                Debug.Log("Hit player");
                 Destroy(gameObject);
             }
             else if (other.CompareTag("PlayerProjectile")) {
@@ -71,6 +73,9 @@ public class BossBigProjectile : EnemyProjectile {
                     currentHealth = maxHealth;
                 }
             }
+            //else {
+            //    Debug.Log("buged transformed:"+transformed);
+            //}
         }
         else {
             if (other.CompareTag("Enemy")) {
@@ -79,13 +84,15 @@ public class BossBigProjectile : EnemyProjectile {
                     int random = Random.Range(0, 3);
                     if(random == 0) {
                         ricochetCoroutine ??= StartCoroutine(Ricochet(goldenSnitchBoss));
-                        return;
+                        Debug.Log("ricochet");
                     }
-                    if(goldenSnitchBoss.shield1Active || goldenSnitchBoss.shield2Active) {
+                    else if(goldenSnitchBoss.shield1Active || goldenSnitchBoss.shield2Active) {
                         goldenSnitchBoss.DestroyShield();
                         Destroy(gameObject);
+                        Debug.Log("Hit boss shield");
                     }
                     else {
+                        Debug.Log("Hit boss hp");
                         goldenSnitchBoss.TakeDamage(damageAmount, false);
                         goldenSnitchBoss.TakeDamage(damageAmount, false);
                         goldenSnitchBoss.TakeDamage(damageAmount, false);
@@ -123,7 +130,7 @@ public class BossBigProjectile : EnemyProjectile {
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if( collision != null ) {
-           if(collision.gameObject.CompareTag("EnemyProjectile")) {
+           if(collision.gameObject.CompareTag("EnemyProjectile") && ricochet) {
 
                 //if (Vector2.Distance(new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y + 3f), collision.transform.position) < 0.3f) {
                 //    Debug.Log(Vector2.Distance(new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y + 3f), collision.transform.position));

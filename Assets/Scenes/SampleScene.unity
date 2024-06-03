@@ -10242,7 +10242,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Lives left:'
+  m_Text: 'Lives:'
 --- !u!222 &1603772117
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12511,7 +12511,7 @@ MonoBehaviour:
   projectileThrower: {fileID: 1249886201}
   coinSucker: {fileID: 0}
   supportThrower: {fileID: 1944338056}
-  numberOfLifesLeft: 3
+  numberOfLivesDuringBoss: 3
   healthWhenFightingTheBoss: 0
 --- !u!50 &2059007155
 Rigidbody2D:

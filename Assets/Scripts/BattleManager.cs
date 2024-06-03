@@ -118,14 +118,14 @@ public class BattleManager : MonoBehaviour
             livesDuringBossText.gameObject.SetActive(true);
             Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
             ResourceManager.Instance.UpdateBossfightScore();
-            livesDuringBossText.text = "Lives left:" + Player.Instance.numberOfLifesLeft.ToString();
+            UpdateLivesText();
             bossChoice.SetActive(true);
         }
         else if (hasChoosen && level == EnemySpawner.Instance.bossSpawningLevel) {
             uiManager.EnableMainCamera();
             StartRound();
             bossChoice.SetActive(false);
-            livesDuringBossText.text = "Lives left:" + Player.Instance.numberOfLifesLeft.ToString();
+            UpdateLivesText();
         }
 
     }
@@ -150,5 +150,9 @@ public class BattleManager : MonoBehaviour
         hasChoosen = true;
         StartRound();
         bossChoice.SetActive(false);
+    }
+
+    public void UpdateLivesText() {
+        livesDuringBossText.text = "Lives:" + Player.Instance.numberOfLivesDuringBoss.ToString();
     }
 }

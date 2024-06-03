@@ -622,7 +622,7 @@ public class GoldenSnitchBoss : Enemy {
         Vector2 destination = new Vector2(hoverAbovePlayerPosition.x, hoverAbovePlayerPosition.y + 4f);
         float journeyLength = Vector2.Distance(startPosition, destination);
         float startTime = Time.time;
-        while (Vector2.Distance(transform.position,destination)>0.2f) {
+        while (Vector2.Distance(transform.position,destination)>0.5f) {
             // Calculate the fraction of the journey completed
             float distCovered = (Time.time - startTime) * moveSpeed;
             float fractionOfJourney = distCovered / journeyLength;

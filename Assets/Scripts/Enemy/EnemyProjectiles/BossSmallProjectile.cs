@@ -81,7 +81,12 @@ public class BossSmallProjectile : EnemyProjectile {
         }
         else{
             if (other.CompareTag("EnemyProjectile") ) {
-
+                BossBigProjectile isBossProjectile;
+                other.TryGetComponent(out isBossProjectile);
+                if(isBossProjectile != null) {
+                    Destroy(gameObject);
+                    return;
+                }
                 Destroy(other.gameObject);
                 if (hitBackCountBoss > 5) {
                     Destroy(gameObject);
