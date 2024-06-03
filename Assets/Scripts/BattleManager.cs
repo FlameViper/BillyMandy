@@ -16,7 +16,9 @@ public class BattleManager : MonoBehaviour
     private bool isRoundActive = false;
     public int level = 1; // Level counter
     public bool isBossLevel;
-
+    public bool playerHasScoreAsHpShield;
+    public bool hasChoosen;
+    [SerializeField] GameObject bossChoice;
     void Awake()   // I AM EDITING YOUR FILE
     {
         if (Instance != null && Instance != this)       //     I AM EDITING YOUR FILE
@@ -31,19 +33,37 @@ public class BattleManager : MonoBehaviour
 
     void StartRound()
     {
+
+        //if (level == EnemySpawner.Instance.bossSpawningLevel && !hasChoosen) {
+      
+        //    livesDuringBossText.gameObject.SetActive(true);
+        //    Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
+        //    livesDuringBossText.text = "Lives left:" + Player.Instance.numberOfLifesLeft.ToString();
+        //    bossChoice.SetActive(true);
+        //    return;
+        //}
+        //else {
+    
+        //    playerHasScoreAsHpShield = false;
+        //    livesDuringBossText.gameObject.SetActive(false);
+        //    bossChoice.SetActive(false);
+        //}
+        
+       
         isRoundActive = true;
         roundTimeLimit = 60;
         uiManager.EnableBattleCamera();
         enemySpawner.StartSpawning(level); // Pass current level to spawner
-        if (isBossLevel) {
-            livesDuringBossText.gameObject.SetActive(true);
-            Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
-            livesDuringBossText.text = "Lives left:" + Player.Instance.numberOfLifesLeft.ToString();
-        }
-        else {
-            livesDuringBossText.gameObject.SetActive(false);
+        //if (isBossLevel) {
+        //    livesDuringBossText.gameObject.SetActive(true);
+        //    Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
+        //    livesDuringBossText.text = "Lives left:" + Player.Instance.numberOfLifesLeft.ToString();
+        //}
+        //else {
+        //    playerHasScoreAsHpShield = false;
+        //    livesDuringBossText.gameObject.SetActive(false);
 
-        }
+        //}
         UpdateAllStealers(level);
         UpdateLevelDisplay(); // Update the level display at the start of each round
     }
@@ -113,8 +133,27 @@ public class BattleManager : MonoBehaviour
 
     public void OnUpgradesDone()
     {
-        uiManager.EnableMainCamera();
-        StartRound(); // Start new round with incremented level
+        //if (hasChoosen) {
+        //    StartRound();
+        //    return;
+        //}
+        if(level != EnemySpawner.Instance.bossSpawningLevel || hasChoosen) {
+            uiManager.EnableMainCamera();
+            StartRound(); // Start new round with incremented level
+            playerHasScoreAsHpShield = false;
+            livesDuringBossText.gameObject.SetActive(false);
+            bossChoice.SetActive(false);
+        }
+        else if(level == EnemySpawner.Instance.bossSpawningLevel && !hasChoosen) {
+            livesDuringBossText.gameObject.SetActive(true);
+            Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
+            ResourceManager.Instance.UpdateBossfightScore();
+            livesDuringBossText.text = "Lives left:" + Player.Instance.numberOfLifesLeft.ToString();
+            bossChoice.SetActive(true);
+        }
+        if (level != EnemySpawner.Instance.bossSpawningLevel) {
+            hasChoosen = false;
+        }
     }
 
     void UpdateLevelDisplay()
@@ -123,5 +162,19 @@ public class BattleManager : MonoBehaviour
             levelText.text = "Level: " + level;
         else
             Debug.LogError("Level text component is not assigned in the BattleManager.");
+    }
+
+    public void SetPlayerHasScoreAsHpShield() {
+        playerHasScoreAsHpShield = true;
+        hasChoosen = true;
+     
+        StartRound();
+        bossChoice.SetActive(false);
+    }
+    public void SetOffPlayerHasScoreAsHpShield() {
+        playerHasScoreAsHpShield = false;
+        hasChoosen = true;
+        StartRound();
+        bossChoice.SetActive(false);
     }
 }

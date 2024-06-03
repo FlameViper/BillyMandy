@@ -4,7 +4,7 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance;
 
-    private int score = 0;
+    private int score = 100000;
 
     void Awake()
     {
@@ -32,6 +32,7 @@ public class ScoreManager : MonoBehaviour
                 break;
         }
         score += baseScore * multiplier;
+    
         UpdateScoreDisplay();
     }
 

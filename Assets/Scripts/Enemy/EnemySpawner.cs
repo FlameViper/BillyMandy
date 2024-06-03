@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public static EnemySpawner Instance { get; private set; }
     public List<GameObject> enemyPrefabs;
     // spawnInterval is now set dynamically in StartSpawning
     private float spawnInterval;
@@ -12,7 +13,7 @@ public class EnemySpawner : MonoBehaviour
 
     public int specialEnemyStartLevel = 5;
     public int specialEnemyInterval = 1; // Spawns an extra CoinStealer every 5 levels past level 5
-    [SerializeField] int bossSpawningLevel = 100;
+    public int bossSpawningLevel = 100;
 
     private float spawnTimer;
     private Vector3 spawnAreaSize;
@@ -32,7 +33,16 @@ public class EnemySpawner : MonoBehaviour
     {
         ShouldSpawnBossNextRound = value;
     }
-
+    void Awake()   // I AM EDITING YOUR FILE
+{
+        if (Instance != null && Instance != this)       //     I AM EDITING YOUR FILE
+        {
+            Destroy(this.gameObject);
+        }
+        else {
+            Instance = this;
+        }
+    }
 
     void Start()
     {

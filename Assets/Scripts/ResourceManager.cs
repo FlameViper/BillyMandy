@@ -1,14 +1,15 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
-public class ResourceManager : MonoBehaviour
-{
+public class ResourceManager : MonoBehaviour {
+    public static ResourceManager Instance;
     [SerializeField] int initialCoinAmount = 10;
  
     public int Coins { get; private set; }
     public int EnemyCoins { get; private set; } // Coins collected by the enemy
-    public int Score { get; private set; } // Manage the score
+    public int Score { get; private set; }  // Manage the score
 
     public Text coinsText; // Existing UI text to display coins on the Upgrade screen
     public Text enemyCoinsText; // New UI text to display enemy coins
@@ -16,12 +17,21 @@ public class ResourceManager : MonoBehaviour
     public Text scoreText; // UI text to display score
 
     public EnemySpawner enemySpawner; // Reference to the EnemySpawner
-
+    private int scoreWhenFightingTheBoss;
+    void Awake() {
+        if (Instance != null) {
+            Destroy(gameObject);
+        }
+        else {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
     void Start()
     {
         Coins = initialCoinAmount; // Initialize coins to 0
         EnemyCoins = 0;
-        Score = 0;  // Initialize score to 0
+        Score = 500;  // Initialize score to 0
         UpdateUI(); // Update the UI with the starting data
         //enemySpawner.PrepareBossSpawn(true);
       
@@ -83,6 +93,7 @@ public class ResourceManager : MonoBehaviour
                 break;
         }
         Score += baseScore * multiplier;
+    
         UpdateUI(); // Update the score display
     }
 
@@ -114,5 +125,14 @@ public class ResourceManager : MonoBehaviour
 
         if (scoreText != null)
             scoreText.text = "Score: " + Score; // Display the current score
+    }
+
+    public void UpdateBossfightScore() {
+        scoreWhenFightingTheBoss = Score;
+   
+    }
+    public void ResetBossFightScore() {
+        Score = scoreWhenFightingTheBoss;
+        UpdateUI();
     }
 }

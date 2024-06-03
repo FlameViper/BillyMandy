@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 
     public int maxHealth = 100; // Maximum health of the player
     public int currentHealth; // Current health of the player
+    [SerializeField] int dmgToScore=100; // Current health of the player
     public GameObject gameOverScreen; // Drag your Game Over UI GameObject here in the inspector
     public Text healthText; // Drag your health Text UI component here in the inspector
     public AudioSource deathSound; // Reference to the AudioSource component that plays the death sound
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour
     public SupportThrower supportThrower;
     public int numberOfLifesLeft = 2;
     public int healthWhenFightingTheBoss;
+
     private void Awake() {
 
         if (Instance == null) {
@@ -42,8 +44,13 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         if (isDead) return; // If already dead, do nothing
+        if (BattleManager.Instance.playerHasScoreAsHpShield && ResourceManager.Instance.Score > 0) {
+            ResourceManager.Instance.AddScore(-dmgToScore);
+        }
+        else {
+            currentHealth -= damage;
 
-        currentHealth -= damage;
+        }
         if (currentHealth <= 0 && !isDead)
         {
             isDead = true; // Set isDead to true to prevent multiple calls
@@ -69,6 +76,7 @@ public class Player : MonoBehaviour
             currentHealth = healthWhenFightingTheBoss;
             healthText.text = currentHealth.ToString();
             gameOverScreen.SetActive(false);
+            ResourceManager.Instance.ResetBossFightScore();
             BattleManager.Instance.RestartRound();
             yield break;
         }

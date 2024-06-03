@@ -136,6 +136,7 @@ MonoBehaviour:
   chainLightning: {fileID: 6919800717130832529, guid: 08e1d94296411cb4399c453abdc12f63, type: 3}
   gotBouncedOn: {fileID: 3207760742647441980, guid: be7fdb75526d41a4fb2228939424158c, type: 3}
   damage: 20
+  damageIncrasedByProjectileDamage: 1
   spriteRenderer: {fileID: 2344487439220774462}
   color: 
 --- !u!61 &7588725078646041512

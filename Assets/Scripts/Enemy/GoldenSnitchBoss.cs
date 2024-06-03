@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class GoldenSnitchBoss : Enemy {
@@ -68,6 +69,7 @@ public class GoldenSnitchBoss : Enemy {
     [SerializeField] private float pointMoveSpeed = 1f;   
     [SerializeField] private float pointMoveRange = 5f; 
     [SerializeField] private float radius = 3f;
+    [SerializeField] private TextMeshProUGUI bossHpText;
     BossBigProjectile bossBigProjectile;
 
     private void Awake() {
@@ -81,9 +83,13 @@ public class GoldenSnitchBoss : Enemy {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         target = player;
         currentHealth = baseHealth;
+        if (BattleManager.Instance.playerHasScoreAsHpShield) {
+            currentHealth = currentHealth * 5;
+        }
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         baseColor = spriteRenderer.color;
+        bossHpText.text = "Boss Hp:"+ currentHealth.ToString();
     }
 
     protected override void Update() {
@@ -493,9 +499,9 @@ public class GoldenSnitchBoss : Enemy {
                 currentHealth -= damage;
                 DisplayDamage(damage, transform.position);
             }
-           
 
         }
+        bossHpText.text = "Boss Hp:" + currentHealth.ToString();
         // Play damage sound effect
         if (damageSound != null) {
             damageSound.Play();

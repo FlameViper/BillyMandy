@@ -8,12 +8,16 @@ public class ColoredProjectile : Projectile {
 
     [SerializeField] private GameObject chainLightning;
     [SerializeField] private GameObject gotBouncedOn;
-  
+    [SerializeField] private int damage=20;
+    [SerializeField] private bool damageIncrasedByProjectileDamage=true;
     public SpriteRenderer spriteRenderer;
     public string color;
     protected override void Start() {
         base.Start();
-      
+        if (!damageIncrasedByProjectileDamage) {
+            damageAmount = damage;
+
+        }
         // Rotate the sprite to face the direction of movement
         transform.rotation = Quaternion.Euler(0, 0, GetAngleFromVectorFloat(direction));
     }
