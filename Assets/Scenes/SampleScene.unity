@@ -12504,6 +12504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  dmgToScore: 100
   gameOverScreen: {fileID: 928683896}
   healthText: {fileID: 1755080495}
   deathSound: {fileID: 2059007156}

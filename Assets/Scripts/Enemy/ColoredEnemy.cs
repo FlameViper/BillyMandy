@@ -31,7 +31,7 @@ public class ColoredEnemy : Enemy {
             target = player;  // Default back to player if no gotchis are close
             return;
         }
-        Debug.Log("here2");
+    
         Transform closest = null;
         float minDistance = float.MaxValue;
         foreach (Transform t in potentialTargets) {
@@ -47,9 +47,9 @@ public class ColoredEnemy : Enemy {
 
             }
         }
-        Debug.Log(closest.name + "closest");
+      
         if (closest != null && closest != target) {
-            Debug.Log("here3");
+           
             target = closest;
             if (attackRoutine != null) {
                 StopCoroutine(attackRoutine);
@@ -141,9 +141,9 @@ public class ColoredEnemy : Enemy {
                 return coloredExplosionPrefabs[0];
             case "Green":
                 return coloredExplosionPrefabs[1];
-            case "Yellow":
-                return coloredExplosionPrefabs[2];
             case "Purple":
+                return coloredExplosionPrefabs[2];
+            case "Yellow":
                 return coloredExplosionPrefabs[3];
             default:
                 return coloredExplosionPrefabs[0];

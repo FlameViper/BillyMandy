@@ -17,23 +17,9 @@ public class ColoredExplosion : MonoBehaviour {
         PlayColoredExplosion();
         StartCoroutine(DestroyAfterDelay());
     }
-    private void Update() {
-
-        //if (numberOfColoredEnemies >= 3 && !exploded) {
-        //    exploded = true;
-        //    PlayColoredExplosion();
-            
-        //}
-
-    }
+   
     private void OnTriggerEnter2D(Collider2D collision) {
-        //if (collision.CompareTag("ColoredEnemy") && !exploded) {
-        //    ColoredEnemy coloredEnemy = collision.gameObject.GetComponent<ColoredEnemy>();
-        //    if (coloredEnemy.currentColor == color) {
-        //        numberOfColoredEnemies++;
-        //    }
-
-        //}
+   
         if (collision == null) {
             return;
         }
@@ -45,17 +31,7 @@ public class ColoredExplosion : MonoBehaviour {
         }
     }
 
-    //private void OnTriggerStay2D(Collider2D collision) {
-    //    if (collision == null) {
-    //        return;
-    //    }
-    //    if (collision.CompareTag("ColoredEnemy") /*&& exploded*/) {
-    //        //if its explosion dmg it dosent triggr others explosions
-    //        collision.gameObject.GetComponent<Enemy>().TakeDamage(200,false);
-          
 
-    //    }
-    //}
 
     private void PlayColoredExplosion() {
         switch (color) {

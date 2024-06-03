@@ -71,11 +71,14 @@ public class GoldenSnitchBoss : Enemy {
     [SerializeField] private float radius = 3f;
     [SerializeField] private TextMeshProUGUI bossHpText;
     BossBigProjectile bossBigProjectile;
-
+    private int bossStartingHealth;
     private void Awake() {
         if (Instance == null) {
-
             Instance = this;
+
+        }
+        else {
+            Destroy(gameObject);
         }
     }
 
@@ -90,6 +93,7 @@ public class GoldenSnitchBoss : Enemy {
         rb = GetComponent<Rigidbody2D>();
         baseColor = spriteRenderer.color;
         bossHpText.text = "Boss Hp:"+ currentHealth.ToString();
+        bossStartingHealth = currentHealth;
     }
 
     protected override void Update() {
@@ -251,13 +255,7 @@ public class GoldenSnitchBoss : Enemy {
         }
 
 
-        //}
-        //else if(phase2Active) {
-        //    if (moveToEnemyPathCoroutine == null) {
-        //        moveToEnemyPathCoroutine = StartCoroutine(MoveToEnemyPath());
-
-        //    }
-        //}
+    
     }
     private IEnumerator MoveInCircle( float speed, float duration, float radius) {
 
@@ -484,6 +482,10 @@ public class GoldenSnitchBoss : Enemy {
 
 
         if(shield1Active || shield2Active) {
+            if (shield2Active && currentHealth<= bossStartingHealth / 4) {
+
+                return;
+            }
             TakeShieldDamage(damage);
            
             return;
@@ -506,7 +508,7 @@ public class GoldenSnitchBoss : Enemy {
         if (damageSound != null) {
             damageSound.Play();
         }
-        if(currentHealth < baseHealth / 2) {
+        if(currentHealth < bossStartingHealth / 2) {
             phase2Active = true;
             phase1Active = false;
 
@@ -639,13 +641,11 @@ public class GoldenSnitchBoss : Enemy {
 
         OnExplosionTriggerd?.Invoke(this, EventArgs.Empty);
         bossBigProjectile = null;
-        //explosionJustTriggeredCortuine ??= StartCoroutine(ExplosionEffect());
+      
     }
 
-    //private IEnumerator ExplosionEffect() {
-    //    explosionJustTriggered = true;
-    //    yield return new WaitForSeconds(10f);
-    //    explosionJustTriggered = false;
-    //    explosionJustTriggeredCortuine = null;
-    //}
+
+    private void OnDestroy() {
+        transform.DOKill();
+    }
 }

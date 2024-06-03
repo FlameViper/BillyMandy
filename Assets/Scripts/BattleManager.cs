@@ -19,9 +19,9 @@ public class BattleManager : MonoBehaviour
     public bool playerHasScoreAsHpShield;
     public bool hasChoosen;
     [SerializeField] GameObject bossChoice;
-    void Awake()   // I AM EDITING YOUR FILE
+    void Awake()  
     {
-        if (Instance != null && Instance != this)       //     I AM EDITING YOUR FILE
+        if (Instance != null && Instance != this)      
         {
             Destroy(this.gameObject) ; 
         }
@@ -32,38 +32,11 @@ public class BattleManager : MonoBehaviour
     }
 
     void StartRound()
-    {
-
-        //if (level == EnemySpawner.Instance.bossSpawningLevel && !hasChoosen) {
-      
-        //    livesDuringBossText.gameObject.SetActive(true);
-        //    Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
-        //    livesDuringBossText.text = "Lives left:" + Player.Instance.numberOfLifesLeft.ToString();
-        //    bossChoice.SetActive(true);
-        //    return;
-        //}
-        //else {
-    
-        //    playerHasScoreAsHpShield = false;
-        //    livesDuringBossText.gameObject.SetActive(false);
-        //    bossChoice.SetActive(false);
-        //}
-        
-       
+    {    
         isRoundActive = true;
         roundTimeLimit = 60;
         uiManager.EnableBattleCamera();
         enemySpawner.StartSpawning(level); // Pass current level to spawner
-        //if (isBossLevel) {
-        //    livesDuringBossText.gameObject.SetActive(true);
-        //    Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
-        //    livesDuringBossText.text = "Lives left:" + Player.Instance.numberOfLifesLeft.ToString();
-        //}
-        //else {
-        //    playerHasScoreAsHpShield = false;
-        //    livesDuringBossText.gameObject.SetActive(false);
-
-        //}
         UpdateAllStealers(level);
         UpdateLevelDisplay(); // Update the level display at the start of each round
     }
@@ -75,11 +48,7 @@ public class BattleManager : MonoBehaviour
             stealer.UpdateAttractionPower(level);
         }
     }
-    //private void Start() {
-    //    if (isBossLevel) {
-    //        Player.Instance.healthWhenFightingTheBoss = Player.Instance.currentHealth;
-    //    }
-    //}
+
 
     void Update()
     {
@@ -137,12 +106,13 @@ public class BattleManager : MonoBehaviour
         //    StartRound();
         //    return;
         //}
-        if(level != EnemySpawner.Instance.bossSpawningLevel || hasChoosen) {
+        if(level != EnemySpawner.Instance.bossSpawningLevel) {
             uiManager.EnableMainCamera();
-            StartRound(); // Start new round with incremented level
+            StartRound(); 
             playerHasScoreAsHpShield = false;
             livesDuringBossText.gameObject.SetActive(false);
             bossChoice.SetActive(false);
+            hasChoosen = false;
         }
         else if(level == EnemySpawner.Instance.bossSpawningLevel && !hasChoosen) {
             livesDuringBossText.gameObject.SetActive(true);
@@ -151,9 +121,13 @@ public class BattleManager : MonoBehaviour
             livesDuringBossText.text = "Lives left:" + Player.Instance.numberOfLifesLeft.ToString();
             bossChoice.SetActive(true);
         }
-        if (level != EnemySpawner.Instance.bossSpawningLevel) {
-            hasChoosen = false;
+        else if (hasChoosen && level == EnemySpawner.Instance.bossSpawningLevel) {
+            uiManager.EnableMainCamera();
+            StartRound();
+            bossChoice.SetActive(false);
+            livesDuringBossText.text = "Lives left:" + Player.Instance.numberOfLifesLeft.ToString();
         }
+
     }
 
     void UpdateLevelDisplay()
