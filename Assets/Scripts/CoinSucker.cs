@@ -13,6 +13,9 @@ public class CoinSucker : MonoBehaviour
     }
     void Update()
     {
+        if (TowerDefenseManager.Instance.isInPreparationPhase) {
+            return;
+        }
         // Constantly check if the sucker should be active and manage coin attraction accordingly
         if (isSuckerActive)
         {

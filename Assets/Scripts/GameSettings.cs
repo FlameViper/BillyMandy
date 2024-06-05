@@ -8,7 +8,8 @@ public class GameSettings : MonoBehaviour
 
     public enum Difficulty { Easy, Medium, Hard }
     public Difficulty currentDifficulty = Difficulty.Medium; // Default difficulty
-
+    public bool MusicOFF=false;
+    public bool SFXOFF = false;
     void Awake()
     {
         if (Instance == null)

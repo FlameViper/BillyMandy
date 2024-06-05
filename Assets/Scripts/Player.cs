@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,7 +12,9 @@ public class Player : MonoBehaviour
     public int currentHealth; // Current health of the player
     [SerializeField] int dmgToScore=100; // Current health of the player
     public GameObject gameOverScreen; // Drag your Game Over UI GameObject here in the inspector
+    public GameObject gameOverScreenTowerDefense; // Drag your Game Over UI GameObject here in the inspector
     public Text healthText; // Drag your health Text UI component here in the inspector
+    public TextMeshProUGUI TDHealthText; // Drag your health Text UI component here in the inspector
     public AudioSource deathSound; // Reference to the AudioSource component that plays the death sound
     private bool isDead = false; // Flag to prevent multiple death sequences
     //projectile ref
@@ -57,7 +60,10 @@ public class Player : MonoBehaviour
         if (currentHealth <= 0 && !isDead)
         {
             isDead = true; // Set isDead to true to prevent multiple calls
-            deathSound.Play(); // Play the death sound
+            if (deathSound != null && !GameSettings.Instance.SFXOFF) {
+                deathSound.Play(); // Play the death sound
+
+            }
             StartCoroutine(HandleDeath()); // Start the coroutine to handle death
         }
     }
@@ -65,14 +71,19 @@ public class Player : MonoBehaviour
     private void UpdateHealthUI()
     {
         if (healthText != null)
-            healthText.text = "HP " + currentHealth + "/" + maxHealth; // Displays as 'currentHealth/maxHealth', e.g., '50/100'
+            healthText.text = "HP " + currentHealth + "/" + maxHealth; 
+        if (TDHealthText != null)
+            TDHealthText.text = "HP " + currentHealth + "/" + maxHealth; // Displays as 'currentHealth/maxHealth', e.g., '50/100'
     }
 
     IEnumerator HandleDeath()
     {
         Debug.Log("Player Died!");
         gameOverScreen.SetActive(true); // Show the Game Over screen
-        numberOfLivesDuringBoss--;
+        gameOverScreenTowerDefense.SetActive(true); // Show the Game Over screen
+        if (BattleManager.Instance.isBossLevel) {
+            numberOfLivesDuringBoss--;
+        }
         BattleManager.Instance.UpdateLivesText();
         yield return new WaitForSeconds(5); // Wait for 5 seconds
         if (BattleManager.Instance.isBossLevel && numberOfLivesDuringBoss>0) {
@@ -80,6 +91,7 @@ public class Player : MonoBehaviour
             currentHealth = healthWhenFightingTheBoss;
             healthText.text = currentHealth.ToString();
             gameOverScreen.SetActive(false);
+            gameOverScreenTowerDefense.SetActive(false);
             ResourceManager.Instance.ResetBossFightScore();
             BattleManager.Instance.RestartRound();
             yield break;

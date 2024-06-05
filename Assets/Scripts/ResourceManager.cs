@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
@@ -15,6 +16,9 @@ public class ResourceManager : MonoBehaviour {
     public Text enemyCoinsText; // New UI text to display enemy coins
     public Text battleCoinsText; // Added UI text to display coins on the Battle screen
     public Text scoreText; // UI text to display score
+    public TextMeshProUGUI TDScoreText;
+    public TextMeshProUGUI TDCoinsText;
+   
 
     public EnemySpawner enemySpawner; // Reference to the EnemySpawner
     private int scoreWhenFightingTheBoss;
@@ -125,6 +129,13 @@ public class ResourceManager : MonoBehaviour {
 
         if (scoreText != null)
             scoreText.text = "Score: " + Score; // Display the current score
+
+        if(TDScoreText != null) 
+            TDScoreText.text = "Score: " + Score;
+
+        if (TDCoinsText != null)
+            TDCoinsText.text = "Coins: " + Coins;
+
     }
 
     public void UpdateBossfightScore() {

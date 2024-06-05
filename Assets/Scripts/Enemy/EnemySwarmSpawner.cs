@@ -39,7 +39,7 @@ public class EnemySwarmSpawner : Enemy
 
         
         // Play damage sound effect
-        if (damageSound != null) {
+        if (damageSound != null && !GameSettings.Instance.SFXOFF) {
             damageSound.Play();
         }
 
@@ -59,7 +59,7 @@ public class EnemySwarmSpawner : Enemy
         }
 
         // Play death sound effect
-        if (deathSound != null) {
+        if (deathSound != null && !GameSettings.Instance.SFXOFF) {
             deathSound.Play();
         }
 

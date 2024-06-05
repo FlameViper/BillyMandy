@@ -11,15 +11,24 @@ public class Citizen : MonoBehaviour
     private Vector2 targetPosition;
     private float lastShotTime = 0;  // Track the last time a shot was fired
     private float nextShotTime;      // Time until the next shot
-
+    private Vector2 startingPosition;
     void Start()
     {
+       
         SetRandomTargetPosition();
         SetNextShotTime();
+        BattleManager.Instance.OnUpgradesDoneEvent += BattleManager_OnUpgradesDoneEvent;
+    }
+
+    private void BattleManager_OnUpgradesDoneEvent(object sender, System.EventArgs e) {
+        SetCitizenStartingPosition();
     }
 
     void Update()
     {
+        if (TowerDefenseManager.Instance.isInPreparationPhase) {
+            return;
+        }
         MoveTowardsTarget();
         ShootProjectile();
     }
@@ -27,10 +36,10 @@ public class Citizen : MonoBehaviour
     private void MoveTowardsTarget()
     {
         // Move towards the target position
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        transform.localPosition = Vector2.MoveTowards(transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
 
         // Check if the target position has been reached
-        if ((Vector2)transform.position == targetPosition)
+        if ((Vector2)transform.localPosition == targetPosition)
         {
             SetRandomTargetPosition();
         }
@@ -39,8 +48,8 @@ public class Citizen : MonoBehaviour
     private void SetRandomTargetPosition()
     {
         // Generate a random position within the boundaries
-        float randomX = Random.Range(boundaryMin.x, boundaryMax.x);
-        float randomY = Random.Range(boundaryMin.y, boundaryMax.y);
+        float randomX = Random.Range(boundaryMin.x,boundaryMax.x);
+        float randomY = Random.Range( boundaryMin.y, boundaryMax.y);
         targetPosition = new Vector2(randomX, randomY);
     }
 
@@ -70,5 +79,9 @@ public class Citizen : MonoBehaviour
     {
         // Randomize the next shot time within +/- 10% of the base interval
         nextShotTime = baseShootingInterval * Random.Range(0.8f, 1.2f);
+    }
+
+    private void SetCitizenStartingPosition() {
+        startingPosition = transform.localPosition;
     }
 }

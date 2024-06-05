@@ -181,7 +181,7 @@ public class Enemy : MonoBehaviour
 
         }
         // Play damage sound effect
-        if (damageSound != null)
+        if (damageSound != null && !GameSettings.Instance.SFXOFF)
         {
             damageSound.Play();
         }
@@ -206,7 +206,7 @@ public class Enemy : MonoBehaviour
         }
 
         // Play death sound effect
-        if (deathSound != null)
+        if (deathSound != null && !GameSettings.Instance.SFXOFF)
         {
             deathSound.Play();
         }
@@ -297,4 +297,6 @@ public class Enemy : MonoBehaviour
         // Ensure the text is visible above everything else
         damageTextObject.transform.localPosition = new Vector3(damageTextObject.transform.localPosition.x, damageTextObject.transform.localPosition.y, 0);
     }
+
+   
 }

@@ -43,24 +43,9 @@ public class ProjectileThrower : MonoBehaviour
 
     void Update()
     {
-        //if (isThrowerActive && Input.GetKeyDown(KeyCode.Alpha1)) {
-        //    currentColoredProjectileModeIndex++;
-
-        //    if (currentColoredProjectileModeIndex > 2) {
-
-        //        currentColoredProjectileModeIndex = 0;
-        //    }
-
-        //}
-        //if (isThrowerActive && Input.GetKeyDown(KeyCode.Alpha2) ) {
-        //    currentColoredProjectileTypeIndex++;
-
-        //    if (currentColoredProjectileTypeIndex > 3) {
-
-        //        currentColoredProjectileTypeIndex = 0;
-        //    }
-
-        //}
+        if (TowerDefenseManager.Instance.isInPreparationPhase) {
+            return;
+        }
         if (isThrowerActive && Input.GetKeyDown(KeyCode.Alpha1)) {
             currentColoredProjectileModeIndex = (currentColoredProjectileModeIndex + 1) % 3;
         }
@@ -144,14 +129,11 @@ public class ProjectileThrower : MonoBehaviour
             }
 
             // Play the attack sound if the AudioSource and clip are available
-            if (attackSound != null)
+            if (attackSound != null && !GameSettings.Instance.SFXOFF)
             {
                 attackSound.Play();
             }
-            else
-            {
-                Debug.LogError("No AudioSource component found on the GameObject!");
-            }
+
         }
 
 

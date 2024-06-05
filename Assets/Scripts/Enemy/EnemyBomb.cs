@@ -44,7 +44,7 @@ public class EnemyBomb : Enemy
 
         }
         // Play damage sound effect
-        if (damageSound != null) {
+        if (damageSound != null && !GameSettings.Instance.SFXOFF) {
             damageSound.Play();
         }
 
@@ -70,7 +70,7 @@ public class EnemyBomb : Enemy
         }
 
         // Play death sound effect
-        if (deathSound != null) {
+        if (deathSound != null && !GameSettings.Instance.SFXOFF) {
             deathSound.Play();
         }
 

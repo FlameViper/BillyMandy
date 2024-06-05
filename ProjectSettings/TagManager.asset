@@ -17,6 +17,7 @@ TagManager:
   - PlayerProjectile
   - ColoredProjectile
   - ColoredEnemy
+  - TowerDefenseTile
   layers:
   - Default
   - TransparentFX
@@ -30,8 +31,8 @@ TagManager:
   - Frozen
   - Player
   - FreezableProjectile
-  - 
-  - 
+  - TowerDefenseTerrain
+  - TowerDefenseTile
   - 
   - 
   - 

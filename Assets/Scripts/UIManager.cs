@@ -26,16 +26,19 @@ public class UIManager : MonoBehaviour
     public Camera battleCamera;
     public Camera upgradesCamera;
     public Camera example2Camera;
+    public Camera towerDefenseCamera;
 
     public AudioSource mainMusic;
     public AudioSource battleMusic;
     public AudioSource upgradesMusic;
     public AudioSource example2Music;
+    public AudioSource towerDefenseMusic;
 
     public Canvas mainCanvas;
     public Canvas battleCanvas;
     public Canvas upgradesCanvas;
     public Canvas example2Canvas;
+    public Canvas towerDefenseCanvas;
 
     public GameObject player; // Reference to the player GameObject
 
@@ -50,6 +53,7 @@ public class UIManager : MonoBehaviour
         SetCameraActive(battleCamera, true, battleCanvas, battleMusic);
         SetCameraActive(upgradesCamera, false, upgradesCanvas, upgradesMusic);
         SetCameraActive(example2Camera, false, example2Canvas, example2Music);
+        SetCameraActive(towerDefenseCamera, false, towerDefenseCanvas, towerDefenseMusic);
         SetPlayerChildrenActive(true); // Enable Player's children
     }
 
@@ -59,7 +63,16 @@ public class UIManager : MonoBehaviour
         SetCameraActive(battleCamera, false, battleCanvas, battleMusic);
         SetCameraActive(upgradesCamera, false, upgradesCanvas, upgradesMusic);
         SetCameraActive(example2Camera, false, example2Canvas, example2Music);
+        SetCameraActive(towerDefenseCamera, false, towerDefenseCanvas, towerDefenseMusic);
         SetPlayerChildrenActive(false); // Disable Player's children
+    }
+    public void EnableTowerDefenseCamera() {
+        SetCameraActive(mainCamera, false, mainCanvas, mainMusic);
+        SetCameraActive(battleCamera, false, battleCanvas, battleMusic);
+        SetCameraActive(upgradesCamera, false, upgradesCanvas, upgradesMusic);
+        SetCameraActive(example2Camera, false, example2Canvas, example2Music);
+        SetCameraActive(towerDefenseCamera, true, towerDefenseCanvas, towerDefenseMusic);
+        SetPlayerChildrenActive(true); // Disable Player's children
     }
 
     public void EnableUpgradesCamera()
@@ -68,6 +81,7 @@ public class UIManager : MonoBehaviour
         SetCameraActive(battleCamera, false, battleCanvas, battleMusic);
         SetCameraActive(upgradesCamera, true, upgradesCanvas, upgradesMusic);
         SetCameraActive(example2Camera, false, example2Canvas, example2Music);
+        SetCameraActive(towerDefenseCamera, false, towerDefenseCanvas, towerDefenseMusic);
         SetPlayerChildrenActive(false); // Disable Player's children
     }
 
@@ -77,6 +91,7 @@ public class UIManager : MonoBehaviour
         SetCameraActive(battleCamera, false, battleCanvas, battleMusic);
         SetCameraActive(upgradesCamera, false, upgradesCanvas, upgradesMusic);
         SetCameraActive(example2Camera, true, example2Canvas, example2Music);
+        SetCameraActive(towerDefenseCamera, false, towerDefenseCanvas, towerDefenseMusic);
         SetPlayerChildrenActive(false); // Disable Player's children
     }
 

@@ -17,7 +17,7 @@ public class BigEnemy : Enemy {
         }
 
         // Play death sound effect
-        if (deathSound != null) {
+        if (deathSound != null && !GameSettings.Instance.SFXOFF) {
             deathSound.Play();
         }
 

@@ -22,6 +22,10 @@ public class SupportThrower : MonoBehaviour
     }
     void Update()
     {
+        if (TowerDefenseManager.Instance.isInPreparationPhase) {
+            return;
+        }
+
         if (isSupportActive && Input.GetMouseButtonDown(0) && Time.time - lastSupportAttackTime >= delayBetweenAttacks / supportAttackSpeed)
         {
             
