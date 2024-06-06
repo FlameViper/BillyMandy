@@ -19,11 +19,12 @@ public class EnemyAssasinBungee : Enemy {
 
 
     protected override void Start() {
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         target = player;
         currentHealth = baseHealth;
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         originalPosition = transform.position;
+        baseColor = spriteRenderer.color;
         PickRandomPosition(player.position);
     }
 

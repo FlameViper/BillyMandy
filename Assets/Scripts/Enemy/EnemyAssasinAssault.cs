@@ -16,10 +16,11 @@ public class EnemyAssasinAssault : Enemy {
 
 
     protected override void Start() {
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         target = player;
         currentHealth = baseHealth;
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        baseColor = spriteRenderer.color;
         int random = Random.Range(0, 2);
         if (random == 0) {
             semiCircleAngle = 0f;

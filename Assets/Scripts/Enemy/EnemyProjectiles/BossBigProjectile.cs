@@ -42,14 +42,17 @@ public class BossBigProjectile : EnemyProjectile {
 
 
     protected override void OnTriggerEnter2D(Collider2D other) {
-      
-        if (!transformed) {
+        if (other.CompareTag("Border")) {
+            Destroy(gameObject);
+            return;
+        }
+            if (!transformed) {
             if (other.CompareTag("Player")) {
                 Player player = other.GetComponent<Player>();
                 if (player != null) {
                     player.TakeDamage(damageAmount);
                 }
-                Debug.Log("Hit player");
+               
                 Destroy(gameObject);
             }
             else if (other.CompareTag("PlayerProjectile")) {
@@ -74,9 +77,7 @@ public class BossBigProjectile : EnemyProjectile {
                     currentHealth = maxHealth;
                 }
             }
-            //else {
-            //    Debug.Log("buged transformed:"+transformed);
-            //}
+           
         }
         else {
             if (other.CompareTag("Enemy") && !triggered) {
@@ -84,7 +85,7 @@ public class BossBigProjectile : EnemyProjectile {
                     triggered = true;
                     GoldenSnitchBoss goldenSnitchBoss = other.GetComponent<GoldenSnitchBoss>();
                     int random = Random.Range(0, 3);
-                    Debug.Log("random:"+random);
+                   
                     if(random == 0) {
                         ricochetCoroutine ??= StartCoroutine(Ricochet(goldenSnitchBoss));
                       
@@ -135,17 +136,11 @@ public class BossBigProjectile : EnemyProjectile {
         if( collision != null ) {
            if(collision.gameObject.CompareTag("EnemyProjectile") && ricochet) {
 
-                //if (Vector2.Distance(new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y + 3f), collision.transform.position) < 0.3f) {
-                //    Debug.Log(Vector2.Distance(new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y + 3f), collision.transform.position));
-                //    Destroy(collision.gameObject);
-                //}
-                //else {
-                    Vector2  direction = (transform.position - collision.transform.position).normalized;
-                    EnemyProjectile enemyProjectile = collision.gameObject.GetComponent<EnemyProjectile>();
-                    enemyProjectile.SetDirection(direction);
-                    enemyProjectile.speed = 1f;
+                Vector2  direction = (transform.position - collision.transform.position).normalized;
+                EnemyProjectile enemyProjectile = collision.gameObject.GetComponent<EnemyProjectile>();
+                enemyProjectile.SetDirection(direction);
+                enemyProjectile.speed = 1f;
 
-               // }
 
 
                 

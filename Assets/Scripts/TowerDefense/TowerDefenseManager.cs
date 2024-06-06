@@ -43,7 +43,7 @@ public class TowerDefenseManager : MonoBehaviour {
     }
 
     private void BattleManager_OnUpgradesDoneEvent(object sender, System.EventArgs e) {
-        if(BattleManager.Instance.level % 10 == 0) {
+        if(BattleManager.Instance.level % 10 == 0 && BattleManager.Instance.level != EnemySpawner.Instance.bossSpawningLevel) {
             startWaveButton.gameObject.SetActive(true);
             isInPreparationPhase = true;
             checkingValidPath = false;

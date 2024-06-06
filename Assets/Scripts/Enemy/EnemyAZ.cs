@@ -16,6 +16,9 @@ public class EnemyAZ : Enemy
     }
     protected override void Update() {
         base.Update();
+        if (isFrozen) {
+            return;
+        }
         // Shooting logic
         if (Vector3.Distance(transform.position, player.position) <= attackRange) {
             if (Time.time - lastAttackTime >= 1f / attackSpeed) {
