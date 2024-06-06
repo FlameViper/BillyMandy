@@ -114,7 +114,13 @@ public class EnemySpawner : MonoBehaviour
             shouldSpawnBossNextRound = false; // Reset the flag after spawning
             yield break;
         }
+        if (ResourceManager.Instance.EnemyCoins >= 3) {
 
+            ResourceManager.Instance.AddEnemyCoins(-3);
+            Debug.Log("spawnedboss");
+            Vector3 randomSpawnPosition = CalculateSpawnPosition();
+            GameObject boss = Instantiate(miniBossEnemyPrefab, randomSpawnPosition, Quaternion.identity);
+        }
         int specialEnemyCount = 0;
         if (level >= specialEnemyStartLevel)
         {
@@ -128,12 +134,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 spawnTimer = 0f;
                 Vector3 randomSpawnPosition = CalculateSpawnPosition();
-                if (ResourceManager.Instance.EnemyCoins >= 3) {
-
-                    ResourceManager.Instance.AddEnemyCoins(-3);
-                    Debug.Log("spawnedboss");
-                    GameObject boss = Instantiate(miniBossEnemyPrefab, randomSpawnPosition, Quaternion.identity);
-                }
+              
 
                 GameObject selectedPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
                 if (specialEnemyCount > 0 && Random.Range(0, maxEnemies) < specialEnemyCount)
