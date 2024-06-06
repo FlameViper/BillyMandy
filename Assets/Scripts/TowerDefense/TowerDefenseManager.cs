@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TowerDefenseManager : MonoBehaviour {
@@ -17,6 +18,7 @@ public class TowerDefenseManager : MonoBehaviour {
     [SerializeField] private GameObject invalidPathWarning;
     [SerializeField] private Camera towerDefenseCamera; 
     public int SelectedTowerIndex { get; private set; } = -1;
+  
     public bool isInPreparationPhase;
     public bool checkingValidPath;
     private Coroutine invalidPathWarningCoroutine;
@@ -64,13 +66,22 @@ public class TowerDefenseManager : MonoBehaviour {
                 if (hit2D.collider.CompareTag("TowerDefenseTile")) {
                     return;
                 }
+                else if (hit2D.collider.CompareTag("TowerDefenseShopItem")) {
+                    
+                    return;
+                }
                 else {
+                  
                     
                     UnselectTower();
                   
                 }
             }
             else {
+                if (IsClickingOnShopItem()) {
+                    return;
+                }
+                
 
                 UnselectTower();
             }
@@ -91,21 +102,36 @@ public class TowerDefenseManager : MonoBehaviour {
     }
 
     public void SelectTowerIndex(int index) {
-        if(SelectedTowerIndex != -1) {
+      
+
+        if (SelectedTowerIndex == index) {
+           
+            UnselectTower();
+            return;
+        }
+
+        if (SelectedTowerIndex != -1) {
             UnselectTower();
         }
+
         SelectedTowerIndex = index;
     }
+
     public void SelectTower(Image image) {
-       
+        if (currentSelectedTowerImage != null) {
+            currentSelectedTowerImage.color = Color.white;
+        }
+
         currentSelectedTowerImage = image;
         currentSelectedTowerImage.color = Color.green;
     }
+
     public void UnselectTower() {
         SelectedTowerIndex = -1;
+
         if (currentSelectedTowerImage != null) {
             currentSelectedTowerImage.color = Color.white;
-
+            currentSelectedTowerImage = null;
         }
     }
 
@@ -141,5 +167,19 @@ public class TowerDefenseManager : MonoBehaviour {
         }
 
     }
+    private bool IsClickingOnShopItem() {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current) {
+            position = new Vector2(Input.mousePosition.x, Input.mousePosition.y)
+        };
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        foreach (RaycastResult result in results) {
+            if (result.gameObject.CompareTag("TowerDefenseShopItem")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }

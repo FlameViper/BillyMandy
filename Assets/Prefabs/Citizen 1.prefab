@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.3857, y: -2.2786, z: -0.06847219}
-  m_LocalScale: {x: 0.09, y: 0.09, z: 1}
+  m_LocalScale: {x: 0.13, y: 0.13, z: 0.13}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
-  boundaryMin: {x: -8, y: -3}
-  boundaryMax: {x: 8, y: -5}
+  boundaryMin: {x: -8, y: -1.3}
+  boundaryMax: {x: 8, y: -2.7}
   projectilePrefab: {fileID: 3442017150751071412, guid: c5af88333196d25428c108a93891473e, type: 3}
   baseShootingInterval: 5

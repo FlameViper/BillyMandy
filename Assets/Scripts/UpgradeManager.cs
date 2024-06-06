@@ -205,9 +205,9 @@ public class UpgradeManager : MonoBehaviour
     {
         if (CanPurchaseUpgrade(citizenSpawnUpgradeCost))
         {
-            GameObject newCitizen = Instantiate(citizenPrefab, spawnPointTransform.position, Quaternion.identity);
-            GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
-            newCitizen.transform.SetParent(playerGameObject.transform, false);
+            GameObject newCitizen = Instantiate(citizenPrefab, spawnPointTransform);
+            //GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
+            //newCitizen.transform.SetParent(playerGameObject.transform, false);
 
             // Set a random color hue and saturation
             SpriteRenderer spriteRenderer = newCitizen.GetComponent<SpriteRenderer>();

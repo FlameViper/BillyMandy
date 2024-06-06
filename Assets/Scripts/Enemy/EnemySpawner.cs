@@ -21,6 +21,7 @@ public class EnemySpawner : MonoBehaviour
     private List<GameObject> currentEnemies = new List<GameObject>();
 
     public GameObject bossEnemyPrefab; // Boss enemy prefab
+    public GameObject miniBossEnemyPrefab; // Boss enemy prefab
     private bool shouldSpawnBossNextRound = false;
 
     public bool ShouldSpawnBossNextRound
@@ -119,6 +120,7 @@ public class EnemySpawner : MonoBehaviour
         {
             specialEnemyCount = 1 + (level - specialEnemyStartLevel) / specialEnemyInterval;
         }
+       
 
         while (enemiesSpawned < maxEnemies)
         {
@@ -126,6 +128,12 @@ public class EnemySpawner : MonoBehaviour
             {
                 spawnTimer = 0f;
                 Vector3 randomSpawnPosition = CalculateSpawnPosition();
+                if (ResourceManager.Instance.EnemyCoins >= 3) {
+
+                    ResourceManager.Instance.AddEnemyCoins(-3);
+                    Debug.Log("spawnedboss");
+                    GameObject boss = Instantiate(miniBossEnemyPrefab, randomSpawnPosition, Quaternion.identity);
+                }
 
                 GameObject selectedPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
                 if (specialEnemyCount > 0 && Random.Range(0, maxEnemies) < specialEnemyCount)
