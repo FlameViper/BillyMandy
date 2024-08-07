@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,6 +32,7 @@ public class AudioLoader : MonoBehaviour {
     private List<string> audioFiles;
     private List<string> audioFields;
     GalleryCategory currentGalleryCategory;
+
 
     private Queue<FileProcessData> fileQueue = new Queue<FileProcessData>();
     private bool isProcessing = false;
@@ -90,6 +92,7 @@ public class AudioLoader : MonoBehaviour {
         button.onClick.AddListener(() => OnFieldButtonClicked(fieldName, categoryPath));
         testButton.onClick.AddListener(() => OnTestAudioButtonClicked(fieldName));
         var audioGalleryIcons = currentGalleryCategory.GetIconFields();
+       
         foreach (var iconField in audioGalleryIcons) {
             string iconFieldName = Path.GetFileNameWithoutExtension(iconField.Name);
             string associatedField = fieldName + "Icon";
@@ -147,9 +150,16 @@ public class AudioLoader : MonoBehaviour {
         Button button = buttonObj.GetComponent<Button>();
         TextMeshProUGUI buttonText = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
         Button deleteButton = buttonObj.transform.GetChild(1).GetComponent<Button>();
-
         buttonText.text = fileName;
-
+        foreach (var field in currentGalleryCategory.GetAudioClipFields()) {
+            AudioClip audioClip = field.GetValue(currentGalleryCategory) as AudioClip;
+            if (audioClip.name == fileName) {
+                buttonObj.GetComponent<Image>().color = Color.blue;
+            }
+            else {
+                buttonObj.GetComponent<Image>().color = Color.gray;
+            }
+        }
         button.onClick.AddListener(() => OnFileButtonClicked(fileName,fieldName,categoryPath));
         deleteButton.onClick.AddListener(() => OnDeleteFileButtonClicked(fileName,fieldName,categoryPath));
 
@@ -162,8 +172,8 @@ public class AudioLoader : MonoBehaviour {
     }
    
     //
-    private void OnFileButtonClicked(string fileName, string fieldName, string cattegoyPath) {
-        string filePath = Path.Combine(cattegoyPath, fieldName);
+    private void OnFileButtonClicked(string fileName, string fieldName, string categoryPath) {
+        string filePath = Path.Combine(categoryPath, fieldName);
         filePath = Path.Combine(filePath, fileName) + ".wav";
         AudioClip savedClip = NAudioPlayer.LoadWav(filePath);
         savedClip.name = fileName;
@@ -179,6 +189,7 @@ public class AudioLoader : MonoBehaviour {
         else {
             UnityEngine.Debug.LogError("Failed to load saved audio clip.");
         }
+        OnFieldButtonClicked(fieldName, categoryPath);
     }
     private void OnDeleteFileButtonClicked(string fileName, string fieldName, string categoryPath) {
         string fieldPath = Path.Combine(categoryPath, fieldName);

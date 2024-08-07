@@ -43,21 +43,41 @@ public static class NAudioPlayer {
         File.WriteAllBytes(path, wavData);
     }
 
+    //public static AudioClip LoadWav(string path) {
+    //    byte[] wavData = File.ReadAllBytes(path);
+    //    WAV wav = new WAV(wavData);
+
+    //    AudioClip audioClip;
+    //    if (wav.ChannelCount == 2) {
+    //        audioClip = AudioClip.Create("Audio File Name", wav.SampleCount, 2, wav.Frequency, false);
+    //        audioClip.SetData(wav.StereoChannel, 0);
+    //    }
+    //    else {
+    //        audioClip = AudioClip.Create("Audio File Name", wav.SampleCount, 1, wav.Frequency, false);
+    //        audioClip.SetData(wav.LeftChannel, 0);
+    //    }
+    //    return audioClip;
+    //}
     public static AudioClip LoadWav(string path) {
         byte[] wavData = File.ReadAllBytes(path);
         WAV wav = new WAV(wavData);
 
+        // Extract the file name without the extension
+        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(path);
+
         AudioClip audioClip;
         if (wav.ChannelCount == 2) {
-            audioClip = AudioClip.Create("Audio File Name", wav.SampleCount, 2, wav.Frequency, false);
+            audioClip = AudioClip.Create(fileNameWithoutExtension, wav.SampleCount, 2, wav.Frequency, false);
             audioClip.SetData(wav.StereoChannel, 0);
         }
         else {
-            audioClip = AudioClip.Create("Audio File Name", wav.SampleCount, 1, wav.Frequency, false);
+            audioClip = AudioClip.Create(fileNameWithoutExtension, wav.SampleCount, 1, wav.Frequency, false);
             audioClip.SetData(wav.LeftChannel, 0);
         }
+
         return audioClip;
     }
+
 }
 public static class AudioClipToWav {
     public static byte[] Convert(AudioClip clip) {
