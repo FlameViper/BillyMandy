@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3994451182231360236}
   - component: {fileID: 3387475246279673497}
-  m_Layer: 2
+  m_Layer: 10
   m_Name: ProjectileSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7982990177775130213}
   - component: {fileID: 2552842991088117505}
-  m_Layer: 2
+  m_Layer: 10
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 8429578378955165262}
   - component: {fileID: 745926584554731368}
   - component: {fileID: 7471835942033237109}
-  m_Layer: 2
+  m_Layer: 10
   m_Name: FreezTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}

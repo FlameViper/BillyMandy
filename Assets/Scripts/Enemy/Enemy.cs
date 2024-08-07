@@ -30,10 +30,14 @@ public class Enemy : MonoBehaviour
     protected bool isTouchingFrozenEnemy = false;
     protected bool isFrozen = false;
     protected Coroutine freezeCoroutine;
-  
+
+    //sound
+    [SerializeField] SoundData enemyOnHitSoundData;
+    [SerializeField] SoundData enemyOnDeathSoundData;
+
 
     protected List<Transform> potentialTargets = new List<Transform>();
-
+    public SoundManager soundManager => SoundManager.Instance;
     protected virtual void Awake() {
         if (UIManager.Instance.battleCanvasTransform == null) {
             Debug.LogError("BattleCanvas Transform is not set in the UIManager.");
@@ -50,8 +54,39 @@ public class Enemy : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();   
         baseColor = spriteRenderer.color;
+        InitSoundSettings();
     }
+    protected virtual void InitSoundSettings() {
+        enemyOnHitSoundData.loop = false;
+        enemyOnDeathSoundData.loop = false;
+        enemyOnHitSoundData.frequentSound = true;
+        enemyOnDeathSoundData.frequentSound = false;
 
+
+        SetMusicClip();
+    }
+    public void SetMusicClip() {
+        var enemyOnDeathCategory = soundManager.audioGalleryEntries.EnemyOnDeathCategory;
+        var enemyOnHitCategory = soundManager.audioGalleryEntries.EnemyOnHitCategory;
+        foreach (var field in enemyOnHitCategory.GetAudioClipFields()) {
+            // Matching the name convention for OnHit sounds
+            if (field.Name == this.GetType().Name + "OnHit") {
+                // Get the value from the scriptable object field
+                AudioClip clip = (AudioClip)field.GetValue(enemyOnHitCategory);
+                // Assign it to your local variable
+                enemyOnHitSoundData.clip = clip;
+            }
+        }
+        foreach (var field in enemyOnDeathCategory.GetAudioClipFields()) {
+            // Matching the name convention for OnDeath sounds
+            if (field.Name == this.GetType().Name + "OnDeath") {
+                // Get the value from the scriptable object field
+                AudioClip clip = (AudioClip)field.GetValue(enemyOnDeathCategory);
+                // Assign it to your local variable
+                enemyOnDeathSoundData.clip = clip;
+            }
+        }
+    }
     protected virtual void Update()
     {
         if (isTouchingFrozenEnemy && !isFrozen && !isDead) {
@@ -183,7 +218,13 @@ public class Enemy : MonoBehaviour
         // Play damage sound effect
         if (damageSound != null && !GameSettings.Instance.SFXOFF)
         {
-            damageSound.Play();
+            if(enemyOnHitSoundData.clip != null) {
+                soundManager.CreateSound().WithSoundData(enemyOnHitSoundData).WithPosition(transform.position).Play();
+
+            }
+            else {
+                Debug.Log("Is NULL FK");
+            }
         }
 
         if (currentHealth <= 0)
@@ -208,7 +249,7 @@ public class Enemy : MonoBehaviour
         // Play death sound effect
         if (deathSound != null && !GameSettings.Instance.SFXOFF)
         {
-            deathSound.Play();
+            soundManager.CreateSound().WithSoundData(enemyOnDeathSoundData).WithPosition(transform.position).Play();
         }
 
         ResourceManager resourceManager = FindObjectOfType<ResourceManager>();

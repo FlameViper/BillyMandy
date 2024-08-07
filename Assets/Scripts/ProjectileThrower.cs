@@ -129,10 +129,10 @@ public class ProjectileThrower : MonoBehaviour
             }
 
             // Play the attack sound if the AudioSource and clip are available
-            if (attackSound != null && !GameSettings.Instance.SFXOFF)
-            {
-                attackSound.Play();
-            }
+            //if (attackSound != null && !GameSettings.Instance.SFXOFF)
+            //{
+               // attackSound.Play();
+           // }
 
         }
 

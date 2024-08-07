@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 858c145ef5e4b864c9ba182ce1a32b3b, type: 3}
+  m_Name: AudioGalleryEntries
+  m_EditorClassIdentifier: 
+  BGMCategory: {fileID: 11400000, guid: 1cb0579ab6b90494980edfba8160fe96, type: 2}
+  EnemyOnDeathCategory: {fileID: 11400000, guid: d179695066021894b9787ac33e554bb2, type: 2}
+  EnemyOnHitCategory: {fileID: 11400000, guid: 19eeef23f5d8ce24ca69b0513c3a8e45, type: 2}
+  ProjectilesCategory: {fileID: 11400000, guid: 55eb9217456c8c147a53d25ec807222d, type: 2}
+  DefaultBGMCategory: {fileID: 11400000, guid: e2f7aea8f64aa854da0b947370842ee5, type: 2}
+  DefaultEnemyOnDeathCategory: {fileID: 11400000, guid: c743ad29fc059064daec37d74e871210, type: 2}
+  DefaultEnemyOnHitCategory: {fileID: 11400000, guid: cea137b09987bef48b7b595327fb9876, type: 2}
+  DefaultProjectilesCategory: {fileID: 11400000, guid: 13a4c35248deb36429989cb423361aad, type: 2}

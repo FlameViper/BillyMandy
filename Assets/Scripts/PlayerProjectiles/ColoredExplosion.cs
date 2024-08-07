@@ -6,7 +6,8 @@ public class ColoredExplosion : MonoBehaviour {
     Animator animator;
     [SerializeField] private string color;
     [SerializeField] private float destroyDelay = 0.5f;
-
+    [SerializeField] SoundData explosionSound;
+    public SoundManager soundManager => SoundManager.Instance;
     private int numberOfColoredEnemies;
     bool exploded;
     private void Awake() {
@@ -16,8 +17,31 @@ public class ColoredExplosion : MonoBehaviour {
     private void Start() {
         PlayColoredExplosion();
         StartCoroutine(DestroyAfterDelay());
+        InitSoundSettings();
+        if (explosionSound.clip != null && !GameSettings.Instance.SFXOFF) {
+            soundManager.CreateSound().WithSoundData(explosionSound).WithPosition(transform.position).Play();
+
+        }
     }
-   
+    protected virtual void InitSoundSettings() {
+        explosionSound.loop = false;
+        explosionSound.frequentSound = true;
+        SetMusicClip();
+    }
+    public void SetMusicClip() {
+        var projectilesCategory = soundManager.audioGalleryEntries.ProjectilesCategory;
+        foreach (var field in projectilesCategory.GetAudioClipFields()) {
+            // Matching the name convention for OnHit sounds
+            if (field.Name == gameObject.name + "OnShoot") {
+                // Get the value from the scriptable object field
+                AudioClip clip = (AudioClip)field.GetValue(projectilesCategory);
+                // Assign it to your local variable
+                explosionSound.clip = clip;
+            }
+        }
+
+    }
+
     private void OnTriggerEnter2D(Collider2D collision) {
    
         if (collision == null) {

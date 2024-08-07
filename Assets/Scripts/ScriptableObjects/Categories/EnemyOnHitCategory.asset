@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ee0880f7a8b39845bd82cc1bd786ff8, type: 3}
+  m_Name: EnemyOnHitCategory
+  m_EditorClassIdentifier: 
+  EnemyOnHit: {fileID: 0}
+  Enemy09OnHit: {fileID: 0}
+  EnemyAZOnHit: {fileID: 0}
+  BigEnemyOnHit: {fileID: 0}
+  ColoredEnemyOnHit: {fileID: 8300000, guid: 18c46f8a5e2edfc4394b8faf4b6a89d2, type: 3}
+  EnemyAssasinAssaultOnHit: {fileID: 8300000, guid: 18c46f8a5e2edfc4394b8faf4b6a89d2, type: 3}
+  EnemyAssasinBigOnHit: {fileID: 8300000, guid: 18c46f8a5e2edfc4394b8faf4b6a89d2, type: 3}
+  EnemyAssasinBungeeOnHit: {fileID: 8300000, guid: 18c46f8a5e2edfc4394b8faf4b6a89d2, type: 3}
+  EnemyAssasinTowerOnHit: {fileID: 8300000, guid: 18c46f8a5e2edfc4394b8faf4b6a89d2, type: 3}
+  EnemyBombOnHit: {fileID: 8300000, guid: 18c46f8a5e2edfc4394b8faf4b6a89d2, type: 3}
+  EnemyShooterOnHit: {fileID: 8300000, guid: 18c46f8a5e2edfc4394b8faf4b6a89d2, type: 3}
+  EnemySwarmOnHit: {fileID: 8300000, guid: 18c46f8a5e2edfc4394b8faf4b6a89d2, type: 3}
+  EnemySwarmSpawnerOnHit: {fileID: 8300000, guid: 18c46f8a5e2edfc4394b8faf4b6a89d2, type: 3}
+  GoldenSnitchBossOnHit: {fileID: 8300000, guid: 18c46f8a5e2edfc4394b8faf4b6a89d2, type: 3}
+  EnemyOnHitIcon: {fileID: 21300000, guid: 37e920711689bb84e9bd0a91287e62e2, type: 3}
+  Enemy09OnHitIcon: {fileID: 21300000, guid: cc693980ce387844891e9a7f7e3bdf5e, type: 3}
+  EnemyAZOnHitIcon: {fileID: 21300000, guid: 1692bac83c3fbc04181ead437fe9f1c2, type: 3}
+  BigEnemyOnHitIcon: {fileID: 21300000, guid: 37e920711689bb84e9bd0a91287e62e2, type: 3}
+  ColoredEnemyOnHitIcon: {fileID: 21300000, guid: f0e7ef80749bc1c4299eb08a71c8db5a, type: 3}
+  EnemyAssasinAssaultOnHitIcon: {fileID: 21300000, guid: d0ea2c97b8e0a9e469b88f4f16dfd70a, type: 3}
+  EnemyAssasinBigOnHitIcon: {fileID: 21300000, guid: d0ea2c97b8e0a9e469b88f4f16dfd70a, type: 3}
+  EnemyAssasinBungeeOnHitIcon: {fileID: 21300000, guid: d0ea2c97b8e0a9e469b88f4f16dfd70a, type: 3}
+  EnemyAssasinTowerOnHitIcon: {fileID: 21300000, guid: d0ea2c97b8e0a9e469b88f4f16dfd70a, type: 3}
+  EnemyBombOnHitIcon: {fileID: 21300000, guid: fa9cd1d37126fe74992fd9e21d0fd5bc, type: 3}
+  EnemyShooterOnHitIcon: {fileID: 21300000, guid: 37e920711689bb84e9bd0a91287e62e2, type: 3}
+  EnemySwarmOnHitIcon: {fileID: 21300000, guid: 37e920711689bb84e9bd0a91287e62e2, type: 3}
+  EnemySwarmSpawnerOnHitIcon: {fileID: 21300000, guid: 37e920711689bb84e9bd0a91287e62e2, type: 3}
+  GoldenSnitchBossOnHitIcon: {fileID: -460800598, guid: c2adcfc4815c1804ba76b263372e0c9b, type: 3}

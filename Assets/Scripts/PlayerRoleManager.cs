@@ -37,9 +37,9 @@ public class PlayerRoleManager : MonoBehaviour
         originalSupportColor = supportRenderer.color;
 
         // Debugging to check if all components are found
-        Debug.Log($"ProjectileThrower found: {projectileThrower != null}");
-        Debug.Log($"CoinSucker found: {coinSucker != null}");
-        Debug.Log($"SupportThrower found: {supportThrower != null}");
+        //Debug.Log($"ProjectileThrower found: {projectileThrower != null}");
+        //Debug.Log($"CoinSucker found: {coinSucker != null}");
+        //Debug.Log($"SupportThrower found: {supportThrower != null}");
 
         UpdateRole();
     }

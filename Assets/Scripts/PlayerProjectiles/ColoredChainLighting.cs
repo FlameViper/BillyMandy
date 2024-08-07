@@ -22,7 +22,8 @@ public class ColoredChainLighting : MonoBehaviour {
     private GameObject start;
     private GameObject end;
     private Animator animator;
-
+    [SerializeField] SoundData shootProjectileSoundData;
+    public SoundManager soundManager => SoundManager.Instance;
     private void Start() {
         Destroy(gameObject, 0.2f);
         if (numberOfBounces <= 0) {
@@ -37,6 +38,32 @@ public class ColoredChainLighting : MonoBehaviour {
         start = gameObject;
         alreadyBounced = 1;
         canBounceOnNormalEnemies = true;
+        InitSoundSettings();
+        if (shootProjectileSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+            soundManager.CreateSound().WithSoundData(shootProjectileSoundData).WithPosition(transform.position).Play();
+
+        }
+    }
+    protected void InitSoundSettings() {
+        shootProjectileSoundData.loop = false;
+        shootProjectileSoundData.frequentSound = true;
+
+
+
+        SetMusicClip();
+    }
+    protected void SetMusicClip() {
+        var projectilesCategory = soundManager.audioGalleryEntries.ProjectilesCategory;
+        foreach (var field in projectilesCategory.GetAudioClipFields()) {
+            // Matching the name convention for OnHit sounds
+            if (field.Name == this.GetType().Name + "OnShoot") {
+                // Get the value from the scriptable object field
+                AudioClip clip = (AudioClip)field.GetValue(projectilesCategory);
+                // Assign it to your local variable
+                shootProjectileSoundData.clip = clip;
+            }
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

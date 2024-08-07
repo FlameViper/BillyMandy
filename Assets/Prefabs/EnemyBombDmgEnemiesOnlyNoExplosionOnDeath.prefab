@@ -115,9 +115,16 @@ MonoBehaviour:
   deathSound: {fileID: 8829242649662499052}
   damageTextPrefab: {fileID: 4908666859188776841, guid: 3d2ae03f4303db3439eb36ec3754fff3, type: 3}
   canvasTransform: {fileID: 0}
-  frozenLayer:
-    serializedVersion: 2
-    m_Bits: 512
+  enemyOnHitSoundData:
+    clip: {fileID: 0}
+    loop: 0
+    playOnAwake: 0
+    frequentSound: 0
+  enemyOnDeathSoundData:
+    clip: {fileID: 0}
+    loop: 0
+    playOnAwake: 0
+    frequentSound: 0
   explosionPrefabPlayerOnly: {fileID: 1520684401069668320, guid: d5ac48e3bba6e5440b50d0c1a4b220af, type: 3}
   explosionPrefabEnemiesOnly: {fileID: 1520684401069668320, guid: 0c3d8e6201742e246823fb9439796dbe, type: 3}
   explosionPrefabEverything: {fileID: 1520684401069668320, guid: 78b537c4455327c4e9fad00401ddc3c0, type: 3}
@@ -450,7 +457,7 @@ GameObject:
   - component: {fileID: 9182985218694931524}
   - component: {fileID: 1803877916175597855}
   m_Layer: 0
-  m_Name: explosion
+  m_Name: EnemyOnHitExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 public class Projectile : MonoBehaviour {
     public float speed = 10f; // Speed of the projectile
@@ -15,10 +13,11 @@ public class Projectile : MonoBehaviour {
 
     public GameObject damageTextPrefab; // Reference to the damage text prefab
     public Transform canvasTransform; // Reference to the transform of the Canvas object
-
+    [SerializeField] SoundData shootProjectileSoundData;
+  
 
     protected Vector3 direction; // Direction in which the projectile will move
-
+    public SoundManager soundManager => SoundManager.Instance;
     protected virtual void Awake() {
         if (UIManager.Instance.battleCanvasTransform == null) {
             Debug.LogError("BattleCanvas Transform is not set in the UIManager.");
@@ -29,11 +28,35 @@ public class Projectile : MonoBehaviour {
 
     }
     protected virtual void Start() {
-
         StartCoroutine(DestroyAfterDelay());
+        InitSoundSettings();
+        if (shootProjectileSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+            soundManager.CreateSound().WithSoundData(shootProjectileSoundData).WithPosition(transform.position).Play();
 
+        }
+        
     }
+    protected virtual void InitSoundSettings() {
+        shootProjectileSoundData.loop = false;
+        shootProjectileSoundData.frequentSound = true;
+     
 
+
+        SetMusicClip();
+    }
+    protected virtual void SetMusicClip() {
+        var projectilesCategory = soundManager.audioGalleryEntries.ProjectilesCategory;
+        foreach (var field in projectilesCategory.GetAudioClipFields()) {
+            // Matching the name convention for OnHit sounds
+            if (field.Name == this.GetType().Name + "OnShoot") {
+                // Get the value from the scriptable object field
+                AudioClip clip = (AudioClip)field.GetValue(projectilesCategory);
+                // Assign it to your local variable
+                shootProjectileSoundData.clip = clip;
+            }
+        }
+     
+    }
     protected virtual void Update() {
         // Move the projectile in its direction
         transform.position += direction * speed * Time.deltaTime;

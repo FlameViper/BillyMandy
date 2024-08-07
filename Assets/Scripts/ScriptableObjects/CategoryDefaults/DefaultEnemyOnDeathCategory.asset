@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b0e7b5ffeba1964a9998561d5428339, type: 3}
+  m_Name: DefaultEnemyOnDeathCategory
+  m_EditorClassIdentifier: 
+  EnemyOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  Enemy09OnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  EnemyAZOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  BigEnemyOnDeatht: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  ColoredEnemyOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  EnemyAssasinAssaultOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  EnemyAssasinBigOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  EnemyAssasinBungeeOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  EnemyAssasinTowerOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  EnemyBombOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  EnemyShooterOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  EnemySwarmOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  EnemySwarmSpawnerOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  GoldenSnitchBossOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}

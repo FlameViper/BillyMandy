@@ -9,6 +9,7 @@ public class BalisticProjectile : Projectile
     private Animator animator;
     private Vector3 inpactPosition;
     [SerializeField] private Collider2D inpactCollider;
+    [SerializeField] SoundData impactProjectileSoundDatas;
     protected override void Awake() {
         base.Awake();
         animator = GetComponentInChildren<Animator>();
@@ -17,9 +18,35 @@ public class BalisticProjectile : Projectile
     {
         inpactCollider.enabled = false;
         HandleProjectile();
+        InitSoundSettings();
+        if (impactProjectileSoundDatas.clip != null && !GameSettings.Instance.SFXOFF) {
+            soundManager.CreateSound().WithSoundData(impactProjectileSoundDatas).WithPosition(transform.position).Play();
         
+        }
     }
+    protected override void InitSoundSettings() {
+        base.InitSoundSettings();
+        impactProjectileSoundDatas.loop = false;
+        impactProjectileSoundDatas.frequentSound = true;
 
+
+
+        SetMusicClip();
+    }
+    protected override void SetMusicClip() {
+        base.SetMusicClip();
+        var projectilesCategory = soundManager.audioGalleryEntries.ProjectilesCategory;
+        foreach (var field in projectilesCategory.GetAudioClipFields()) {
+            // Matching the name convention for OnHit sounds
+            if (field.Name == this.GetType().Name + "OnImpact") {
+                // Get the value from the scriptable object field
+                AudioClip clip = (AudioClip)field.GetValue(projectilesCategory);
+                // Assign it to your local variable
+                impactProjectileSoundDatas.clip = clip;
+            }
+        }
+
+    }
     // Update is called once per frame
     protected override void Update()
     {

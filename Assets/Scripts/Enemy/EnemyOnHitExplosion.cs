@@ -6,6 +6,36 @@ public class EnemyOnHitExplosion : MonoBehaviour
 {
     [SerializeField] private int explosionDamage = 30;
     [SerializeField] private bool canDamageEnemies = true;
+    [SerializeField] SoundData explosionSound;
+    public SoundManager soundManager => SoundManager.Instance;
+    private void Start() {
+        InitSoundSettings();
+        
+    }
+    private void OnEnable() {
+        if (explosionSound.clip != null && !GameSettings.Instance.SFXOFF) {
+            soundManager.CreateSound().WithSoundData(explosionSound).WithPosition(transform.position).Play();
+
+        }
+    }
+    protected virtual void InitSoundSettings() {
+        explosionSound.loop = false;
+        explosionSound.frequentSound = true;
+        SetMusicClip();
+    }
+    public void SetMusicClip() {
+        var projectilesCategory = soundManager.audioGalleryEntries.ProjectilesCategory;
+        foreach (var field in projectilesCategory.GetAudioClipFields()) {
+            // Matching the name convention for OnHit sounds
+            if (field.Name == gameObject.name + "OnShoot") {
+                // Get the value from the scriptable object field
+                AudioClip clip = (AudioClip)field.GetValue(projectilesCategory);
+                // Assign it to your local variable
+                explosionSound.clip = clip;
+            }
+        }
+
+    }
     private void OnTriggerEnter2D(Collider2D collision) {
         if (canDamageEnemies) {
             if (collision.CompareTag("Enemy")) {
