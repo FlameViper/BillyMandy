@@ -29,24 +29,24 @@ public class GalleryCategory : ScriptableObject {
     }
     public virtual void LoadAudioSettings() {
 
-        if (!File.Exists(audioSettingsFilePath)) return;
-        string json = File.ReadAllText(audioSettingsFilePath);
-
-        audioClipNames = JsonUtility.FromJson<SerializableDictionary<string, string>>(json);
-        foreach (var field in GetAudioClipFields()) {
-            if (audioClipNames.TryGetValue(field.Name, out string audioFileName)) {
-                string fieldPath = Path.Combine(savedAudioPath, field.Name);
-                field.SetValue(this, LoadWav(Path.Combine(fieldPath, audioFileName)));
-            }
-
-
+        
+        if (File.Exists(audioSettingsFilePath)){
+            string json = File.ReadAllText(audioSettingsFilePath);
+            audioClipNames = JsonUtility.FromJson<SerializableDictionary<string, string>>(json);
+            foreach (var field in GetAudioClipFields()) {
+                if (audioClipNames.TryGetValue(field.Name, out string audioFileName)) {
+                    string fieldPath = Path.Combine(savedAudioPath, field.Name);
+                    if (File.Exists(fieldPath))
+                    field.SetValue(this, LoadWav(Path.Combine(fieldPath, audioFileName)));
+                }
+            }      
         }
         foreach (var field in GetAudioClipFields()) {
             AudioClip currentValue = field.GetValue(this) as AudioClip;
             if (currentValue == null) {
                 foreach (DefaultGalerryCategory defaultGalleryCategory in SoundManager.Instance.audioGalleryEntries.GetDefaultCategories()) {
-
                     if (defaultGalleryCategory.name == "Default"+this.GetType().Name) {
+                        
                         foreach (var defaultField in defaultGalleryCategory.GetAudioClipFields()) {
                             if (defaultField.Name == field.Name) {
                                 field.SetValue(this, defaultField.GetValue(defaultGalleryCategory));
@@ -78,7 +78,15 @@ public class GalleryCategory : ScriptableObject {
             audioClipNames.Remove(key);
             string json = JsonUtility.ToJson(audioClipNames, true);
             File.WriteAllText(audioSettingsFilePath, json);
+            
         }
+    }
+    public string GetCurrentFieldSetting(string fieldName) {
+        // Assuming 'audioClipNames' is a dictionary where keys are field names and values are the saved file names
+        if (audioClipNames.TryGetValue(fieldName, out string savedFileName)) {
+            return savedFileName;
+        }
+        return null;
     }
 
 }

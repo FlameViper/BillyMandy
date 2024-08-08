@@ -15,6 +15,11 @@ public class BoomerangProjectile : Projectile
 
     protected override void Start()
     {
+        InitSoundSettings();
+        if (shootProjectileSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+            soundManager.CreateSound().WithSoundData(shootProjectileSoundData).WithPosition(transform.position).Play();
+
+        }
         transform.DORotate(new Vector3(0f, 0f, 360f), 1f, RotateMode.FastBeyond360)
            .SetLoops(-1, LoopType.Incremental)
            .SetEase(Ease.Linear);

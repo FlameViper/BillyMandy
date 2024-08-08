@@ -222,9 +222,7 @@ public class Enemy : MonoBehaviour
                 soundManager.CreateSound().WithSoundData(enemyOnHitSoundData).WithPosition(transform.position).Play();
 
             }
-            else {
-                Debug.Log("Is NULL FK");
-            }
+
         }
 
         if (currentHealth <= 0)

@@ -6,7 +6,7 @@ public class EnemyOnDeathCategory : GalleryCategory {
     [HideInInspector] public AudioClip EnemyOnDeath;
     [HideInInspector] public AudioClip Enemy09OnDeath;
     [HideInInspector] public AudioClip EnemyAZOnDeath;
-    [HideInInspector] public AudioClip BigEnemyOnDeatht;
+    [HideInInspector] public AudioClip BigEnemyOnDeath;
     [HideInInspector] public AudioClip ColoredEnemyOnDeath;
     [HideInInspector] public AudioClip EnemyAssasinAssaultOnDeath;
     [HideInInspector] public AudioClip EnemyAssasinBigOnDeath;
@@ -21,7 +21,7 @@ public class EnemyOnDeathCategory : GalleryCategory {
     public Sprite EnemyOnDeathIcon;
     public Sprite Enemy09OnDeathIcon;
     public Sprite EnemyAZOnDeathIcon;
-    public Sprite BigEnemyOnDeathtIcon;
+    public Sprite BigEnemyOnDeathIcon;
     public Sprite ColoredEnemyOnDeathIcon;
     public Sprite EnemyAssasinAssaultOnDeathIcon;
     public Sprite EnemyAssasinBigOnDeathIcon;

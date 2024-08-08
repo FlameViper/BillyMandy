@@ -2,8 +2,8 @@
 [CreateAssetMenu(fileName = "ProjectilesCategory", menuName = "Data/ProjectilesCategory")]
 public class ProjectilesCategory : GalleryCategory {
     [HideInInspector] public AudioClip ProjectileOnShoot;
-    [HideInInspector] public AudioClip BallisticProjectileOnShoot;
-    [HideInInspector] public AudioClip BallisticProjectileOnImpact;
+    [HideInInspector] public AudioClip BalisticProjectileOnShoot;
+    [HideInInspector] public AudioClip BalisticProjectileOnImpact;
     [HideInInspector] public AudioClip BoomerangProjectileOnShoot;
     [HideInInspector] public AudioClip BlueFireballProjectileOnShoot;
     [HideInInspector] public AudioClip LazerProjectileOnShoot;
@@ -19,8 +19,8 @@ public class ProjectilesCategory : GalleryCategory {
     [HideInInspector] public AudioClip EnemyOnHitExplosionOnShoot;
 
     public Sprite ProjectileOnShootIcon;
-    public Sprite BallisticProjectileOnShootIcon;
-    public Sprite BallisticProjectileOnImpactIcon;
+    public Sprite BalisticProjectileOnShootIcon;
+    public Sprite BalisticProjectileOnImpactIcon;
     public Sprite BoomerangProjectileOnShootIcon;
     public Sprite BlueFireballProjectileOnShootIcon;
     public Sprite LazerProjectileOnShootIcon;

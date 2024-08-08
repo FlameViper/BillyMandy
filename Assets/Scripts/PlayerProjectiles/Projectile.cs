@@ -13,7 +13,7 @@ public class Projectile : MonoBehaviour {
 
     public GameObject damageTextPrefab; // Reference to the damage text prefab
     public Transform canvasTransform; // Reference to the transform of the Canvas object
-    [SerializeField] SoundData shootProjectileSoundData;
+    [SerializeField] protected SoundData shootProjectileSoundData;
   
 
     protected Vector3 direction; // Direction in which the projectile will move

@@ -66,11 +66,14 @@ public static class NAudioPlayer {
         string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(path);
 
         AudioClip audioClip;
+
         if (wav.ChannelCount == 2) {
+            
             audioClip = AudioClip.Create(fileNameWithoutExtension, wav.SampleCount, 2, wav.Frequency, false);
             audioClip.SetData(wav.StereoChannel, 0);
         }
         else {
+            
             audioClip = AudioClip.Create(fileNameWithoutExtension, wav.SampleCount, 1, wav.Frequency, false);
             audioClip.SetData(wav.LeftChannel, 0);
         }

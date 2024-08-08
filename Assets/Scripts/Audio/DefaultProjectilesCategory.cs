@@ -3,8 +3,8 @@
 [CreateAssetMenu(fileName = "DefaultProjectilesCategory", menuName = "Data/DefaultProjectilesCategory")]
 public class DefaultProjectilesCategory : DefaultGalerryCategory {
     public AudioClip ProjectileOnShoot;
-    public AudioClip BallisticProjectileOnShoot;
-    public AudioClip BallisticProjectileOnImpact;
+    public AudioClip BalisticProjectileOnShoot;
+    public AudioClip BalisticProjectileOnImpact;
     public AudioClip BoomerangProjectileOnShoot;
     public AudioClip LazerProjectileOnShoot;
     public AudioClip BlueFireballProjectileOnShoot;

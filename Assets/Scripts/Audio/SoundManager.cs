@@ -18,6 +18,7 @@ public class SoundManager : PersistentSingleton<SoundManager> {
     public AudioLoader audioLoader => GetComponent<AudioLoader>();
     private void Start() {
         if (audioGalleryEntries != null) {
+           
             audioGalleryEntries.InitializeAudioClips();
         }
         InitializePool();

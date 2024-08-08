@@ -96,7 +96,9 @@ public class Player : MonoBehaviour
             BattleManager.Instance.RestartRound();
             yield break;
         }
-        Time.timeScale = 0; // Reload the scene
+        //Time.timeScale = 0; // Reload the scene
+        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     public bool GetSuckerStatus() {
         return coinSucker.isSuckerActive;

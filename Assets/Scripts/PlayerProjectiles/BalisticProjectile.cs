@@ -19,9 +19,9 @@ public class BalisticProjectile : Projectile
         inpactCollider.enabled = false;
         HandleProjectile();
         InitSoundSettings();
-        if (impactProjectileSoundDatas.clip != null && !GameSettings.Instance.SFXOFF) {
-            soundManager.CreateSound().WithSoundData(impactProjectileSoundDatas).WithPosition(transform.position).Play();
-        
+        if (shootProjectileSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+            soundManager.CreateSound().WithSoundData(shootProjectileSoundData).WithPosition(transform.position).Play();
+
         }
     }
     protected override void InitSoundSettings() {
@@ -45,6 +45,7 @@ public class BalisticProjectile : Projectile
                 impactProjectileSoundDatas.clip = clip;
             }
         }
+
 
     }
     // Update is called once per frame
@@ -71,6 +72,10 @@ public class BalisticProjectile : Projectile
         transform.DOMove(inpactPosition, 5f).SetSpeedBased().SetEase(Ease.Linear).OnComplete(() => {
             animator.Play("ballisticProjectileInpactAnimation");
             inpactCollider.enabled = true;
+            if (impactProjectileSoundDatas.clip != null && !GameSettings.Instance.SFXOFF) {
+                soundManager.CreateSound().WithSoundData(impactProjectileSoundDatas).WithPosition(transform.position).Play();
+
+            }
         });
     }
 

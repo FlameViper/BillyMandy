@@ -151,14 +151,16 @@ public class AudioLoader : MonoBehaviour {
         TextMeshProUGUI buttonText = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
         Button deleteButton = buttonObj.transform.GetChild(1).GetComponent<Button>();
         buttonText.text = fileName;
-        foreach (var field in currentGalleryCategory.GetAudioClipFields()) {
-            AudioClip audioClip = field.GetValue(currentGalleryCategory) as AudioClip;
-            if (audioClip.name == fileName) {
-                buttonObj.GetComponent<Image>().color = Color.blue;
-            }
-            else {
-                buttonObj.GetComponent<Image>().color = Color.gray;
-            }
+
+        // Load the saved audio settings for the current field
+        string savedAudioFileName = currentGalleryCategory.GetCurrentFieldSetting(fieldName);
+
+        // Check if the current file name matches the saved file name
+        if (savedAudioFileName == fileName + ".wav") { // Assuming the saved file name includes the .wav extension
+            buttonObj.GetComponent<Image>().color = Color.blue;
+        }
+        else {
+            buttonObj.GetComponent<Image>().color = Color.gray;
         }
         button.onClick.AddListener(() => OnFileButtonClicked(fileName,fieldName,categoryPath));
         deleteButton.onClick.AddListener(() => OnDeleteFileButtonClicked(fileName,fieldName,categoryPath));
@@ -189,6 +191,7 @@ public class AudioLoader : MonoBehaviour {
         else {
             UnityEngine.Debug.LogError("Failed to load saved audio clip.");
         }
+        ClearAudioContainer();
         OnFieldButtonClicked(fieldName, categoryPath);
     }
     private void OnDeleteFileButtonClicked(string fileName, string fieldName, string categoryPath) {
@@ -201,18 +204,23 @@ public class AudioLoader : MonoBehaviour {
                 File.Delete(filePath);
 
                 // Update the save data by setting the filename to an empty string
-                currentGalleryCategory.RemoveAudioSetting(fieldName);
+                string savedAudioFileName = currentGalleryCategory.GetCurrentFieldSetting(fieldName);
 
-                // Refresh the file list
-                ClearAudioContainer();
-                int currentButtonIndex = 0;
-                audioFiles = new List<string>(Directory.GetFiles(fieldPath, "*.wav"));
-                foreach (var path in audioFiles) {
-                    string name = Path.GetFileNameWithoutExtension(path);
-                    CreateFileButton(name, fieldName, categoryPath, currentButtonIndex);
-                    currentButtonIndex++;
+                // Check if the current file name matches the saved file name
+                if (savedAudioFileName == fileName + ".wav") { 
+                    currentGalleryCategory.RemoveAudioSetting(fieldName);
+                    foreach (var field in currentGalleryCategory.GetAudioClipFields()) {
+                        if (field.Name == fieldName) {
+                            field.SetValue(currentGalleryCategory, null);
+                            SoundManager.Instance.audioGalleryEntries.InitializeAudioClips();
+                            currentGalleryCategory.SaveAudioSetting(field.Name, fileName + ".wav");
+                            break;
+                        }
+                    }
                 }
-                CreateAddNewAudioButton(fieldName, currentButtonIndex);
+                
+                ClearAudioContainer();
+                OnFieldButtonClicked(fieldName,categoryPath);
             }
             catch (Exception ex) {
                 Debug.LogError("Error deleting file: " + ex.Message);
@@ -334,6 +342,7 @@ public class AudioLoader : MonoBehaviour {
             isProcessing = true;
             StartCoroutine(ProcessFiles());
         }
+        ClearAudioContainer();
     }
 
     private IEnumerator ProcessFiles() {
@@ -390,7 +399,6 @@ public class AudioLoader : MonoBehaviour {
             FieldName = fieldName;
         }
     }
-
 
 
 

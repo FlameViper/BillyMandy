@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: DefaultProjectilesCategory
   m_EditorClassIdentifier: 
   ProjectileOnShoot: {fileID: 8300000, guid: cf6aa0d7ee3bc1c4ba126eebdd5b7f1d, type: 3}
-  BallisticProjectileOnShoot: {fileID: 8300000, guid: cf6aa0d7ee3bc1c4ba126eebdd5b7f1d, type: 3}
-  BallisticProjectileOnImpact: {fileID: 8300000, guid: cf6aa0d7ee3bc1c4ba126eebdd5b7f1d, type: 3}
+  BalisticProjectileOnShoot: {fileID: 8300000, guid: cf6aa0d7ee3bc1c4ba126eebdd5b7f1d, type: 3}
+  BalisticProjectileOnImpact: {fileID: 8300000, guid: 0d6592e04ab888f45a37cec4aea77e9a, type: 3}
   BoomerangProjectileOnShoot: {fileID: 8300000, guid: cf6aa0d7ee3bc1c4ba126eebdd5b7f1d, type: 3}
   LazerProjectileOnShoot: {fileID: 8300000, guid: cf6aa0d7ee3bc1c4ba126eebdd5b7f1d, type: 3}
   BlueFireballProjectileOnShoot: {fileID: 8300000, guid: cf6aa0d7ee3bc1c4ba126eebdd5b7f1d, type: 3}
