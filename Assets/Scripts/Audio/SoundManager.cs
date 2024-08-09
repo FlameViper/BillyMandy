@@ -103,4 +103,18 @@ public class SoundManager : PersistentSingleton<SoundManager> {
             }
         }
     }
+    public static void SetAudioClipForGameobject(GameObject gameObject, GalleryCategory category, SoundData soundData, string clipNameSuffix) {
+        foreach (var field in category.GetAudioClipFields()) {
+            // Check if the field name matches the type name with the provided suffix
+            if (field.Name == gameObject.name + clipNameSuffix) {
+                // Get the value from the scriptable object field
+                AudioClip clip = field.GetValue(category) as AudioClip;
+                // Assign it to the provided sound data
+                if (clip != null) {
+                    soundData.clip = clip;
+                }
+                break;
+            }
+        }
+    }
 }

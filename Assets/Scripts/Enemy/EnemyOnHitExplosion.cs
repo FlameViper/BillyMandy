@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,11 +9,11 @@ public class EnemyOnHitExplosion : MonoBehaviour
     [SerializeField] private bool canDamageEnemies = true;
     [SerializeField] SoundData explosionSound;
     public SoundManager soundManager => SoundManager.Instance;
-    private void Start() {
-        InitSoundSettings();
-        
-    }
+    private bool initialized;
+
     private void OnEnable() {
+        if(!initialized)
+        InitSoundSettings();
         if (explosionSound.clip != null && !GameSettings.Instance.SFXOFF) {
             soundManager.CreateSound().WithSoundData(explosionSound).WithPosition(transform.position).Play();
 
@@ -20,20 +21,15 @@ public class EnemyOnHitExplosion : MonoBehaviour
     }
     protected virtual void InitSoundSettings() {
         explosionSound.loop = false;
-        explosionSound.frequentSound = true;
-        SetMusicClip();
-    }
-    public void SetMusicClip() {
-        var projectilesCategory = soundManager.audioGalleryEntries.ProjectilesCategory;
-        foreach (var field in projectilesCategory.GetAudioClipFields()) {
-            // Matching the name convention for OnHit sounds
-            if (field.Name == gameObject.name + "OnShoot") {
-                // Get the value from the scriptable object field
-                AudioClip clip = (AudioClip)field.GetValue(projectilesCategory);
-                // Assign it to your local variable
-                explosionSound.clip = clip;
-            }
-        }
+        explosionSound.frequentSound = false;
+        initialized = true;
+
+
+     
+        var enemyOnHitCategory = soundManager.audioGalleryEntries.ProjectilesCategory;
+
+        // Set the OnShoot sound data
+        SoundManager.SetAudioClipForGameobject(gameObject, enemyOnHitCategory, explosionSound, "OnShoot");
 
     }
     private void OnTriggerEnter2D(Collider2D collision) {

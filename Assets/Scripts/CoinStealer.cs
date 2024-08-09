@@ -39,7 +39,7 @@ public class CoinStealer : Enemy
     protected override void Start()
     {
         target = GameObject.Find("CoinStealerLocation").transform;  // Find the target location by name
-        spawner = FindFirstObjectByType<EnemySpawner>().transform;  // Find the spawner by name
+        spawner = GameObject.FindGameObjectWithTag("EnemySpawner").transform;  // Find the spawner by name
         Debug.Log(spawner.position);
         currentHealth = baseHealth;  // Initialize health
         if (BattleManager.Instance != null)
