@@ -204,15 +204,13 @@ public class Enemy : MonoBehaviour
 
         }
         // Play damage sound effect
-       // if (damageSound != null && !GameSettings.Instance.SFXOFF)
-        //{
+
         if(enemyOnHitSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
             //Debug.Log("played");
             soundManager.CreateSound().WithSoundData(enemyOnHitSoundData).WithPosition(transform.position).Play();
 
         }
 
-       // }
 
         if (currentHealth <= 0)
         {

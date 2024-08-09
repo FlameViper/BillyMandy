@@ -9,6 +9,7 @@ public class DefaultEnemyOnDeathCategory : DefaultGalerryCategory {
     public AudioClip EnemyAZOnDeath;
     public AudioClip CoinStealerOnDeath;
     public AudioClip BigEnemyOnDeath;
+    public AudioClip MiniBossOnDeath;
     public AudioClip ColoredEnemyOnDeath;
     public AudioClip EnemyAssasinAssaultOnDeath;
     public AudioClip EnemyAssasinBigOnDeath;

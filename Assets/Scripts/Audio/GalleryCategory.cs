@@ -31,7 +31,7 @@ public class GalleryCategory : ScriptableObject {
 
         
         if (File.Exists(audioSettingsFilePath)){
-            Debug.Log("init");
+         
             string json = File.ReadAllText(audioSettingsFilePath);
             audioClipNames = JsonUtility.FromJson<SerializableDictionary<string, string>>(json);
             foreach (var field in GetAudioClipFields()) {

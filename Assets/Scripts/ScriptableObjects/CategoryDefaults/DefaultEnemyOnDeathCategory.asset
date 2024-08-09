@@ -17,6 +17,7 @@ MonoBehaviour:
   EnemyAZOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
   CoinStealerOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
   BigEnemyOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
+  MiniBossOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
   ColoredEnemyOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
   EnemyAssasinAssaultOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
   EnemyAssasinBigOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}

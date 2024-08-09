@@ -7,6 +7,7 @@ public class DefaultEnemyOnHitCategory : DefaultGalerryCategory {
     public AudioClip Enemy09OnHit;
     public AudioClip EnemyAZOnHit;
     public AudioClip BigEnemyOnHit;
+    public AudioClip MiniBossOnHit;
     public AudioClip CoinStealerOnHit;
     public AudioClip ColoredEnemyOnHit;
     public AudioClip EnemyAssasinAssaultOnHit;

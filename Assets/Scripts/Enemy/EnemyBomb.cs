@@ -44,8 +44,10 @@ public class EnemyBomb : Enemy
 
         }
         // Play damage sound effect
-        if (damageSound != null && !GameSettings.Instance.SFXOFF) {
-            damageSound.Play();
+        if (enemyOnHitSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+            //Debug.Log("played");
+            soundManager.CreateSound().WithSoundData(enemyOnHitSoundData).WithPosition(transform.position).Play();
+
         }
 
         if (currentHealth <= 0) {

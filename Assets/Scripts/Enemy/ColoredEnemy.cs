@@ -93,8 +93,10 @@ public class ColoredEnemy : Enemy {
 
         }
         // Play damage sound effect
-        if (damageSound != null && !GameSettings.Instance.SFXOFF) {
-            damageSound.Play();
+        if (enemyOnHitSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+            //Debug.Log("played");
+            soundManager.CreateSound().WithSoundData(enemyOnHitSoundData).WithPosition(transform.position).Play();
+
         }
 
         if (currentHealth <= 0) {
@@ -116,8 +118,10 @@ public class ColoredEnemy : Enemy {
         }
 
         // Play death sound effect
-        if (deathSound != null && !GameSettings.Instance.SFXOFF) {
-            deathSound.Play();
+        if (enemyOnDeathSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+            //Debug.Log("played");
+            soundManager.CreateSound().WithSoundData(enemyOnDeathSoundData).WithPosition(transform.position).Play();
+
         }
 
         ResourceManager resourceManager = FindObjectOfType<ResourceManager>();

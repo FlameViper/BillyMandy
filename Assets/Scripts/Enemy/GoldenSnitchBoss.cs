@@ -507,10 +507,11 @@ public class GoldenSnitchBoss : Enemy {
         }
         bossHpText.text = "Boss Hp:" + currentHealth.ToString();
         // Play damage sound effect
-        if (damageSound != null && !GameSettings.Instance.SFXOFF) {
-            damageSound.Play();
+        if (enemyOnHitSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+            soundManager.CreateSound().WithSoundData(enemyOnHitSoundData).WithPosition(transform.position).Play();
+
         }
-        if(currentHealth < bossStartingHealth / 2) {
+        if (currentHealth < bossStartingHealth / 2) {
             phase2Active = true;
             phase1Active = false;
 
@@ -587,7 +588,6 @@ public class GoldenSnitchBoss : Enemy {
     public void TakeShieldDamage(int damage) {
 
         if (enemyOnHitSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
-            //Debug.Log("played");
             soundManager.CreateSound().WithSoundData(enemyOnHitSoundData).WithPosition(transform.position).Play();
 
         }

@@ -3083,11 +3083,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefabs:
-  - {fileID: 1800205754805486490, guid: ef39fe34b3f49ca4da87be2b0912455a, type: 3}
-  - {fileID: 1800205754805486490, guid: a85d8f7925b89664098e71157b8873c1, type: 3}
-  - {fileID: 1800205754805486490, guid: a81c864a5da631546ad39692c054dce9, type: 3}
-  - {fileID: 1800205754805486490, guid: a81c864a5da631546ad39692c054dce9, type: 3}
-  - {fileID: 3393424486779976714, guid: 99102f165b4f56945aaefb495ccf1227, type: 3}
+  - {fileID: 7561713150331688314, guid: 0f9526c57afb24b4592d35568129c227, type: 3}
   maxEnemies: 50
   specialEnemyPrefab: {fileID: 6432242035614911728, guid: f181b4c51ed9e8a43afac243e99b861c, type: 3}
   specialEnemyStartLevel: 1
@@ -23729,6 +23725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleCanvasTransform: {fileID: 924632715}
+  bgmRandom: 0
   mainCamera: {fileID: 323615833}
   battleCamera: {fileID: 519420031}
   upgradesCamera: {fileID: 1542511370}
@@ -40058,6 +40055,8 @@ MonoBehaviour:
   fileButtonPrefab: {fileID: 1498002046594089966, guid: 99429d7eb0c467c469b0a5049147edd4, type: 3}
   fieldButtonPrefab: {fileID: 1498002046594089966, guid: 50da36e10157dd844b899065641241c2, type: 3}
   addAudioButtonPrefab: {fileID: 1498002046594089966, guid: db463f2f08c879d429de7bf9f310226e, type: 3}
+  resetAudioButtonPrefab: {fileID: 7062404581359141332, guid: 1745d7a53bb912c499918be48f1a82a6, type: 3}
+  randomBgmAudioButtonPrefab: {fileID: 7062404581359141332, guid: c74e145a0be74ab4db19fd3d5644473c, type: 3}
   fileListContainer: {fileID: 1828834728}
   EnemyOnDeathIcon: {fileID: 21300000, guid: 37e920711689bb84e9bd0a91287e62e2, type: 3}
   startPosition: {x: -645, y: 315}

@@ -17,10 +17,12 @@ public class AudioLoader : MonoBehaviour {
     [SerializeField] private Button showBGMButton;
     [SerializeField] private Button importAllButton;
     [SerializeField] private Button resetAllButton;
-    [SerializeField] private GameObject fileButtonPrefab; // Prefab for the file buttons
-    [SerializeField] private GameObject fieldButtonPrefab; // Prefab for the field buttons includes test audio button
-    [SerializeField] private GameObject addAudioButtonPrefab; // Prefab for the field buttons includes test audio button
-    [SerializeField] private Transform fileListContainer; // Container to hold the list of buttons
+    [SerializeField] private GameObject fileButtonPrefab; 
+    [SerializeField] private GameObject fieldButtonPrefab; 
+    [SerializeField] private GameObject addAudioButtonPrefab;
+    [SerializeField] private GameObject resetAudioButtonPrefab; 
+    [SerializeField] private GameObject randomBgmAudioButtonPrefab; 
+    [SerializeField] private Transform fileListContainer; 
     [SerializeField] Sprite EnemyOnDeathIcon;
     public Vector2 startPosition = new Vector2(-645, 315); // Starting position for the first button
     public int spacingX = 215; // Spacing between buttons
@@ -91,11 +93,11 @@ public class AudioLoader : MonoBehaviour {
         TextMeshProUGUI buttonText = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
         buttonText.text = fieldName;
         Button testButton = buttonObj.transform.GetChild(2).GetComponent<Button>();
-        Button resetButton = buttonObj.transform.GetChild(3).GetComponent<Button>();
+       
    
         button.onClick.AddListener(() => OnFieldButtonClicked(fieldName, categoryPath));
         testButton.onClick.AddListener(() => OnTestAudioButtonClicked(fieldName));
-        resetButton.onClick.AddListener(() => ResetFieldToDefault(fieldName));
+        
         var audioGalleryIcons = currentGalleryCategory.GetIconFields();
        
         foreach (var iconField in audioGalleryIcons) {
@@ -131,8 +133,12 @@ public class AudioLoader : MonoBehaviour {
             CreateFileButton(fileName, fieldName, categoryPath, currentButtonIndex);
             currentButtonIndex++;
         }
+        if(currentGalleryCategory.name == "BGMCategory") {
+            CreateRandomAudioButton(fieldName,currentButtonIndex);
+        }
         CreateAddNewAudioButton(fieldName, currentButtonIndex);
-
+        CreateResetAudioButton(fieldName, currentButtonIndex);
+        
     }
 
     private void OnTestAudioButtonClicked(string fieldName) {
@@ -162,6 +168,7 @@ public class AudioLoader : MonoBehaviour {
 
         // Check if the current file name matches the saved file name
         if (savedAudioFileName == fileName + ".wav") { // Assuming the saved file name includes the .wav extension
+
             buttonObj.GetComponent<Image>().color = Color.blue;
         }
         else {
@@ -240,7 +247,8 @@ public class AudioLoader : MonoBehaviour {
     private void CreateAddNewAudioButton(string fieldName, int index) {
         GameObject buttonObj = Instantiate(addAudioButtonPrefab, fileListContainer);
         Button button = buttonObj.GetComponent<Button>();
-
+        Image buttonBackground = buttonObj.GetComponent<Image>();
+        buttonBackground.color = Color.gray;
         button.onClick.AddListener(() => StartCoroutine(AddNewAudioFile(fieldName)));
 
         int row = index / maxRowSize;
@@ -250,7 +258,49 @@ public class AudioLoader : MonoBehaviour {
 
         buttonObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, yPos);
     }
+    private void CreateResetAudioButton(string fieldName, int index) {
+        GameObject buttonObj = Instantiate(resetAudioButtonPrefab, fileListContainer);
+        Button button = buttonObj.GetComponent<Button>();
+        Image buttonBackground = buttonObj.GetComponent<Image>();
+        buttonBackground.color = Color.gray;
+        button.onClick.AddListener(() => ResetFieldToDefault(fieldName));
+    
+        int row = index / maxRowSize;
+        int col = index % maxRowSize;
+        float xPos = startPosition.x + col * spacingX;
+        float yPos = startPosition.y - row * spacingY;
 
+        buttonObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, yPos);
+    }
+    private void CreateRandomAudioButton(string fieldName, int index) {
+        GameObject buttonObj = Instantiate(randomBgmAudioButtonPrefab, fileListContainer);
+        Button button = buttonObj.GetComponent<Button>();
+        Image buttonBackground = buttonObj.GetComponent<Image>();
+
+        if (UIManager.Instance.bgmRandom) {
+
+            buttonBackground.color = Color.blue;
+
+        }
+        else {
+            buttonBackground.color = Color.gray;
+        }
+        button.onClick.AddListener(() => {
+            UIManager.Instance.bgmRandom = !UIManager.Instance.bgmRandom;
+            string categoryPath = Path.Combine(savedAudioPath, currentGalleryCategory.name);
+            ClearAudioContainer();
+            OnFieldButtonClicked(fieldName, categoryPath);
+            
+            }    
+        );
+
+        int row = index / maxRowSize;
+        int col = index % maxRowSize;
+        float xPos = startPosition.x + col * spacingX;
+        float yPos = startPosition.y - row * spacingY;
+
+        buttonObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, yPos);
+    }
 
     private IEnumerator AddNewAudioFile(string fieldName) {
         yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.Files, false, null, null, "Select Audio File", "Load");

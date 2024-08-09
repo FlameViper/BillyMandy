@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     public Transform battleCanvasTransform;
-
+    public bool bgmRandom;
     void Awake()
     {
         if (Instance != null)
@@ -107,6 +107,7 @@ public class UIManager : MonoBehaviour
         else
         {
             if (isBattleMusic) {
+                if(bgmRandom)
                 SoundManager.Instance.audioLoader.ChooseRandomBGM();
                 foreach (var field in SoundManager.Instance.audioGalleryEntries.BGMCategory.GetAudioClipFields()) {
                     if (field.Name == "normalBgMusic") { }

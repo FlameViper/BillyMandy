@@ -17,8 +17,10 @@ public class BigEnemy : Enemy {
         }
 
         // Play death sound effect
-        if (deathSound != null && !GameSettings.Instance.SFXOFF) {
-            deathSound.Play();
+        if (enemyOnDeathSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+            //Debug.Log("played");
+            soundManager.CreateSound().WithSoundData(enemyOnDeathSoundData).WithPosition(transform.position).Play();
+
         }
 
         ResourceManager resourceManager = FindObjectOfType<ResourceManager>();
