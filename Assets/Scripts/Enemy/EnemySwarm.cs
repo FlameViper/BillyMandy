@@ -107,7 +107,11 @@ public class EnemySwarm : Enemy
     public IEnumerator HandleEnemyHurtAnimation() {
 
         spriteRenderer.material.SetFloat(FLASH_AMOUNT, 1);
+        if (enemyOnHitSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+            //Debug.Log("played");
+            soundManager.CreateSound().WithSoundData(enemyOnHitSoundData).WithPosition(transform.position).Play();
 
+        }
         yield return new WaitForSeconds(HurtAnimationDelay);
 
         spriteRenderer.material.SetFloat(FLASH_AMOUNT, 0);

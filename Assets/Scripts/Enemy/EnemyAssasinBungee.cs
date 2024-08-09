@@ -26,7 +26,10 @@ public class EnemyAssasinBungee : Enemy {
         originalPosition = transform.position;
         baseColor = spriteRenderer.color;
         PickRandomPosition(player.position);
+        InitSoundSettings();
+
     }
+
 
     protected override void Update() {
         base.Update();

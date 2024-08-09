@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,8 +20,10 @@ public class EnemyAssasinBig : Enemy {
         target = player;
         currentHealth = baseHealth;
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        InitSoundSettings();
 
     }
+  
 
     protected override void Update() {
         base.Update();

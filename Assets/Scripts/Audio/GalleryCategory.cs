@@ -31,13 +31,14 @@ public class GalleryCategory : ScriptableObject {
 
         
         if (File.Exists(audioSettingsFilePath)){
+            Debug.Log("init");
             string json = File.ReadAllText(audioSettingsFilePath);
             audioClipNames = JsonUtility.FromJson<SerializableDictionary<string, string>>(json);
             foreach (var field in GetAudioClipFields()) {
                 if (audioClipNames.TryGetValue(field.Name, out string audioFileName)) {
-                    string fieldPath = Path.Combine(savedAudioPath, field.Name);
+                    string fieldPath = Path.Combine(savedAudioPath, field.Name, audioFileName);
                     if (File.Exists(fieldPath))
-                    field.SetValue(this, LoadWav(Path.Combine(fieldPath, audioFileName)));
+                    field.SetValue(this, LoadWav(fieldPath));
                 }
             }      
         }

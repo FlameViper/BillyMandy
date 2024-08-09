@@ -19,6 +19,7 @@ TagManager:
   - ColoredEnemy
   - TowerDefenseTile
   - TowerDefenseShopItem
+  - EnemySpawner
   layers:
   - Default
   - TransparentFX

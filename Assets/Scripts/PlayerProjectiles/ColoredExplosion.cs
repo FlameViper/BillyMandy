@@ -19,20 +19,23 @@ public class ColoredExplosion : MonoBehaviour {
         StartCoroutine(DestroyAfterDelay());
         InitSoundSettings();
         if (explosionSound.clip != null && !GameSettings.Instance.SFXOFF) {
+            Debug.Log("triggred colored explosion");
             soundManager.CreateSound().WithSoundData(explosionSound).WithPosition(transform.position).Play();
 
         }
     }
     protected virtual void InitSoundSettings() {
         explosionSound.loop = false;
-        explosionSound.frequentSound = true;
+        explosionSound.frequentSound = false;
         SetMusicClip();
     }
     public void SetMusicClip() {
         var projectilesCategory = soundManager.audioGalleryEntries.ProjectilesCategory;
         foreach (var field in projectilesCategory.GetAudioClipFields()) {
             // Matching the name convention for OnHit sounds
-            if (field.Name == gameObject.name + "OnShoot") {
+      
+            if (field.Name == GetType().Name + "OnShoot") {
+              
                 // Get the value from the scriptable object field
                 AudioClip clip = (AudioClip)field.GetValue(projectilesCategory);
                 // Assign it to your local variable

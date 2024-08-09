@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,15 +22,17 @@ public class EnemyAssasinAssault : Enemy {
         target = player;
         currentHealth = baseHealth;
         baseColor = spriteRenderer.color;
-        int random = Random.Range(0, 2);
+        int random = UnityEngine.Random.Range(0, 2);
         if (random == 0) {
             semiCircleAngle = 0f;
         }
         else {
             semiCircleAngle = 180f;
         }
+        InitSoundSettings();
 
     }
+ 
 
     protected override void Update() {
         base.Update();

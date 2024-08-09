@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,8 @@ public class EnemyAssasinTower : Enemy {
         target = player;
         currentHealth = baseHealth;
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        InitSoundSettings();
 
     }
 

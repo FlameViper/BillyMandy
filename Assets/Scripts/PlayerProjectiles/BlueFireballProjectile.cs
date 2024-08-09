@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlueFireballPorjectile : Projectile {
+public class BlueFireballProjectile : Projectile {
 
 
     public static float maxNumberOfPassedEnemies = 3;
@@ -46,23 +46,6 @@ public class BlueFireballPorjectile : Projectile {
                 }
             }
         }
-        // Additional condition for CoinStealer
-        else if (other.CompareTag("CoinStealer")) {
-            // Get the CoinStealer component from the collided object
-            CoinStealer coinStealer = other.GetComponent<CoinStealer>();
-
-            // If the CoinStealer component exists, apply damage
-            if (coinStealer != null) {
-                coinStealer.TakeDamage(damageAmount);
-                // DisplayDamage(damageAmount, transform.position);
-                if (destoryedOnEnemyInpact) {
-                    Destroy(gameObject);
-                }
-            }
-        }
-        //else if (other.CompareTag("PassiveEnemy")) {
-
-        //}
         if (other.CompareTag("Border") && destoryedOnBorderInpact) {
             Destroy(gameObject);
         }

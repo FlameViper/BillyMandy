@@ -16,6 +16,7 @@ public class AudioLoader : MonoBehaviour {
     [SerializeField] private Button showProjectilesButton;
     [SerializeField] private Button showBGMButton;
     [SerializeField] private Button importAllButton;
+    [SerializeField] private Button resetAllButton;
     [SerializeField] private GameObject fileButtonPrefab; // Prefab for the file buttons
     [SerializeField] private GameObject fieldButtonPrefab; // Prefab for the field buttons includes test audio button
     [SerializeField] private GameObject addAudioButtonPrefab; // Prefab for the field buttons includes test audio button
@@ -60,6 +61,8 @@ public class AudioLoader : MonoBehaviour {
         showEnemiesOnHitButton.onClick.AddListener(() => DisplayCategoryFields(SoundManager.Instance.audioGalleryEntries.EnemyOnHitCategory));
         showBGMButton.onClick.AddListener(() => DisplayCategoryFields(SoundManager.Instance.audioGalleryEntries.BGMCategory));
         importAllButton.onClick.AddListener(() => StartCoroutine(ImportAllFromFolder()));
+        resetAllButton.onClick.AddListener(() => OnResetDefaultsClicked());
+    
     }
     public void ClearAudioContainer() {
         foreach (Transform child in fileListContainer) {
@@ -88,9 +91,11 @@ public class AudioLoader : MonoBehaviour {
         TextMeshProUGUI buttonText = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
         buttonText.text = fieldName;
         Button testButton = buttonObj.transform.GetChild(2).GetComponent<Button>();
+        Button resetButton = buttonObj.transform.GetChild(3).GetComponent<Button>();
    
         button.onClick.AddListener(() => OnFieldButtonClicked(fieldName, categoryPath));
         testButton.onClick.AddListener(() => OnTestAudioButtonClicked(fieldName));
+        resetButton.onClick.AddListener(() => ResetFieldToDefault(fieldName));
         var audioGalleryIcons = currentGalleryCategory.GetIconFields();
        
         foreach (var iconField in audioGalleryIcons) {
@@ -399,7 +404,43 @@ public class AudioLoader : MonoBehaviour {
             FieldName = fieldName;
         }
     }
+    // Function to handle reset button popup
+    private void OnResetDefaultsClicked() {
+        PopupManager.Instance.ShowConfirmationPopup(ResetAllFieldsToDefault);
+    }
+    // Function to reset all fields to their default values
+    private void ResetAllFieldsToDefault() {
+        foreach (var galleryCategory in SoundManager.Instance.audioGalleryEntries.GetCategories()) {
+            if (galleryCategory != null) {
+                foreach (var field in galleryCategory.GetAudioClipFields()) {
+                    // Set each field to its default value (null in this case)
+                    field.SetValue(galleryCategory, null);
 
+                    // Remove any saved settings for this field
+                    galleryCategory.RemoveAudioSetting(field.Name);
+                    galleryCategory.LoadAudioSettings();
+                }
+            }
+        }
+        // Optionally, clear the UI to reflect these changes
+        ClearAudioContainer();
+    }
+    private void ResetFieldToDefault(string fieldName) {
 
+        foreach (var field in currentGalleryCategory.GetAudioClipFields()) {
+            if(field.Name == fieldName) {
+                // Set each field to its default value (null in this case)
+                field.SetValue(currentGalleryCategory, null);
 
+                // Remove any saved settings for this field
+                currentGalleryCategory.RemoveAudioSetting(field.Name);
+                currentGalleryCategory.LoadAudioSettings();
+
+            }
+        }
+
+        // Optionally, clear the UI to reflect these changes
+        ClearAudioContainer();
+        DisplayCategoryFields(currentGalleryCategory);
+    }
 }

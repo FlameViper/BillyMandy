@@ -40,19 +40,19 @@ public class MinigunProjectile : Projectile {
             }
         }
         // Additional condition for CoinStealer
-        else if (other.CompareTag("CoinStealer")) {
-            // Get the CoinStealer component from the collided object
-            CoinStealer coinStealer = other.GetComponent<CoinStealer>();
+        //else if (other.CompareTag("CoinStealer")) {
+        //    // Get the CoinStealer component from the collided object
+        //    CoinStealer coinStealer = other.GetComponent<CoinStealer>();
 
-            // If the CoinStealer component exists, apply damage
-            if (coinStealer != null) {
-                coinStealer.TakeDamage(damageAmount);
-                // DisplayDamage(damageAmount, transform.position);
-                if (destoryedOnEnemyInpact) {
-                    Destroy(gameObject);
-                }
-            }
-        }
+        //    // If the CoinStealer component exists, apply damage
+        //    if (coinStealer != null) {
+        //        coinStealer.TakeDamage(damageAmount);
+        //        // DisplayDamage(damageAmount, transform.position);
+        //        if (destoryedOnEnemyInpact) {
+        //            Destroy(gameObject);
+        //        }
+        //    }
+        //}
         //else if (other.CompareTag("PassiveEnemy")) {
 
         //}

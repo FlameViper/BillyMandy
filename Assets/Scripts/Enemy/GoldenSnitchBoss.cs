@@ -94,6 +94,8 @@ public class GoldenSnitchBoss : Enemy {
         baseColor = spriteRenderer.color;
         bossHpText.text = "Boss Hp:"+ currentHealth.ToString();
         bossStartingHealth = currentHealth;
+        InitSoundSettings();
+
     }
 
     protected override void Update() {
@@ -583,7 +585,12 @@ public class GoldenSnitchBoss : Enemy {
 
 
     public void TakeShieldDamage(int damage) {
-    
+
+        if (enemyOnHitSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+            //Debug.Log("played");
+            soundManager.CreateSound().WithSoundData(enemyOnHitSoundData).WithPosition(transform.position).Play();
+
+        }
         if (takesObjectiveDamage) {
             shieldCurrentHp -= objectiveOnHitDamageTaken;
             shieldSlider.value -= objectiveOnHitDamageTaken;

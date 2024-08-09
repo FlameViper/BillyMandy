@@ -37,7 +37,7 @@
 
             if (instance == null) {
                 instance = this as T;
-                DontDestroyOnLoad(transform.gameObject);
+                //DontDestroyOnLoad(transform.gameObject);
                 enabled = true;
             } else {
                 if (this != instance) {

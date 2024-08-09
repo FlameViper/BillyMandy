@@ -330,12 +330,12 @@ public class UpgradeManager : MonoBehaviour
                     blueFireTargetsPierced++;
                 }
                 
-                BlueFireballPorjectile.maxNumberOfPassedEnemies = blueFireTargetsPierced;
+                BlueFireballProjectile.maxNumberOfPassedEnemies = blueFireTargetsPierced;
                 if (blueFireTargetsPierced == 7 && blueFireWeaponCostText.text != "Max") {
                     Color color = new Color(0.23f, 0, 0); 
-                    BlueFireballPorjectile.SetColor(color);
+                    BlueFireballProjectile.SetColor(color);
                     blueFireWeaponCostText.text = "Black Fire" + blueFireCost + " Coins";
-                    BlueFireballPorjectile.SetBlackfire();
+                    BlueFireballProjectile.SetBlackfire();
                 }
                 if (blueFireTargetsPierced == 8) {
                     blueFireWeaponCostText.text = "Max";

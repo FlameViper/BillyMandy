@@ -6,6 +6,7 @@ public class EnemyOnHitCategory : GalleryCategory {
     [HideInInspector] public AudioClip Enemy09OnHit;
     [HideInInspector] public AudioClip EnemyAZOnHit;
     [HideInInspector] public AudioClip BigEnemyOnHit;
+    [HideInInspector] public AudioClip CoinStealerOnHit;
     [HideInInspector] public AudioClip ColoredEnemyOnHit;
     [HideInInspector] public AudioClip EnemyAssasinAssaultOnHit;
     [HideInInspector] public AudioClip EnemyAssasinBigOnHit;
@@ -21,6 +22,7 @@ public class EnemyOnHitCategory : GalleryCategory {
     public Sprite Enemy09OnHitIcon;
     public Sprite EnemyAZOnHitIcon;
     public Sprite BigEnemyOnHitIcon;
+    public Sprite CoinStealerOnHitIcon;
     public Sprite ColoredEnemyOnHitIcon;
     public Sprite EnemyAssasinAssaultOnHitIcon;
     public Sprite EnemyAssasinBigOnHitIcon;

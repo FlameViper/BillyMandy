@@ -1,27 +1,33 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
-public class CoinStealer : MonoBehaviour
+public class CoinStealer : Enemy
 {
-    public float moveSpeed = 1f;
-    public Transform target;  // Will be assigned dynamically
+    //public float moveSpeed = 1f;
+   // public Transform target;  // Will be assigned dynamically
     public Transform spawner;  // Will be assigned dynamically
-    public GameObject coinPrefab;
+   // public GameObject coinPrefab;
     public int coinsCollected = 0;
     public float baseAttractionPower = 1f;  // Base sucking power
     public float attractionPower;  // Current sucking power, adjusted per level
-    public int baseHealth = 200;  // Base health
-    public int currentHealth;  // Current health
+    //public int baseHealth = 200;  // Base health
+   // public int currentHealth;  // Current health
 
     private float suckDuration = 10f;
     private float suckTimer = 0f;
     private bool returningToSpawner = false;
     private bool isSuckerActive = false;
-    private bool isDead = false;  // Flag to check if the CoinStealer is dead
+   // private bool isDead = false;  // Flag to check if the CoinStealer is dead
 
-    private SpriteRenderer spriteRenderer; // Make sure to initialize this in Start or Awake
+   // private SpriteRenderer spriteRenderer; // Make sure to initialize this in Start or Awake
+    //sound
+   // [SerializeField] SoundData enemyOnHitSoundData;
+   // [SerializeField] SoundData enemyOnDeathSoundData;
 
-    void Awake()
+   // public SoundManager soundManager => SoundManager.Instance;
+
+    protected override void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
@@ -30,11 +36,11 @@ public class CoinStealer : MonoBehaviour
         }
     }
 
-    void Start()
+    protected override void Start()
     {
         target = GameObject.Find("CoinStealerLocation").transform;  // Find the target location by name
-        spawner = GameObject.Find("EnemySpawner").transform;  // Find the spawner by name
-
+        spawner = FindFirstObjectByType<EnemySpawner>().transform;  // Find the spawner by name
+        Debug.Log(spawner.position);
         currentHealth = baseHealth;  // Initialize health
         if (BattleManager.Instance != null)
         {
@@ -45,10 +51,12 @@ public class CoinStealer : MonoBehaviour
         {
             Debug.LogError("BattleManager instance not found");
         }
+        InitSoundSettings();
+
     }
+   
 
-
-    void Update()
+    protected override void Update()
     {
         if (!returningToSpawner)
         {
@@ -56,6 +64,7 @@ public class CoinStealer : MonoBehaviour
         }
         else
         {
+           // Debug.Log("returning");
             ReturnToSpawner();
         }
 
@@ -70,16 +79,23 @@ public class CoinStealer : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
-    {
-        if (isDead) return;  // Ignore damage if already dead
+    //public void TakeDamage(int damage)
+    //{
+    //    if (isDead) return;  // Ignore damage if already dead
 
-        currentHealth -= damage;
-        if (currentHealth <= 0)
-        {
-            OnDeath();
-        }
-    }
+    //    currentHealth -= damage;
+    //    if (enemyOnHitSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+    //        soundManager.CreateSound().WithSoundData(enemyOnHitSoundData).WithPosition(transform.position).Play();
+
+    //    }
+    //    else {
+    //        Debug.Log("no audio clip set hit");
+    //    }
+    //    if (currentHealth <= 0)
+    //    {
+    //        OnDeath();
+    //    }
+    //}
 
     public void UpdateAttractionPower(int level)
     {
@@ -104,7 +120,7 @@ public class CoinStealer : MonoBehaviour
     private void AttractCoins()
     {
         GameObject[] coins = GameObject.FindGameObjectsWithTag("coin");
-        Debug.Log("Found " + coins.Length + " coins to potentially attract.");
+       // Debug.Log("Found " + coins.Length + " coins to potentially attract.");
 
         foreach (GameObject coin in coins)
         {
@@ -151,16 +167,15 @@ public class CoinStealer : MonoBehaviour
 
     void ReturnToSpawner()
     {
+
         float distance = Vector2.Distance(transform.position, spawner.position);
-        Debug.Log("Returning to spawner. Distance: " + distance);
-        if (distance > 1f)
-        {
+   
+        if (distance > 1f) {
             transform.position = Vector2.MoveTowards(transform.position, spawner.position, moveSpeed * Time.deltaTime);
         }
-        else
-        {
+        else {
             DepositCoins();
-            Debug.Log("Deposited coins: " + coinsCollected);
+   
             Destroy(gameObject);  // Destroy or disable after depositing coins
         }
     }
@@ -180,56 +195,62 @@ public class CoinStealer : MonoBehaviour
         coinsCollected = 0;  // Reset coin count after deposit
     }
 
-    public void OnDeath()
-    {
-        if (isDead) return; // Prevent multiple deaths
-        isDead = true; // Mark as dead
+    //public void OnDeath()
+    //{
+    //    if (isDead) return; // Prevent multiple deaths
+    //    isDead = true; // Mark as deadss
+    //    if (enemyOnDeathSoundData.clip != null && !GameSettings.Instance.SFXOFF) {
+    //        soundManager.CreateSound().WithSoundData(enemyOnDeathSoundData).WithPosition(transform.position).Play();
 
-        ResourceManager resourceManager = FindObjectOfType<ResourceManager>();
-        if (resourceManager != null)
-        {
-            resourceManager.AddScore(300);
-        }
+    //    }
+    //    else {
+    //        Debug.Log("no audio clip set death");
+    //    }
+    //    //ResourceManager resourceManager = FindObjectOfType<ResourceManager>();
+    //    // if (resourceManager != null)
+    //    // {
+    //    ResourceManager.Instance.AddScore(300);
+    //   // }
 
-        StartCoroutine(FadeOutAndDropCoins(1f)); // Start fading out with a duration of 1 second
-    }
+    //    StartCoroutine(FadeOutAndDropCoins(1f)); // Start fading out with a duration of 1 second
+    //}
 
-    IEnumerator FadeOutAndDropCoins(float duration)
-    {
-        float counter = 0;
-        while (counter < duration)
-        {
-            counter += Time.deltaTime;
-            float alpha = Mathf.Lerp(1, 0, counter / duration);
-            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alpha);
-            yield return null;
-        }
+    //IEnumerator FadeOutAndDropCoins(float duration)
+    //{
+    //    float counter = 0;
+    //    while (counter < duration)
+    //    {
+    //        counter += Time.deltaTime;
+    //        float alpha = Mathf.Lerp(1, 0, counter / duration);
+    //        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alpha);
+    //        yield return null;
+    //    }
 
-        Debug.Log("CoinStealer died. Dropping coins: " + coinsCollected);
-        float dropRadius = 1f; // Define the radius within which coins will be dropped
-        for (int i = 0; i < coinsCollected; i++)
-        {
-            Vector3 coinPosition = transform.position + new Vector3(Random.Range(-dropRadius, dropRadius), Random.Range(-dropRadius, dropRadius), 0);
-            Instantiate(coinPrefab, coinPosition, Quaternion.identity);
-        }
-        Destroy(gameObject); // Destroy the object after fading out
-    }
+    //    Debug.Log("CoinStealer died. Dropping coins: " + coinsCollected);
+    //    float dropRadius = 1f; // Define the radius within which coins will be dropped
+    //    for (int i = 0; i < coinsCollected; i++)
+    //    {
+    //        Vector3 coinPosition = transform.position + new Vector3(UnityEngine.Random.Range(-dropRadius, dropRadius), UnityEngine.Random.Range(-dropRadius, dropRadius), 0);
+    //        Instantiate(coinPrefab, coinPosition, Quaternion.identity);
+    //    }
+    //    Destroy(gameObject); // Destroy the object after fading out
+    //}
 
-    public void SetHealth(int level)
-    {
-        int healthIncrease = 50; // Default for Easy
+    //public void SetHealth(int level)
+    //{
+    //    int healthIncrease = 50; // Default for Easy
 
-        switch (GameSettings.Instance.currentDifficulty)
-        {
-            case GameSettings.Difficulty.Medium:
-                healthIncrease = 70;
-                break;
-            case GameSettings.Difficulty.Hard:
-                healthIncrease = 100;
-                break;
-        }
+    //    switch (GameSettings.Instance.currentDifficulty)
+    //    {
+    //        case GameSettings.Difficulty.Medium:
+    //            healthIncrease = 70;
+    //            break;
+    //        case GameSettings.Difficulty.Hard:
+    //            healthIncrease = 100;
+    //            break;
+    //    }
 
-        baseHealth = 200 + (level - 1) * healthIncrease;
-        currentHealth = baseHealth;
-    }
+    //    baseHealth = 200 + (level - 1) * healthIncrease;
+    //    currentHealth = baseHealth;
+    //}
 }

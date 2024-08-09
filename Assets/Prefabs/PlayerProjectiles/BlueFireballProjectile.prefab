@@ -125,15 +125,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 3442017150751071412}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 640d23c3ffda43445b02c8e5b2de3fff, type: 3}
+  m_Script: {fileID: 11500000, guid: cf48863beb2950a4493ef62aee150cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
   destroyDelay: 10
   destoryedOnBorderInpact: 1
-  destoryedOnEnemyInpact: 1
+  destoryedOnEnemyInpact: 0
   damageTextPrefab: {fileID: 4908666859188776841, guid: 3d2ae03f4303db3439eb36ec3754fff3, type: 3}
   canvasTransform: {fileID: 0}
+  shootProjectileSoundData:
+    clip: {fileID: 0}
+    loop: 0
+    playOnAwake: 0
+    frequentSound: 0
   currrentNumberOfPassedEnemies: 0
 --- !u!61 &7588725078646041512
 BoxCollider2D:

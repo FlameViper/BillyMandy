@@ -16,6 +16,7 @@ MonoBehaviour:
   Enemy09OnDeath: {fileID: 0}
   EnemyAZOnDeath: {fileID: 0}
   BigEnemyOnDeath: {fileID: 0}
+  CoinStealerOnDeath: {fileID: 0}
   ColoredEnemyOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
   EnemyAssasinAssaultOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
   EnemyAssasinBigOnDeath: {fileID: 8300000, guid: 94faec1a838967c43801ffec1d9b5b58, type: 3}
@@ -30,6 +31,7 @@ MonoBehaviour:
   Enemy09OnDeathIcon: {fileID: 21300000, guid: cc693980ce387844891e9a7f7e3bdf5e, type: 3}
   EnemyAZOnDeathIcon: {fileID: 21300000, guid: 1692bac83c3fbc04181ead437fe9f1c2, type: 3}
   BigEnemyOnDeathIcon: {fileID: 21300000, guid: 37e920711689bb84e9bd0a91287e62e2, type: 3}
+  CoinStealerOnDeathIcon: {fileID: 21300000, guid: 37e920711689bb84e9bd0a91287e62e2, type: 3}
   ColoredEnemyOnDeathIcon: {fileID: 21300000, guid: f0e7ef80749bc1c4299eb08a71c8db5a, type: 3}
   EnemyAssasinAssaultOnDeathIcon: {fileID: 21300000, guid: d0ea2c97b8e0a9e469b88f4f16dfd70a, type: 3}
   EnemyAssasinBigOnDeathIcon: {fileID: 21300000, guid: d0ea2c97b8e0a9e469b88f4f16dfd70a, type: 3}
